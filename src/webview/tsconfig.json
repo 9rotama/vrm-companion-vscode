@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
-    "outDir": "../../dist/webview"
+    "outDir": "../../dist/webview",
+    "composite": true
   }
 }
