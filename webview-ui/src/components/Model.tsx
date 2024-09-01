@@ -2,7 +2,8 @@ import { useGLTF } from "@react-three/drei";
 import { VRM, VRMLoaderPlugin } from "@pixiv/three-vrm";
 import { GLTF, GLTFLoader, GLTFLoaderPlugin } from "three/examples/jsm/loaders/GLTFLoader";
 import { useEffect, useRef, useState } from "react";
-import { useThree } from "@react-three/fiber";
+import { useFrame, useThree } from "@react-three/fiber";
+import { Object3D } from "three";
 
 export default function Model() {
   const { scene, camera } = useThree();
@@ -37,6 +38,22 @@ export default function Model() {
         console.log(error);
       }
     );
+  });
+
+  useFrame(({ clock }, delta) => {
+    const t = clock.getElapsedTime();
+
+    if (avatar.current?.expressionManager) {
+      avatar.current.update(delta);
+      const blinkDelay = 10;
+      const blinkFrequency = 3;
+      if (Math.round(t * blinkFrequency) % blinkDelay === 0) {
+        avatar.current.expressionManager.setValue(
+          "blink",
+          1 - Math.abs(Math.sin(t * blinkFrequency * Math.PI))
+        );
+      }
+    }
   });
 
   return (
