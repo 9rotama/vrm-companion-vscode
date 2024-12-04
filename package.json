@@ -15,10 +15,15 @@
       }
     ]
   },
+  "workspaces": {
+    "packages": [
+      "webview"
+    ]
+  },
   "scripts": {
-    "install:all": "npm install && cd webview-ui && npm install",
-    "start:webview": "cd webview-ui && npm run start",
-    "build:webview": "cd webview-ui && npm run build",
+    "install:all": "npm install",
+    "start:webview": "npm run start -w webview",
+    "build:webview": "npm run build -w webview",
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
