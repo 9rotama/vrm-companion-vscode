@@ -1,19 +1,18 @@
-import { useGLTF } from "@react-three/drei";
 import { VRM, VRMLoaderPlugin } from "@pixiv/three-vrm";
-import { GLTF, GLTFLoader, GLTFLoaderPlugin } from "three/examples/jsm/loaders/GLTFLoader";
+import { GLTF, GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { useEffect, useRef, useState } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
-import { Object3D } from "three";
 
 export default function Model() {
   const { scene, camera } = useThree();
 
   const [gltf, setGltf] = useState<GLTF>();
-  const [progress, setProgress] = useState<number>(0);
   const avatar = useRef<VRM>();
 
   useEffect(() => {
-    if (gltf) return;
+    if (gltf) {
+      return;
+    }
 
     const loader = new GLTFLoader();
 
@@ -27,11 +26,13 @@ export default function Model() {
         setGltf(gltf);
         const vrm: VRM = gltf.userData.vrm;
         avatar.current = vrm;
-        if (vrm.lookAt) vrm.lookAt.target = camera;
+        if (vrm.lookAt) {
+          vrm.lookAt.target = camera;
+        }
       },
       (xhr) => {
-        setProgress((xhr.loaded / xhr.total) * 100);
-        console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
+        const progress = (xhr.loaded / xhr.total) * 100;
+        console.log(progress + "% loaded");
       },
       (error) => {
         console.log("An error happened");
