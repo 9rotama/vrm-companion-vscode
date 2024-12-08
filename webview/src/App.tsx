@@ -1,4 +1,3 @@
-import Model from "./components/Model";
 import "./App.css";
 import VRMCompanionCanvas from "./components/Canvas";
 
