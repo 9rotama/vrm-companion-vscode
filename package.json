@@ -11,7 +11,7 @@
     "commands": [
       {
         "command": "vrm-companion-vscode.show",
-        "title": "vrm-companion-vscode: Show"
+        "title": "vrm-companion-vscode: show"
       }
     ]
   },
