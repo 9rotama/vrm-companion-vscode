@@ -1,11 +1,9 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
-    "target": "es6",
-    "outDir": "out",
-    "lib": ["es6", "dom"],
-    "sourceMap": true,
+    "target": "es2022",
+    "lib": ["es2022"],
+    "rootDir": ".",
     "strict": true
   },
-  "exclude": ["node_modules", ".vscode-test", "webview"]
+  "include": ["./src/**/*"]
 }
