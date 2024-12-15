@@ -9,15 +9,20 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "*"
+  ],
   "main": "./dist/extension.js",
   "contributes": {
-    "commands": [
-      {
-        "command": "vrm-companion-vscode.helloWorld",
-        "title": "Hello World"
-      }
-    ]
+    "views": {
+      "explorer": [
+        {
+          "type": "webview",
+          "id": "vrm-companion-vscode.summon",
+          "name": "vrm-companion"
+        }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "pnpm run package",
