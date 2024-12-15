@@ -1,11 +1,8 @@
 @tailwind base;
 @tailwind components;
-@tailwind utilities;|
+@tailwind utilities;
 
-main {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  height: 100%;
+body {
+  padding: 0;
 }
+
