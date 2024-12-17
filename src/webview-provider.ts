@@ -1,8 +1,11 @@
 import * as vscode from "vscode";
 import { Uri, Webview } from "vscode";
-
+import { readFile } from "fs";
 export class WebViewProvider implements vscode.WebviewViewProvider {
-  constructor(private _extensionUri: vscode.Uri) {}
+  constructor(
+    private _extensionUri: vscode.Uri,
+    private _vrmFileDataUrl: string
+  ) {}
   private _view?: vscode.WebviewView;
 
   public resolveWebviewView(webviewView: vscode.WebviewView) {
@@ -17,6 +20,15 @@ export class WebViewProvider implements vscode.WebviewViewProvider {
       this._view.webview,
       this._extensionUri
     );
+    webviewView.webview.onDidReceiveMessage((message) => {
+      switch (message.command) {
+        case "readyForReceiveVrmFileData":
+          webviewView.webview.postMessage({
+            command: "setState",
+            state: { vrmFileDataUrl: this._vrmFileDataUrl },
+          });
+      }
+    });
   }
 
   private _getHtml(webview: Webview, extensionUri: Uri) {
@@ -45,7 +57,7 @@ export class WebViewProvider implements vscode.WebviewViewProvider {
         <head>
           <meta charset="UTF-8" />
           <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-          <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src ${webview.cspSource}; script-src 'nonce-${nonce}';">
+          <meta http-equiv="Content-Security-Policy" content="style-src ${webview.cspSource}; script-src 'nonce-${nonce}';">
           <link rel="stylesheet" type="text/css" href="${stylesUri}">
           <title>Hello World</title>
         </head>

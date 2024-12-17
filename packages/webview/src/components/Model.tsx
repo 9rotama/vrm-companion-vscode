@@ -2,15 +2,28 @@ import { VRM, VRMLoaderPlugin } from "@pixiv/three-vrm";
 import { GLTF, GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { useEffect, useRef, useState } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
+import { vscode } from "../utilities/vscode";
 
 export default function Model() {
   const { scene, camera } = useThree();
-
+  const [dataUrl, setDataUrl] = useState<string | null>(null);
   const [gltf, setGltf] = useState<GLTF>();
   const avatar = useRef<VRM>();
 
   useEffect(() => {
-    if (gltf) {
+    vscode.postMessage({ command: "readyForReceiveVrmFileData" });
+    window.addEventListener("message", (event) => {
+      const message = event.data; // The JSON data our extension sent
+      switch (message.command) {
+        case "setState":
+          setDataUrl(message.state.vrmFileDataUrl);
+          break;
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    if (gltf || !dataUrl) {
       return;
     }
 
@@ -21,7 +34,7 @@ export default function Model() {
     });
 
     loader.load(
-      "/test_models/VRM_NekoUmiushi.vrm",
+      dataUrl,
       (gltf) => {
         setGltf(gltf);
         const vrm: VRM = gltf.userData.vrm;
@@ -39,7 +52,7 @@ export default function Model() {
         console.log(error);
       }
     );
-  });
+  }, [dataUrl]);
 
   useFrame(({ clock }, delta) => {
     const t = clock.getElapsedTime();

@@ -22,6 +22,16 @@
           "name": "vrm-companion"
         }
       ]
+    },
+    "configuration": {
+      "title": "vrm-companion-vscode",
+      "properties": {
+        "vrm-companion-vscode.vrmFilePath": {
+          "type": "string",
+          "default": null,
+          "description": "your vrm file path"
+        }
+      }
     }
   },
   "scripts": {
