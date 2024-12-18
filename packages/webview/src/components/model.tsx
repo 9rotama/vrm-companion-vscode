@@ -3,6 +3,7 @@ import { GLTF, GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { useEffect, useRef, useState } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import { vscode } from "../utilities/vscode";
+import { Float } from "@react-three/drei";
 
 export default function Model() {
   const { scene, camera } = useThree();
@@ -76,8 +77,14 @@ export default function Model() {
   });
 
   return (
-    <mesh rotation={[0, Math.PI, 0]} scale={[5, 5, 5]} position={[0, -3, 0]}>
-      {gltf && <primitive object={gltf.scene} />}
-    </mesh>
+    <Float
+      speed={1.5}
+      rotation={[0, Math.PI, 0]}
+      position={[0, -4, 2.3]}
+      rotationIntensity={0.3}
+      floatIntensity={0.5}
+    >
+      <mesh scale={[5, 5, 5]}>{gltf && <primitive object={gltf.scene} />}</mesh>
+    </Float>
   );
 }
