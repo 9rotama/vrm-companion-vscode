@@ -1,5 +1,5 @@
-import "./App.css";
-import VRMCompanionCanvas from "./components/Canvas";
+import "./app.css";
+import VRMCompanionCanvas from "./components/canvas";
 
 export default function App() {
   return (

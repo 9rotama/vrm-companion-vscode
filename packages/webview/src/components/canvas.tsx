@@ -1,6 +1,6 @@
 import { Canvas } from "@react-three/fiber";
 import { Suspense } from "react";
-import Model from "./Model";
+import Model from "./model";
 
 export default function VRMCompanionCanvas() {
   return (
