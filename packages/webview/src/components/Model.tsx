@@ -11,15 +11,20 @@ export default function Model() {
   const avatar = useRef<VRM>();
 
   useEffect(() => {
-    vscode.postMessage({ command: "readyForReceiveVrmFileData" });
-    window.addEventListener("message", (event) => {
-      const message = event.data; // The JSON data our extension sent
-      switch (message.command) {
-        case "setState":
-          setDataUrl(message.state.vrmFileDataUrl);
-          break;
-      }
-    });
+    const vrmFilePathForDev = import.meta.env.VITE_DEV_VRM;
+    if (vrmFilePathForDev) {
+      setDataUrl(vrmFilePathForDev);
+    } else {
+      vscode.postMessage({ command: "readyForReceiveVrmFileData" });
+      window.addEventListener("message", (event) => {
+        const message = event.data; // The JSON data our extension sent
+        switch (message.command) {
+          case "setState":
+            setDataUrl(message.state.vrmFileDataUrl);
+            break;
+        }
+      });
+    }
   }, []);
 
   useEffect(() => {
