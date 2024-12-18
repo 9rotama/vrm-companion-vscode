@@ -5,9 +5,19 @@ import { useFrame, useThree } from "@react-three/fiber";
 import { vscode } from "../utilities/vscode";
 import { Float } from "@react-three/drei";
 
+const expressions: {
+  [key: number]: { happy: number; angry: number; sad: number };
+} = {
+  0: { happy: 1.0, angry: 0, sad: 0 },
+  1: { happy: 0, angry: 0, sad: 0 },
+  2: { happy: 0, angry: 1.0, sad: 0 },
+  3: { happy: 0, angry: 0, sad: 1.0 },
+} as const;
+
 export default function Model() {
   const { scene, camera } = useThree();
   const [dataUrl, setDataUrl] = useState<string | null>(null);
+  const [issuesCount, setIssuesCount] = useState<number>(0);
   const [gltf, setGltf] = useState<GLTF>();
   const avatar = useRef<VRM>();
 
@@ -20,45 +30,59 @@ export default function Model() {
       window.addEventListener("message", (event) => {
         const message = event.data; // The JSON data our extension sent
         switch (message.command) {
-          case "setState":
+          case "set_vrm":
             setDataUrl(message.state.vrmFileDataUrl);
             break;
+          case "issues_count":
+            setIssuesCount(message.state.issuesCount);
         }
       });
     }
   }, []);
 
-  useEffect(() => {
-    if (gltf || !dataUrl) {
-      return;
-    }
-
-    const loader = new GLTFLoader();
-
-    loader.register((parser) => {
-      return new VRMLoaderPlugin(parser);
-    });
-
-    loader.load(
-      dataUrl,
-      (gltf) => {
-        setGltf(gltf);
-        const vrm: VRM = gltf.userData.vrm;
-        avatar.current = vrm;
-        if (vrm.lookAt) {
-          vrm.lookAt.target = camera;
-        }
-      },
-      (xhr) => {
-        const progress = (xhr.loaded / xhr.total) * 100;
-        console.log(progress + "% loaded");
-      },
-      (error) => {
-        console.log("An error happened");
-        console.log(error);
+  useEffect(
+    function loadVrm() {
+      if (gltf || !dataUrl) {
+        return;
       }
-    );
-  }, [dataUrl]);
+
+      const loader = new GLTFLoader();
+
+      loader.register((parser) => {
+        return new VRMLoaderPlugin(parser);
+      });
+
+      loader.load(
+        dataUrl,
+        (gltf) => {
+          setGltf(gltf);
+          const vrm: VRM = gltf.userData.vrm;
+          avatar.current = vrm;
+          if (vrm.lookAt) {
+            vrm.lookAt.target = camera;
+          }
+        },
+        (xhr) => {
+          const progress = (xhr.loaded / xhr.total) * 100;
+          console.log(progress + "% loaded");
+        },
+        (error) => {
+          console.log("An error happened");
+          console.log(error);
+        }
+      );
+    },
+    [dataUrl]
+  );
+
+  useEffect(function updateExpressionByIssues() {
+    if (avatar.current?.expressionManager) {
+      const expression = expressions[Math.min(issuesCount, 3)];
+      avatar.current.expressionManager.setValue("happy", expression.happy);
+      avatar.current.expressionManager.setValue("angry", expression.angry);
+      avatar.current.expressionManager.setValue("sad", expression.sad);
+    }
+  });
 
   useFrame(({ clock }, delta) => {
     const t = clock.getElapsedTime();
@@ -67,7 +91,10 @@ export default function Model() {
       avatar.current.update(delta);
       const blinkDelay = 10;
       const blinkFrequency = 3;
-      if (Math.round(t * blinkFrequency) % blinkDelay === 0) {
+      if (
+        Math.round(t * blinkFrequency) % blinkDelay === 0 &&
+        issuesCount !== 0
+      ) {
         avatar.current.expressionManager.setValue(
           "blink",
           1 - Math.abs(Math.sin(t * blinkFrequency * Math.PI))

@@ -24,7 +24,7 @@ export class WebViewProvider implements vscode.WebviewViewProvider {
       switch (message.command) {
         case "ready_for_receives":
           webviewView.webview.postMessage({
-            command: "setState",
+            command: "set_vrm",
             state: { vrmFileDataUrl: this._vrmFileDataUrl },
           });
       }
