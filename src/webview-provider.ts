@@ -22,7 +22,7 @@ export class WebViewProvider implements vscode.WebviewViewProvider {
     );
     webviewView.webview.onDidReceiveMessage((message) => {
       switch (message.command) {
-        case "readyForReceiveVrmFileData":
+        case "ready_for_receives":
           webviewView.webview.postMessage({
             command: "setState",
             state: { vrmFileDataUrl: this._vrmFileDataUrl },

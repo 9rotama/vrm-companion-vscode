@@ -15,7 +15,7 @@ export default function Model() {
     if (vrmFilePathForDev) {
       setDataUrl(vrmFilePathForDev);
     } else {
-      vscode.postMessage({ command: "readyForReceiveVrmFileData" });
+      vscode.postMessage({ command: "ready_for_receives" });
       window.addEventListener("message", (event) => {
         const message = event.data; // The JSON data our extension sent
         switch (message.command) {
