@@ -5,14 +5,21 @@ import { useFrame, useThree } from "@react-three/fiber";
 import { vscode } from "../utilities/vscode";
 import { Float } from "@react-three/drei";
 
-const expressions: {
-  [key: number]: { happy: number; angry: number; sad: number };
-} = {
-  0: { happy: 1.0, angry: 0, sad: 0 },
-  1: { happy: 0, angry: 0, sad: 0 },
-  2: { happy: 0, angry: 1.0, sad: 0 },
-  3: { happy: 0, angry: 0, sad: 1.0 },
-} as const;
+function getExpression(issuesCount: number): {
+  happy: number;
+  angry: number;
+  sad: number;
+} {
+  if (issuesCount < 2) {
+    return { happy: 1.0, angry: 0, sad: 0 };
+  } else if (issuesCount < 4) {
+    return { happy: 0, angry: 0, sad: 0 };
+  } else if (issuesCount < 8) {
+    return { happy: 0, angry: 1.0, sad: 0 };
+  } else {
+    return { happy: 0, angry: 0, sad: 1.0 };
+  }
+}
 
 export default function Model() {
   const { scene, camera } = useThree();
@@ -77,7 +84,7 @@ export default function Model() {
 
   useEffect(function updateExpressionByIssues() {
     if (avatar.current?.expressionManager) {
-      const expression = expressions[Math.min(issuesCount, 3)];
+      const expression = getExpression(issuesCount);
       avatar.current.expressionManager.setValue("happy", expression.happy);
       avatar.current.expressionManager.setValue("angry", expression.angry);
       avatar.current.expressionManager.setValue("sad", expression.sad);

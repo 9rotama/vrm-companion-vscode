@@ -31,6 +31,19 @@ export class WebViewProvider implements vscode.WebviewViewProvider {
     });
   }
 
+  public postIssuesCount(issuesCount: number) {
+    const view = this._view;
+    if (!view) {
+      return;
+    }
+    console.log("Issues count:", issuesCount);
+
+    view.webview.postMessage({
+      command: "issues_count",
+      state: { issuesCount },
+    });
+  }
+
   private _getHtml(webview: Webview, extensionUri: Uri) {
     // The CSS file from the React build output
     const stylesUri = getUri(webview, extensionUri, [
