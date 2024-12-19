@@ -100,7 +100,7 @@ export default function Model() {
       const blinkFrequency = 3;
       if (
         Math.round(t * blinkFrequency) % blinkDelay === 0 &&
-        issuesCount !== 0
+        issuesCount >= 2
       ) {
         avatar.current.expressionManager.setValue(
           "blink",
