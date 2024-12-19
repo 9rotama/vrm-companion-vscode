@@ -14,16 +14,23 @@ function postIssuesCount(provider: WebViewProvider) {
     });
   });
 
-  console.log(issues)
-
   provider.postIssuesCount(issues);
+}
+
+async function getVrmFileDataUrl(vrmFilePath: string) {
+  try {
+    const vrmFile = await readFile(vrmFilePath);
+    const base64Data = vrmFile.toString("base64");
+    return `data:application/octet-stream;base64,${base64Data}`;
+  } catch (error) {
+    console.error("Error reading VRM file:", error);
+    return "";
+  }
 }
 
 async function update(vrmFilePath: string, context: vscode.ExtensionContext) {
   try {
-    const vrmFile = await readFile(vrmFilePath);
-    const base64Data = vrmFile.toString("base64");
-    const dataUrl = `data:application/octet-stream;base64,${base64Data}`;
+    const dataUrl = await getVrmFileDataUrl(vrmFilePath);
 
     const provider = new WebViewProvider(context.extensionUri, dataUrl);
 
@@ -35,6 +42,17 @@ async function update(vrmFilePath: string, context: vscode.ExtensionContext) {
     );
 
     vscode.languages.onDidChangeDiagnostics(() => postIssuesCount(provider));
+
+    vscode.workspace.onDidChangeConfiguration(async () => {
+      const extensionConfig = vscode.workspace.getConfiguration(
+        "vrm-companion-vscode"
+      );
+      const vrmFilePath = extensionConfig.get("vrmFilePath") as string;
+
+      console.log(vrmFilePath);
+
+      provider.postVrmFileDataUrl(await getVrmFileDataUrl(vrmFilePath));
+    });
   } catch (error) {
     console.error("Error reading VRM file:", error);
     return;

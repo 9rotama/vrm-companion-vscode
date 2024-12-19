@@ -44,6 +44,17 @@ export class WebViewProvider implements vscode.WebviewViewProvider {
     });
   }
 
+  public postVrmFileDataUrl(vrmFileDataUrl: string) {
+    const view = this._view;
+    if (!view) {
+      return;
+    }
+    view.webview.postMessage({
+      command: "set_vrm",
+      state: { vrmFileDataUrl },
+    });
+  }
+
   private _getHtml(webview: Webview, extensionUri: Uri) {
     // The CSS file from the React build output
     const stylesUri = getUri(webview, extensionUri, [
