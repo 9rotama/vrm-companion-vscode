@@ -1,40 +1,64 @@
 {
-  "name": "hello-world-react-vite",
-  "displayName": "hello-world-react-vite",
-  "description": "A hello world sample extension to demonstrate using React + Vite with the Webview UI Toolkit for VS Code.",
+  "name": "vrm-companion-vscode",
+  "displayName": "vrm-companion-vscode",
+  "description": "",
   "version": "0.0.1",
   "engines": {
-    "vscode": "^1.75.0"
+    "vscode": "^1.95.0"
   },
-  "main": "./out/extension.js",
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "*"
+  ],
+  "main": "./dist/extension.js",
   "contributes": {
-    "commands": [
-      {
-        "command": "hello-world.showHelloWorld",
-        "title": "Hello World (React + Vite): Show"
+    "views": {
+      "explorer": [
+        {
+          "type": "webview",
+          "id": "vrm-companion-vscode.summon",
+          "name": "vrm-companion"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "vrm-companion-vscode",
+      "properties": {
+        "vrm-companion-vscode.vrmFilePath": {
+          "type": "string",
+          "default": null,
+          "description": "your vrm file path"
+        }
       }
-    ]
+    }
   },
   "scripts": {
-    "install:all": "npm install && cd webview-ui && npm install",
-    "start:webview": "cd webview-ui && npm run start",
-    "build:webview": "cd webview-ui && npm run build",
-    "vscode:prepublish": "npm run compile",
-    "compile": "tsc -p ./",
-    "watch": "tsc -watch -p ./",
-    "pretest": "npm run compile && npm run lint",
-    "lint": "eslint src --ext ts"
+    "vscode:prepublish": "pnpm run package",
+    "compile": "pnpm run check-types && pnpm run lint && node esbuild.js",
+    "watch": "npm-run-all -p watch:*",
+    "watch:esbuild": "node esbuild.js --watch",
+    "watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
+    "package": "pnpm run check-types && pnpm run lint && node esbuild.js --production",
+    "compile-tests": "tsc -p . --outDir out",
+    "watch-tests": "tsc -p . -w --outDir out",
+    "pretest": "pnpm run compile-tests && pnpm run compile && pnpm run lint",
+    "check-types": "tsc --noEmit",
+    "lint": "eslint src",
+    "test": "vscode-test"
   },
   "devDependencies": {
-    "@types/glob": "^7.1.3",
-    "@types/node": "^12.11.7",
-    "@types/vscode": "^1.46.0",
-    "@typescript-eslint/eslint-plugin": "^4.14.1",
-    "@typescript-eslint/parser": "^4.14.1",
-    "eslint": "^7.19.0",
-    "glob": "^7.1.6",
-    "prettier": "^2.2.1",
-    "typescript": "^4.1.3",
-    "vscode-test": "^1.5.0"
+    "@types/vscode": "^1.95.0",
+    "@types/mocha": "^10.0.9",
+    "@types/node": "20.x",
+    "@typescript-eslint/eslint-plugin": "^8.10.0",
+    "@typescript-eslint/parser": "^8.7.0",
+    "eslint": "^9.13.0",
+    "esbuild": "^0.24.0",
+    "npm-run-all": "^4.1.5",
+    "typescript": "^5.6.3",
+    "@vscode/test-cli": "^0.0.10",
+    "@vscode/test-electron": "^2.4.1"
   }
 }
