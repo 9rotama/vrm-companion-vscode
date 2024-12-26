@@ -9,7 +9,7 @@ import { env } from "../utils/env";
 export function useVrmCompanion() {
   const [vrmUrl, setVrmUrl] = useState<string | null>(null);
   const [vrmGltf, setVrmGltf] = useState<GLTF>();
-  const [issuesCount, setIssuesCount] = useState<number>(2);
+  const [issuesCount, setIssuesCount] = useState<number>(0);
   const blinkConfig = useRef({ delay: 10, frequency: 3 });
   const avatar = useRef<VRM>();
 
@@ -19,7 +19,7 @@ export function useVrmCompanion() {
     } else {
       vscode.postMessage({ command: "ready_for_receives" });
       window.addEventListener("message", (event) => {
-        const message = event.data; // The JSON data our extension sent
+        const message = event.data;
         switch (message.command) {
           case "set_vrm":
             setVrmUrl(message.state.vrmFileDataUrl);
@@ -49,7 +49,7 @@ export function useVrmCompanion() {
           avatar.current = vrm;
         },
         (error) => {
-          console.log("error on GLTFLoader.load", error);
+          console.log("GLTFLoader.load", error);
         }
       );
     },

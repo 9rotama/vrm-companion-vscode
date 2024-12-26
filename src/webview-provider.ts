@@ -1,10 +1,10 @@
 import * as vscode from "vscode";
 import { Uri, Webview } from "vscode";
-import { readFile } from "fs";
 export class WebViewProvider implements vscode.WebviewViewProvider {
   constructor(
     private _extensionUri: vscode.Uri,
-    private _vrmFileDataUrl: string
+    private _vrmFileDataUrl: string,
+    private _globalState: vscode.Memento
   ) {}
   private _view?: vscode.WebviewView;
 
@@ -27,6 +27,18 @@ export class WebViewProvider implements vscode.WebviewViewProvider {
             command: "set_vrm",
             state: { vrmFileDataUrl: this._vrmFileDataUrl },
           });
+          break;
+        case "ready_for_camera_state":
+          const cameraState = this._globalState.get("cameraState");
+          if (!cameraState) return;
+          webviewView.webview.postMessage({
+            command: "load_camera_state",
+            state: cameraState,
+          });
+          break;
+        case "save_camera_state":
+          this._globalState.update("cameraState", message.state);
+          break;
       }
     });
   }
@@ -36,7 +48,6 @@ export class WebViewProvider implements vscode.WebviewViewProvider {
     if (!view) {
       return;
     }
-    console.log("Issues count:", issuesCount);
 
     view.webview.postMessage({
       command: "issues_count",

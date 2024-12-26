@@ -32,7 +32,11 @@ async function update(vrmFilePath: string, context: vscode.ExtensionContext) {
   try {
     const dataUrl = await getVrmFileDataUrl(vrmFilePath);
 
-    const provider = new WebViewProvider(context.extensionUri, dataUrl);
+    const provider = new WebViewProvider(
+      context.extensionUri,
+      dataUrl,
+      context.globalState
+    );
 
     context.subscriptions.push(
       vscode.window.registerWebviewViewProvider(
@@ -48,8 +52,6 @@ async function update(vrmFilePath: string, context: vscode.ExtensionContext) {
         "vrm-companion-vscode"
       );
       const vrmFilePath = extensionConfig.get("vrmFilePath") as string;
-
-      console.log(vrmFilePath);
 
       provider.postVrmFileDataUrl(await getVrmFileDataUrl(vrmFilePath));
     });
