@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@pixiv/three-vrm": "^3.3.0",
+    "@pixiv/three-vrm-animation": "^3.3.2",
     "@pixiv/types-vrmc-vrm-1.0": "^3.3.0",
     "@react-three/drei": "^9.109.2",
     "@react-three/fiber": "^8.16.8",

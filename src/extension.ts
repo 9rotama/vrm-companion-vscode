@@ -28,6 +28,16 @@ async function getVrmFileDataUrl(vrmFilePath: string) {
   }
 }
 
+async function getVrmaFileDataUrls (){
+  const vrmFilePaths = await vscode.workspace.findFiles("**/*.vrm");
+  const vrmFileDataUrls = await Promise.all(
+    vrmFilePaths.map(async (vrmFilePath) => {
+      return getVrmFileDataUrl(vrmFilePath.path);
+    })
+  );
+  return vrmFileDataUrls;
+}
+
 async function update(vrmFilePath: string, context: vscode.ExtensionContext) {
   try {
     const dataUrl = await getVrmFileDataUrl(vrmFilePath);

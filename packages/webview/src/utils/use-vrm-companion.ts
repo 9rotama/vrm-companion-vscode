@@ -5,6 +5,7 @@ import { useFrame, useThree } from "@react-three/fiber";
 import { vscode } from "../utils/vscode";
 import { getExpression } from "../utils/expression";
 import { env } from "../utils/env";
+import { VRMAnimationLoaderPlugin } from "@pixiv/three-vrm-animation";
 
 export function useVrmCompanion() {
   const [vrmUrl, setVrmUrl] = useState<string | null>(null);
@@ -40,6 +41,9 @@ export function useVrmCompanion() {
       loader.register((parser) => {
         return new VRMLoaderPlugin(parser);
       });
+      loader.register((parser) => {
+        return new VRMAnimationLoaderPlugin(parser);
+      });
 
       loader.load(
         vrmUrl,
@@ -52,6 +56,10 @@ export function useVrmCompanion() {
           console.log("GLTFLoader.load", error);
         }
       );
+
+      loader.load("./VRMA_01.vrma", (vrma) => {
+        console.log(JSON.stringify(vrma.animations));
+      });
     },
     [vrmUrl]
   );

@@ -54,6 +54,9 @@ importers:
       '@pixiv/three-vrm':
         specifier: ^3.3.0
         version: 3.3.0(three@0.164.1)
+      '@pixiv/three-vrm-animation':
+        specifier: ^3.3.2
+        version: 3.3.2(three@0.164.1)
       '@pixiv/types-vrmc-vrm-1.0':
         specifier: ^3.3.0
         version: 3.3.0
@@ -621,8 +624,18 @@ packages:
     resolution: {integrity: sha512-oGB+UxlgWcgQkgwo8GcEGwemoTFt3FIO9ababBmaGwXIoBKZ+GTy0pP185beGg7Llih/NSHSV2XAs1lnznocSg==}
     engines: {node: '>= 8'}
 
+  '@pixiv/three-vrm-animation@3.3.2':
+    resolution: {integrity: sha512-h+valQmgmJasSZsEmbCCQP7pJK/c4wRpXt743ZDdhF3tzMW8H3qB3fx+WRDnKYWk+D+cFOZ8t6js5DHKc9hp6w==}
+    peerDependencies:
+      three: '>=0.137'
+
   '@pixiv/three-vrm-core@3.3.0':
     resolution: {integrity: sha512-AeeuErYF+jxhqJvoBuuc6pqqcegZMSgkLLE+huMHGHasMuHjQt2RAslcANLfpHLn65WEN4GmCtqBw2IWrxFiBQ==}
+    peerDependencies:
+      three: '>=0.137'
+
+  '@pixiv/three-vrm-core@3.3.2':
+    resolution: {integrity: sha512-vDxRVVPzxXjTIl/XrWQZff+3rwNZ+P1F//njLhQslj83aZ9xu8QVsGpBs6u00infeGXzX1f98S3ibY/Gjpj3Sg==}
     peerDependencies:
       three: '>=0.137'
 
@@ -659,6 +672,9 @@ packages:
   '@pixiv/types-vrm-0.0@3.3.0':
     resolution: {integrity: sha512-3AC+hR24O9yEMxoKkGiEVvj8zydh/poy5ZR6FieyvbRsKTJ/+Z8WJgTKnO7hJHkvPOntYznhsWJqjj/YG9kTLw==}
 
+  '@pixiv/types-vrm-0.0@3.3.2':
+    resolution: {integrity: sha512-PXvYXGxP3n8TTOLCYiblLCsWc9AWUWiy5V8AeEm5ADDD5yaMa02Z8zw5/eoHDSPl/Byf/OpNLgeO1wReLE31iw==}
+
   '@pixiv/types-vrmc-materials-hdr-emissive-multiplier-1.0@3.3.0':
     resolution: {integrity: sha512-Q6PCgnt0Kl5v+DI8VAueJ4qyTgQjf186SpWa91m7ZTPIX7hsdOeXly7cO8n64UBnEgihcgWoBS8mhMOLbHBxVg==}
 
@@ -674,8 +690,17 @@ packages:
   '@pixiv/types-vrmc-springbone-extended-collider-1.0@3.3.0':
     resolution: {integrity: sha512-5iBqq3S1MsOtKj5XVVbmx0z4UKO2muUSkamzI+Y2pErQsJyssu9SZBewPyC+aFG8XPk7wUbenQ5MxWHWOPFnFw==}
 
+  '@pixiv/types-vrmc-vrm-1.0@2.0.3':
+    resolution: {integrity: sha512-RMP34Bk1qLFQv/CRB1Zqvn2qMFfWQfP2Hms5QrrfoBsW9XroZdEe0zPLNbGmUPYh4F7VtBb+B7+RCuymRtpehA==}
+
   '@pixiv/types-vrmc-vrm-1.0@3.3.0':
     resolution: {integrity: sha512-4JJizAfGFpyyL+IGMv22z5ORqJ2M3sFgYK0ZRF/ZjOmG8aaQHqh9zFx5KYXdudbT3N95Qo+Nl8/nLN5pwMFEoA==}
+
+  '@pixiv/types-vrmc-vrm-1.0@3.3.2':
+    resolution: {integrity: sha512-FGvu2a6txJ9W/S8yIujFY9a8YMgKmSfIxHPnXj2aNFCaPhdnLb7LkG5b1bkxITUE5oHseLhSnEBv0Ni3nCKbzw==}
+
+  '@pixiv/types-vrmc-vrm-animation-1.0@3.3.2':
+    resolution: {integrity: sha512-Lk/Zvhtj6V2ddD5Me51yGWgXLzii2sKNipSRuDz0h7okWDMH5hOSaC3wpIuYV4PIVJncDC1kZZuSuWzQbrcJbA==}
 
   '@pkgjs/parseargs@0.11.0':
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
@@ -3105,10 +3130,23 @@ snapshots:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.17.1
 
+  '@pixiv/three-vrm-animation@3.3.2(three@0.164.1)':
+    dependencies:
+      '@pixiv/three-vrm-core': 3.3.2(three@0.164.1)
+      '@pixiv/types-vrmc-vrm-1.0': 3.3.2
+      '@pixiv/types-vrmc-vrm-animation-1.0': 3.3.2
+      three: 0.164.1
+
   '@pixiv/three-vrm-core@3.3.0(three@0.164.1)':
     dependencies:
       '@pixiv/types-vrm-0.0': 3.3.0
       '@pixiv/types-vrmc-vrm-1.0': 3.3.0
+      three: 0.164.1
+
+  '@pixiv/three-vrm-core@3.3.2(three@0.164.1)':
+    dependencies:
+      '@pixiv/types-vrm-0.0': 3.3.2
+      '@pixiv/types-vrmc-vrm-1.0': 3.3.2
       three: 0.164.1
 
   '@pixiv/three-vrm-materials-hdr-emissive-multiplier@3.3.0(three@0.164.1)':
@@ -3152,6 +3190,8 @@ snapshots:
 
   '@pixiv/types-vrm-0.0@3.3.0': {}
 
+  '@pixiv/types-vrm-0.0@3.3.2': {}
+
   '@pixiv/types-vrmc-materials-hdr-emissive-multiplier-1.0@3.3.0': {}
 
   '@pixiv/types-vrmc-materials-mtoon-1.0@3.3.0': {}
@@ -3162,7 +3202,15 @@ snapshots:
 
   '@pixiv/types-vrmc-springbone-extended-collider-1.0@3.3.0': {}
 
+  '@pixiv/types-vrmc-vrm-1.0@2.0.3': {}
+
   '@pixiv/types-vrmc-vrm-1.0@3.3.0': {}
+
+  '@pixiv/types-vrmc-vrm-1.0@3.3.2': {}
+
+  '@pixiv/types-vrmc-vrm-animation-1.0@3.3.2':
+    dependencies:
+      '@pixiv/types-vrmc-vrm-1.0': 2.0.3
 
   '@pkgjs/parseargs@0.11.0':
     optional: true
