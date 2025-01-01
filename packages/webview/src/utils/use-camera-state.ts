@@ -1,9 +1,12 @@
 import { useThree } from "@react-three/fiber";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { vscode } from "./vscode";
+import { env } from "./env";
 
-export function useCameraState() {
+export function useVscodeMessages() {
   const { camera } = useThree();
+  const [vrmUrl, setVrmUrl] = useState<string | undefined>(undefined);
+  const [issuesCount, setIssuesCount] = useState<number>(0);
 
   useEffect(() => {
     vscode.postMessage({ command: "ready_for_camera_state" });
@@ -32,4 +35,24 @@ export function useCameraState() {
 
     return () => clearInterval(interval);
   }, []);
+
+  useEffect(function setVrm() {
+    if (env.VITE_DEV_VRM) {
+      setVrmUrl(env.VITE_DEV_VRM);
+    } else {
+      vscode.postMessage({ command: "ready_for_receives" });
+      window.addEventListener("message", (event) => {
+        const message = event.data;
+        switch (message.command) {
+          case "set_vrm":
+            setVrmUrl(message.state.vrmFileDataUrl);
+            break;
+          case "issues_count":
+            setIssuesCount(message.state.issuesCount);
+        }
+      });
+    }
+  }, []);
+
+  return { vrmUrl, issuesCount };
 }

@@ -1,104 +1,90 @@
 import { VRM, VRMLoaderPlugin } from "@pixiv/three-vrm";
-import { GLTF, GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { useEffect, useRef, useState } from "react";
-import { useFrame, useThree } from "@react-three/fiber";
-import { vscode } from "../utils/vscode";
+import { useFrame } from "@react-three/fiber";
 import { getExpression } from "../utils/expression";
-import { env } from "../utils/env";
-import { VRMAnimationLoaderPlugin } from "@pixiv/three-vrm-animation";
+import {
+  createVRMAnimationClip,
+  VRMAnimationLoaderPlugin,
+} from "@pixiv/three-vrm-animation";
+import { AnimationMixer } from "three";
 
-export function useVrmCompanion() {
-  const [vrmUrl, setVrmUrl] = useState<string | null>(null);
-  const [vrmGltf, setVrmGltf] = useState<GLTF>();
-  const [issuesCount, setIssuesCount] = useState<number>(0);
+export function useVrmCompanion({
+  issuesCount,
+  vrmUrl,
+}: {
+  issuesCount: number;
+  vrmUrl: string;
+}) {
+  const [vrm, setVrm] = useState<VRM | undefined>(undefined);
+  const mixerRef = useRef<AnimationMixer | undefined>(undefined);
   const blinkConfig = useRef({ delay: 10, frequency: 3 });
-  const avatar = useRef<VRM>();
-
-  useEffect(function setVrm() {
-    if (env.VITE_DEV_VRM) {
-      setVrmUrl(env.VITE_DEV_VRM);
-    } else {
-      vscode.postMessage({ command: "ready_for_receives" });
-      window.addEventListener("message", (event) => {
-        const message = event.data;
-        switch (message.command) {
-          case "set_vrm":
-            setVrmUrl(message.state.vrmFileDataUrl);
-            break;
-          case "issues_count":
-            setIssuesCount(message.state.issuesCount);
-        }
-      });
-    }
-  }, []);
 
   useEffect(
     function loadVrm() {
-      if (!vrmUrl) return;
+      (async () => {
+        if (!vrmUrl) return;
 
-      const loader = new GLTFLoader();
+        const loader = new GLTFLoader();
+        loader.register((parser) => {
+          return new VRMLoaderPlugin(parser);
+        });
+        loader.register((parser) => {
+          return new VRMAnimationLoaderPlugin(parser);
+        });
 
-      loader.register((parser) => {
-        return new VRMLoaderPlugin(parser);
-      });
-      loader.register((parser) => {
-        return new VRMAnimationLoaderPlugin(parser);
-      });
+        const vrmGltf = await loader.loadAsync(vrmUrl);
+        const vrm = vrmGltf.userData.vrm as VRM;
+        setVrm(vrm);
 
-      loader.load(
-        vrmUrl,
-        (gltf) => {
-          setVrmGltf(gltf);
-          const vrm: VRM = gltf.userData.vrm;
-          avatar.current = vrm;
-        },
-        (error) => {
-          console.log("GLTFLoader.load", error);
-        }
-      );
+        const vrmaGltf = await loader.loadAsync(
+          "./test_models/001_motion_pose.vrma"
+        );
 
-      loader.load("./VRMA_01.vrma", (vrma) => {
-        console.log(JSON.stringify(vrma.animations));
-      });
+        const vrmAnimation = vrmaGltf.userData.vrmAnimations[0];
+
+        // create animation clip
+        const clip = createVRMAnimationClip(vrmAnimation, vrm);
+
+        // play animation
+        const mixer = new AnimationMixer(vrm.scene);
+
+        mixerRef.current = mixer;
+        mixerRef.current.clipAction(clip).play();
+      })();
     },
     [vrmUrl]
   );
 
   useEffect(function updateExpressionByIssues() {
-    if (avatar.current?.expressionManager) {
+    if (vrm?.expressionManager) {
       const expression = getExpression(issuesCount);
-      avatar.current.expressionManager.setValue(
-        "happy",
-        expression.values.happy
-      );
-      avatar.current.expressionManager.setValue(
-        "angry",
-        expression.values.angry
-      );
-      avatar.current.expressionManager.setValue("sad", expression.values.sad);
+      vrm.expressionManager.setValue("happy", expression.values.happy);
+      vrm.expressionManager.setValue("angry", expression.values.angry);
+      vrm.expressionManager.setValue("sad", expression.values.sad);
     }
   });
 
   useFrame(function updateAvatarTime(_, delta) {
-    if (!avatar.current) return;
-    avatar.current.update(delta);
+    if (vrm) vrm.update(delta);
+    if (mixerRef.current) mixerRef.current.update(delta);
   });
 
-  useFrame(function blink({ clock }, delta) {
+  useFrame(function blink({ clock }) {
     const expression = getExpression(issuesCount);
-    if (!avatar.current?.expressionManager || !expression.doBlink) return;
+    if (!vrm?.expressionManager || !expression.doBlink) return;
 
     const t = clock.getElapsedTime();
     const blinkDelay = blinkConfig.current.delay;
     const blinkFrequency = blinkConfig.current.frequency;
 
     if (Math.round(t * blinkFrequency) % blinkDelay === 0) {
-      avatar.current.expressionManager.setValue(
+      vrm.expressionManager.setValue(
         "blink",
         1 - Math.abs(Math.sin(t * blinkFrequency * Math.PI))
       );
     }
   });
 
-  return { vrmGltf };
+  return { vrm };
 }

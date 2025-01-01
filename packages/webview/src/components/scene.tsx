@@ -1,17 +1,19 @@
 import { Suspense } from "react";
 import Model from "./model";
 import { OrbitControls } from "@react-three/drei";
-import { useCameraState } from "../utils/use-camera-state";
+import { useVscodeMessages } from "../utils/use-camera-state";
 
 export default function Scene() {
-  useCameraState();
+  const { vrmUrl, issuesCount } = useVscodeMessages();
 
   return (
     <>
       <ambientLight intensity={5} />
-      <Suspense fallback={null}>
-        <Model />
-      </Suspense>
+      {vrmUrl && (
+        <Suspense fallback={null}>
+          <Model vrmUrl={vrmUrl} issuesCount={issuesCount} />
+        </Suspense>
+      )}
       <OrbitControls />
     </>
   );
