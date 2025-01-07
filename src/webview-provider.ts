@@ -1,5 +1,6 @@
 import * as vscode from "vscode";
 import { Uri, Webview } from "vscode";
+
 export class WebViewProvider implements vscode.WebviewViewProvider {
   constructor(
     private _extensionUri: vscode.Uri,
@@ -20,6 +21,14 @@ export class WebViewProvider implements vscode.WebviewViewProvider {
       this._view.webview,
       this._extensionUri
     );
+
+    const vrmaUri = getUri(this._view.webview, this._extensionUri, [
+      "packages",
+      "webview",
+      "build",
+      "animation",
+      "idle.vrma",
+    ]);
     webviewView.webview.onDidReceiveMessage((message) => {
       switch (message.command) {
         case "ready_for_receives":
@@ -27,14 +36,18 @@ export class WebViewProvider implements vscode.WebviewViewProvider {
             command: "set_vrm",
             state: { vrmFileDataUrl: this._vrmFileDataUrl },
           });
-          break;
-        case "ready_for_camera_state":
+          webviewView.webview.postMessage({
+            command: "set_vrma",
+            state: vrmaUri.toString(),
+          });
+
           const cameraState = this._globalState.get("cameraState");
-          if (!cameraState) return;
+          if (cameraState) return;
           webviewView.webview.postMessage({
             command: "load_camera_state",
             state: cameraState,
           });
+
           break;
         case "save_camera_state":
           this._globalState.update("cameraState", message.state);

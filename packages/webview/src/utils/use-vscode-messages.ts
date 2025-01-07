@@ -6,22 +6,37 @@ import { env } from "./env";
 export function useVscodeMessages() {
   const { camera } = useThree();
   const [vrmUrl, setVrmUrl] = useState<string | undefined>(undefined);
+  const [vrmaUrl, setVrmaUrl] = useState<string | undefined>(undefined);
   const [issuesCount, setIssuesCount] = useState<number>(0);
 
-  useEffect(() => {
-    vscode.postMessage({ command: "ready_for_camera_state" });
-    window.addEventListener("message", (event) => {
-      const message = event.data;
-      if (message.command === "load_camera_state") {
-        const cameraState = JSON.parse(message.state);
-        camera.matrix.fromArray(cameraState);
-        camera.matrix.decompose(
-          camera.position,
-          camera.quaternion,
-          camera.scale
-        );
-      }
-    });
+  useEffect(function setVrm() {
+    if (env.VITE_DEV_VRM) {
+      setVrmUrl(env.VITE_DEV_VRM);
+      setVrmaUrl("animation/idle.vrma");
+    } else {
+      vscode.postMessage({ command: "ready_for_receives" });
+      window.addEventListener("message", (event) => {
+        const message = event.data;
+        switch (message.command) {
+          case "set_vrm":
+            setVrmUrl(message.state.vrmFileDataUrl);
+            break;
+          case "set_vrma":
+            setVrmaUrl(message.state);
+            break;
+          case "issues_count":
+            setIssuesCount(message.state.issuesCount);
+          case "load_camera_state":
+            const cameraState = JSON.parse(message.state);
+            camera.matrix.fromArray(cameraState);
+            camera.matrix.decompose(
+              camera.position,
+              camera.quaternion,
+              camera.scale
+            );
+        }
+      });
+    }
   }, []);
 
   useEffect(function updateCameraState() {
@@ -36,23 +51,5 @@ export function useVscodeMessages() {
     return () => clearInterval(interval);
   }, []);
 
-  useEffect(function setVrm() {
-    if (env.VITE_DEV_VRM) {
-      setVrmUrl(env.VITE_DEV_VRM);
-    } else {
-      vscode.postMessage({ command: "ready_for_receives" });
-      window.addEventListener("message", (event) => {
-        const message = event.data;
-        switch (message.command) {
-          case "set_vrm":
-            setVrmUrl(message.state.vrmFileDataUrl);
-            break;
-          case "issues_count":
-            setIssuesCount(message.state.issuesCount);
-        }
-      });
-    }
-  }, []);
-
-  return { vrmUrl, issuesCount };
+  return { vrmUrl, vrmaUrl, issuesCount };
 }

@@ -12,9 +12,11 @@ import { AnimationMixer } from "three";
 export function useVrmCompanion({
   issuesCount,
   vrmUrl,
+  vrmaUrl,
 }: {
   issuesCount: number;
   vrmUrl: string;
+  vrmaUrl: string;
 }) {
   const [vrm, setVrm] = useState<VRM | undefined>(undefined);
   const mixerRef = useRef<AnimationMixer | undefined>(undefined);
@@ -23,7 +25,7 @@ export function useVrmCompanion({
   useEffect(
     function loadVrm() {
       (async () => {
-        if (!vrmUrl) return;
+        if (!vrmUrl || !vrmaUrl) return;
 
         const loader = new GLTFLoader();
         loader.register((parser) => {
@@ -36,10 +38,8 @@ export function useVrmCompanion({
         const vrmGltf = await loader.loadAsync(vrmUrl);
         const vrm = vrmGltf.userData.vrm as VRM;
         setVrm(vrm);
-
-        const vrmaGltf = await loader.loadAsync(
-          "./test_models/001_motion_pose.vrma"
-        );
+        console.log(vrmaUrl);
+        const vrmaGltf = await loader.loadAsync(vrmaUrl);
 
         const vrmAnimation = vrmaGltf.userData.vrmAnimations[0];
 
