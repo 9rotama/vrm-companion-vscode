@@ -11,7 +11,7 @@ export function useVscodeMessages() {
 
   useEffect(function setVrm() {
     if (env.VITE_DEV_VRM) {
-      setVrmUrl(env.VITE_DEV_VRM);
+      setVrmUrl(`_dev_/${env.VITE_DEV_VRM}`);
       setVrmaUrl("animation/idle.vrma");
     } else {
       vscode.postMessage({ command: "ready_for_receives" });

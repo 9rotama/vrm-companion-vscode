@@ -1,5 +1,5 @@
 import { VRM, VRMLoaderPlugin } from "@pixiv/three-vrm";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { useEffect, useRef, useState } from "react";
 import { useFrame } from "@react-three/fiber";
 import { getExpression } from "../utils/expression";
