@@ -2,6 +2,8 @@ import { useThree } from "@react-three/fiber";
 import { useEffect, useState } from "react";
 import { vscode } from "./vscode";
 import { env } from "./env";
+import { messageToWebviewSchema } from "../models/message";
+import { stateSchema } from "../models/state";
 
 export function useVscodeMessages() {
   const { camera } = useThree();
@@ -14,38 +16,35 @@ export function useVscodeMessages() {
       setVrmUrl(`_dev_/${env.VITE_DEV_VRM}`);
       setVrmaUrl("animation/idle.vrma");
     } else {
-      vscode.postMessage({ command: "ready_for_receives" });
+      vscode.postMessage({ command: "mounted" });
       window.addEventListener("message", (event) => {
-        const message = event.data;
+        const message = messageToWebviewSchema.parse(event.data);
         switch (message.command) {
-          case "set_vrm":
-            setVrmUrl(message.state.vrmFileDataUrl);
+          case "updateVrm":
+            setVrmUrl(message.body.dataUrl);
             break;
-          case "set_vrma":
-            setVrmaUrl(message.state);
+          case "prepareVrmaUris":
+            setVrmaUrl(message.body.idle);
             break;
-          case "issues_count":
-            setIssuesCount(message.state.issuesCount);
-          case "load_camera_state":
-            const cameraState = JSON.parse(message.state);
-            camera.matrix.fromArray(cameraState);
-            camera.matrix.decompose(
-              camera.position,
-              camera.quaternion,
-              camera.scale
-            );
+          case "updateIssuesCount":
+            setIssuesCount(message.body.count);
+            break;
         }
       });
+    }
+
+    const state = stateSchema.parse(vscode.getState());
+    if (state?.camera) {
+      const cameraState = JSON.parse(state.camera);
+      camera.matrix.fromArray(cameraState);
+      camera.matrix.decompose(camera.position, camera.quaternion, camera.scale);
     }
   }, []);
 
   useEffect(function updateCameraState() {
     const interval = setInterval(() => {
       const cameraState = JSON.stringify(camera.matrix.toArray());
-      vscode.postMessage({
-        command: "save_camera_state",
-        state: cameraState,
-      });
+      vscode.setState(stateSchema.parse({ camera: cameraState }));
     }, 1000);
 
     return () => clearInterval(interval);
