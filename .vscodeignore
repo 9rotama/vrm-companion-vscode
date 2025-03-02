@@ -13,5 +13,10 @@ vsc-extension-quickstart.md
 **/*.ts
 **/.vscode-test.*
 packages/webview/**
-!packages/webview/build/*
+
+!packages/webview/dist/index.html
+!packages/webview/dist/assets/index.js
+!packages/webview/dist/assets/index.css
+!packages/webview/dist/animation/idle.vrma
+
 

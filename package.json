@@ -1,8 +1,20 @@
 {
   "name": "vrm-companion-vscode",
   "displayName": "vrm-companion-vscode",
-  "description": "",
-  "version": "0.0.1",
+  "description": "work with your fav vrm avatar",
+  "publisher": "9rotama",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/9rotama/vrm-companion-vscode"
+  },
+  "keywords": [
+    "vrm",
+    "avatar",
+    "explorer",
+    "webview",
+    "pets"
+  ],
+  "version": "0.1.0",
   "engines": {
     "vscode": "^1.95.0"
   },
@@ -10,7 +22,7 @@
     "Other"
   ],
   "activationEvents": [
-    "*"
+    "onStartupFinished"
   ],
   "main": "./dist/extension.js",
   "contributes": {
@@ -29,7 +41,7 @@
         "vrm-companion-vscode.vrmFilePath": {
           "type": "string",
           "default": null,
-          "description": "your vrm file path"
+          "description": "defines the local file path of the VRM avatar you wish to view."
         }
       }
     }
@@ -45,20 +57,27 @@
     "watch-tests": "tsc -p . -w --outDir out",
     "pretest": "pnpm run compile-tests && pnpm run compile && pnpm run lint",
     "check-types": "tsc --noEmit",
-    "lint": "eslint src",
+    "lint": "oxlint",
     "test": "vscode-test"
   },
   "devDependencies": {
-    "@types/vscode": "^1.95.0",
     "@types/mocha": "^10.0.9",
     "@types/node": "20.x",
-    "@typescript-eslint/eslint-plugin": "^8.10.0",
-    "@typescript-eslint/parser": "^8.7.0",
-    "eslint": "^9.13.0",
+    "@types/vscode": "^1.95.0",
+    "@vscode/test-cli": "^0.0.10",
+    "@vscode/test-electron": "^2.4.1",
     "esbuild": "^0.24.0",
     "npm-run-all": "^4.1.5",
     "typescript": "^5.6.3",
-    "@vscode/test-cli": "^0.0.10",
-    "@vscode/test-electron": "^2.4.1"
+    "eslint-plugin-react": "^7.37.4"
+  },
+  "dependencies": {
+    "oxlint": "^0.15.11",
+    "root": "^3.2.0",
+    "zod": "^3.24.1"
+  },
+  "packageManager": "pnpm@10.4.1+sha512.c753b6c3ad7afa13af388fa6d808035a008e30ea9993f58c6663e2bc5ff21679aa834db094987129aa4d488b86df57f7b634981b2f827cdcacc698cc0cfb88af",
+  "volta": {
+    "node": "22.14.0"
   }
 }

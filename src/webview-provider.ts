@@ -1,10 +1,20 @@
 import * as vscode from "vscode";
 import { Uri, Webview } from "vscode";
-import { readFile } from "fs";
-export class WebViewProvider implements vscode.WebviewViewProvider {
+import { getUri } from "./utils/get-uri";
+import { getNonce } from "./utils/get-nonce";
+import {
+  messageToVscodeSchema,
+  MessageToWebview,
+  messageToWebviewSchema,
+} from "../packages/webview/src/models/message";
+
+export class WebviewProvider implements vscode.WebviewViewProvider {
   constructor(
     private _extensionUri: vscode.Uri,
-    private _vrmFileDataUrl: string
+    private dataOnMounted: {
+      vrmDataUrl: string | undefined;
+      issuesCount: number;
+    }
   ) {}
   private _view?: vscode.WebviewView;
 
@@ -16,59 +26,71 @@ export class WebViewProvider implements vscode.WebviewViewProvider {
       enableScripts: true,
       localResourceRoots: [this._extensionUri],
     };
+
     webviewView.webview.html = this._getHtml(
       this._view.webview,
       this._extensionUri
     );
-    webviewView.webview.onDidReceiveMessage((message) => {
-      switch (message.command) {
-        case "ready_for_receives":
-          webviewView.webview.postMessage({
-            command: "set_vrm",
-            state: { vrmFileDataUrl: this._vrmFileDataUrl },
+
+    this._postMessagesOnMounted();
+  }
+
+  /* resolveWebviewView & 初期マウントが完了したときに初期データを送る */
+  private _postMessagesOnMounted() {
+    const view = this._view;
+    if (!view) {
+      return;
+    }
+
+    const idleVrmaUri = getUri(view.webview, this._extensionUri, [
+      "packages",
+      "webview",
+      "dist",
+      "animation",
+      "idle.vrma",
+    ]);
+
+    view.webview.onDidReceiveMessage((message) => {
+      const msg = messageToVscodeSchema.parse(message);
+      switch (msg.command) {
+        case "mounted":
+          this.postMessage({
+            command: "prepareVrmaUris",
+            body: { idle: idleVrmaUri.toString() },
+          });
+          this.postMessage({
+            command: "updateVrm",
+            body: { dataUrl: this.dataOnMounted.vrmDataUrl },
+          });
+          this.postMessage({
+            command: "updateIssuesCount",
+            body: { count: this.dataOnMounted.issuesCount },
           });
       }
     });
   }
 
-  public postIssuesCount(issuesCount: number) {
+  public postMessage(message: MessageToWebview) {
     const view = this._view;
     if (!view) {
       return;
     }
-    console.log("Issues count:", issuesCount);
 
-    view.webview.postMessage({
-      command: "issues_count",
-      state: { issuesCount },
-    });
-  }
-
-  public postVrmFileDataUrl(vrmFileDataUrl: string) {
-    const view = this._view;
-    if (!view) {
-      return;
-    }
-    view.webview.postMessage({
-      command: "set_vrm",
-      state: { vrmFileDataUrl },
-    });
+    view.webview.postMessage(messageToWebviewSchema.parse(message));
   }
 
   private _getHtml(webview: Webview, extensionUri: Uri) {
-    // The CSS file from the React build output
     const stylesUri = getUri(webview, extensionUri, [
       "packages",
       "webview",
-      "build",
+      "dist",
       "assets",
       "index.css",
     ]);
-    // The JS file from the React build output
     const scriptUri = getUri(webview, extensionUri, [
       "packages",
       "webview",
-      "build",
+      "dist",
       "assets",
       "index.js",
     ]);
@@ -92,18 +114,4 @@ export class WebViewProvider implements vscode.WebviewViewProvider {
       </html>
     `;
   }
-}
-
-function getNonce() {
-  let text = "";
-  const possible =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  for (let i = 0; i < 32; i++) {
-    text += possible.charAt(Math.floor(Math.random() * possible.length));
-  }
-  return text;
-}
-
-function getUri(webview: Webview, extensionUri: Uri, pathList: string[]) {
-  return webview.asWebviewUri(Uri.joinPath(extensionUri, ...pathList));
 }
