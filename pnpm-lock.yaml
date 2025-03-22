@@ -8,9 +8,21 @@ importers:
 
   .:
     dependencies:
+      '@types/react':
+        specifier: ^19.0.8
+        version: 19.0.10
+      '@types/react-dom':
+        specifier: ^19.0.4
+        version: 19.0.4(@types/react@19.0.10)
       oxlint:
         specifier: ^0.15.11
         version: 0.15.11
+      react:
+        specifier: ^19.0.0
+        version: 19.0.0
+      react-dom:
+        specifier: ^19.0.0
+        version: 19.0.0(react@19.0.0)
       root:
         specifier: ^3.2.0
         version: 3.2.0
