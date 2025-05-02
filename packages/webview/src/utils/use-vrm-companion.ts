@@ -21,6 +21,8 @@ export function useVrmCompanion({
   const [vrm, setVrm] = useState<VRM | undefined>(undefined);
   const mixerRef = useRef<AnimationMixer | undefined>(undefined);
   const blinkConfig = useRef({ delay: 10, frequency: 3 });
+  const expression = getExpression(issuesCount);
+
 
   useEffect(
     function loadVrm() {
@@ -37,10 +39,7 @@ export function useVrmCompanion({
 
         const vrmGltf = await loader.loadAsync(vrmUrl);
         const vrm = vrmGltf.userData.vrm as VRM;
-        setVrm(vrm);
-        console.log(vrmaUrl);
         const vrmaGltf = await loader.loadAsync(vrmaUrl);
-
         const vrmAnimation = vrmaGltf.userData.vrmAnimations[0];
 
         // create animation clip
@@ -48,9 +47,11 @@ export function useVrmCompanion({
 
         // play animation
         const mixer = new AnimationMixer(vrm.scene);
-
         mixerRef.current = mixer;
         mixerRef.current.clipAction(clip).play();
+
+        // display vrm
+        setVrm(vrm);
       })();
     },
     [vrmUrl]
@@ -66,12 +67,11 @@ export function useVrmCompanion({
   });
 
   useFrame(function updateAvatarTime(_, delta) {
-    if (vrm) vrm.update(delta);
     if (mixerRef.current) mixerRef.current.update(delta);
+    if (vrm) vrm.update(delta);
   });
 
   useFrame(function blink({ clock }) {
-    const expression = getExpression(issuesCount);
     if (!vrm?.expressionManager || !expression.doBlink) return;
 
     const t = clock.getElapsedTime();
