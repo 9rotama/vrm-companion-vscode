@@ -1,4 +1,4 @@
 ```bash
-pnpm i
-pnpm run -F webview watch
+npm i
+npm run -F webview watch
 ```
