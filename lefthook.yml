@@ -1,0 +1,8 @@
+pre-push:
+  parallel: true
+  jobs:
+    - run: npx oxlint {staged_files}
+      stage_fixed: true
+
+    - run: npx prettier --write --ignore-unknown {staged_files}
+      stage_fixed: true
