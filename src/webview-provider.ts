@@ -15,7 +15,7 @@ export class WebviewProvider implements vscode.WebviewViewProvider {
     private dataOnMounted: {
       vrmDataUrl: string | undefined;
       issuesCount: number;
-    }
+    },
   ) {}
   private _view?: vscode.WebviewView;
 
@@ -30,7 +30,7 @@ export class WebviewProvider implements vscode.WebviewViewProvider {
 
     webviewView.webview.html = this._getHtml(
       this._view.webview,
-      this._extensionUri
+      this._extensionUri,
     );
 
     this._postMessagesOnMounted();
@@ -102,7 +102,7 @@ export class WebviewProvider implements vscode.WebviewViewProvider {
       stylesUri.toString(),
       scriptUri.toString(),
       nonce,
-      webview.cspSource
+      webview.cspSource,
     );
   }
 }

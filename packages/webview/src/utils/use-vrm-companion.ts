@@ -23,7 +23,6 @@ export function useVrmCompanion({
   const blinkConfig = useRef({ delay: 10, frequency: 3 });
   const expression = getExpression(issuesCount);
 
-
   useEffect(
     function loadVrm() {
       (async () => {
@@ -54,7 +53,7 @@ export function useVrmCompanion({
         setVrm(vrm);
       })();
     },
-    [vrmUrl]
+    [vrmUrl],
   );
 
   useEffect(function updateExpressionByIssues() {
@@ -81,7 +80,7 @@ export function useVrmCompanion({
     if (Math.round(t * blinkFrequency) % blinkDelay === 0) {
       vrm.expressionManager.setValue(
         "blink",
-        1 - Math.abs(Math.sin(t * blinkFrequency * Math.PI))
+        1 - Math.abs(Math.sin(t * blinkFrequency * Math.PI)),
       );
     }
   });
