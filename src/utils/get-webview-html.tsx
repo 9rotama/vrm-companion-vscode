@@ -4,7 +4,7 @@ export function getWebviewHtml(
   stylesUri: string,
   scriptUri: string,
   nonce: string,
-  cspSource: string
+  cspSource: string,
 ) {
   return renderToStaticMarkup(
     <html lang="en">
@@ -22,6 +22,6 @@ export function getWebviewHtml(
         <div id="root"></div>
         <script type="module" nonce={nonce} src={scriptUri}></script>
       </body>
-    </html>
+    </html>,
   );
 }

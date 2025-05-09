@@ -16,15 +16,15 @@ async function setup(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     vscode.window.registerWebviewViewProvider(
       "vrm-companion-vscode.summon",
-      provider
-    )
+      provider,
+    ),
   );
 
   vscode.languages.onDidChangeDiagnostics(() =>
     provider.postMessage({
       command: "updateIssuesCount",
       body: { count: getIssuesCount() },
-    })
+    }),
   );
 
   vscode.workspace.onDidChangeConfiguration(async () => {

@@ -31,7 +31,7 @@
         {
           "type": "webview",
           "id": "vrm-companion-vscode.summon",
-          "name": "vrm-companion"
+          "name": "vrm-companiozn"
         }
       ]
     },
@@ -47,17 +47,18 @@
     }
   },
   "scripts": {
-    "vscode:prepublish": "pnpm run package",
-    "compile": "pnpm run check-types && pnpm run lint && node esbuild.js",
+    "vscode:prepublish": "npm run package",
+    "compile": "npm run check-types && npm run lint && node esbuild.js",
     "watch": "npm-run-all -p watch:*",
     "watch:esbuild": "node esbuild.js --watch",
     "watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
-    "package": "pnpm run check-types && pnpm run lint && node esbuild.js --production",
+    "package": "npm run check-types && npm run lint && node esbuild.js --production",
     "compile-tests": "tsc -p . --outDir out",
     "watch-tests": "tsc -p . -w --outDir out",
-    "pretest": "pnpm run compile-tests && pnpm run compile && pnpm run lint",
+    "pretest": "npm run compile-tests && npm run compile && npm run lint",
     "check-types": "tsc --noEmit",
     "lint": "oxlint",
+    "format": "prettier --write .",
     "test": "vscode-test"
   },
   "devDependencies": {
@@ -66,10 +67,12 @@
     "@types/vscode": "^1.95.0",
     "@vscode/test-cli": "^0.0.10",
     "@vscode/test-electron": "^2.4.1",
-    "esbuild": "^0.24.0",
+    "esbuild": "^0.25.4",
     "eslint-plugin-react": "^7.37.4",
+    "lefthook": "^1.11.12",
     "npm-run-all": "^4.1.5",
-    "typescript": "^5.6.3"
+    "prettier": "3.5.3",
+    "typescript": "^5.8.3"
   },
   "dependencies": {
     "@types/react": "^19.0.8",
@@ -77,11 +80,13 @@
     "oxlint": "^0.15.11",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "root": "^3.2.0",
     "zod": "^3.24.1"
   },
-  "packageManager": "pnpm@10.4.1+sha512.c753b6c3ad7afa13af388fa6d808035a008e30ea9993f58c6663e2bc5ff21679aa834db094987129aa4d488b86df57f7b634981b2f827cdcacc698cc0cfb88af",
+  "packageManager": "npm@10.4.1+sha512.c753b6c3ad7afa13af388fa6d808035a008e30ea9993f58c6663e2bc5ff21679aa834db094987129aa4d488b86df57f7b634981b2f827cdcacc698cc0cfb88af",
   "volta": {
     "node": "22.14.0"
-  }
+  },
+  "workspaces": [
+    "packages/*"
+  ]
 }
