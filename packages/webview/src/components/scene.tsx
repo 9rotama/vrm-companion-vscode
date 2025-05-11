@@ -1,5 +1,4 @@
 import Model from "./model";
-import { OrbitControls } from "@react-three/drei";
 import { useVscodeMessages } from "../utils/use-vscode-messages";
 
 export default function Scene() {
@@ -11,7 +10,6 @@ export default function Scene() {
         <>
           <ambientLight intensity={5} />
           <Model vrmUrl={vrmUrl} vrmaUrl={vrmaUrl} issuesCount={issuesCount} />
-          <OrbitControls />
         </>
       )}
     </>

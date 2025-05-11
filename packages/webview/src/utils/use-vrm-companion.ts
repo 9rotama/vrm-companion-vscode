@@ -38,6 +38,7 @@ export function useVrmCompanion({
 
         const vrmGltf = await loader.loadAsync(vrmUrl);
         const vrm = vrmGltf.userData.vrm as VRM;
+
         const vrmaGltf = await loader.loadAsync(vrmaUrl);
         const vrmAnimation = vrmaGltf.userData.vrmAnimations[0];
 

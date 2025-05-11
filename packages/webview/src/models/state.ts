@@ -1,8 +1,17 @@
 import { z } from "zod";
 
+export const cameraStateSchema = z.object({
+  position: z.object({
+    x: z.number().default(0),
+    y: z.number().default(1.0),
+    z: z.number().default(0.7),
+  }),
+});
+export type CameraState = z.infer<typeof cameraStateSchema>;
+
 export const stateSchema = z
   .object({
-    camera: z.string().optional(),
+    camera: cameraStateSchema,
   })
   .optional();
 
