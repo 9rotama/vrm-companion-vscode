@@ -33,7 +33,7 @@ export function Settings({ values, onChange }: Props) {
                 <label>height</label>
                 <Slider
                   className="w-16"
-                  defaultValue={0}
+                  defaultValue={0.4}
                   min={0.4}
                   max={1.25}
                   step={0.01}
