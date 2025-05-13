@@ -53,7 +53,6 @@ export function Settings({ values, onChange }: Props) {
                 <label>depth</label>
                 <Slider
                   className="w-16"
-                  defaultValue={0}
                   min={0.5}
                   max={1}
                   step={0.01}
