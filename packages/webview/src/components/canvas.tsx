@@ -17,7 +17,7 @@ export default function VRMCompanion() {
     }));
   }
   return (
-    <>
+    <div className="w-screen h-screen relative">
       <Canvas
         camera={{
           rotation: [0, 0, 0],
@@ -28,6 +28,6 @@ export default function VRMCompanion() {
       <div className="absolute top-1 right-1 text-white">
         <Settings values={{ camera }} onChange={handleChangeSettings} />
       </div>
-    </>
+    </div>
   );
 }
