@@ -1,9 +1,11 @@
-import VRMCompanionCanvas from "./components/canvas";
+import VRMCompanion from "./components/canvas";
 
 export default function App() {
   return (
-    <main className="w-screen h-screen">
-      <VRMCompanionCanvas />
-    </main>
+    <div className="root">
+      <main className="w-screen h-screen">
+        <VRMCompanion />
+      </main>
+    </div>
   );
 }

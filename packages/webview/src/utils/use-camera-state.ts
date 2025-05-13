@@ -1,23 +1,20 @@
 import { useEffect, useState } from "react";
 import { vscode } from "./vscode";
 import { CameraState, stateSchema } from "../models/state";
-import debounce from "debounce";
+import { useDebounce } from "use-debounce";
 
-export function useCameraState() {
-  const [cameraState, setCameraState] = useState<CameraState>(
+export function useSettings() {
+  const [camera, setCamera] = useState<CameraState>(
     stateSchema.parse(vscode.getState())?.camera || {
-      position: { x: 0, y: 1.0, z: 0.7 },
+      position: { y: 1.0, z: 0.7 },
     },
   );
+  const [debouncedCameraState] = useDebounce(camera, 500);
 
-  useEffect(
-    debounce(() => {
-      const state = stateSchema.parse(vscode.getState());
-      vscode.setState({ camera: cameraState, ...state });
-      console.log("debounced camera state");
-    }, 500),
-    [cameraState],
-  );
+  useEffect(() => {
+    const state = stateSchema.parse(vscode.getState());
+    vscode.setState({ camera, ...state });
+  }, [debouncedCameraState]);
 
-  return { cameraState, setCameraState };
+  return { camera, setCamera };
 }
