@@ -2,7 +2,6 @@ import { z } from "zod";
 
 export const cameraStateSchema = z.object({
   position: z.object({
-    x: z.number().default(0),
     y: z.number().default(1.0),
     z: z.number().default(0.7),
   }),
