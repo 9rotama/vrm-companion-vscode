@@ -2,6 +2,7 @@ import { Canvas } from "@react-three/fiber";
 import Scene from "./scene";
 import { useSettings } from "../utils/use-camera-state";
 import { CameraSettings, Settings } from "./settings";
+import { whiteDots } from "../assets/bg";
 
 export default function VRMCompanion() {
   const { camera, setCamera } = useSettings();
@@ -17,7 +18,10 @@ export default function VRMCompanion() {
     }));
   }
   return (
-    <div className="w-screen h-screen relative">
+    <div
+      className="w-screen h-screen relative"
+      style={{ background: `url("${whiteDots}")` }}
+    >
       <Canvas
         camera={{
           rotation: [0, 0, 0],
