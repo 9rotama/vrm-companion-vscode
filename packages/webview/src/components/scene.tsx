@@ -22,7 +22,8 @@ export default function Scene({
     <>
       {vrmUrl && vrmaUrl && (
         <>
-          <ambientLight intensity={5} />
+          <ambientLight intensity={1} />
+          <directionalLight intensity={3} />
           <Model vrmUrl={vrmUrl} vrmaUrl={vrmaUrl} issuesCount={issuesCount} />
         </>
       )}

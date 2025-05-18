@@ -13,7 +13,7 @@ export function useSettings() {
 
   useEffect(() => {
     const state = stateSchema.parse(vscode.getState());
-    vscode.setState({ camera, ...state });
+    vscode.setState({ ...state, camera });
   }, [debouncedCameraState]);
 
   return { camera, setCamera };
