@@ -3,6 +3,7 @@ import Scene from "./scene";
 import { useSettings } from "../utils/use-camera-state";
 import { CameraSettings, Settings } from "./settings";
 import { whiteDots } from "../assets/bg";
+import { Backgrounds } from "./backgrounds/backgrounds";
 
 export default function VRMCompanion() {
   const { camera, setCamera } = useSettings();
@@ -30,7 +31,10 @@ export default function VRMCompanion() {
         <Scene cameraSettings={camera} />
       </Canvas>
       <div className="absolute top-1 right-1 text-white">
-        <Settings values={{ camera }} onChange={handleChangeSettings} />
+        <div className="flex flex-col gap-1">
+          <Settings values={{ camera }} onChange={handleChangeSettings} />
+          <Backgrounds />
+        </div>
       </div>
     </div>
   );

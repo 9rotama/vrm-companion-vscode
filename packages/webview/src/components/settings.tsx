@@ -1,6 +1,7 @@
 import { Popover, Separator } from "@base-ui-components/react";
 import { Bolt } from "lucide-react";
 import Slider from "./slider";
+import { IconButton } from "./icon-button";
 
 export type CameraSettings = {
   position: { y: number; z: number };
@@ -15,9 +16,9 @@ export function Settings({ values, onChange }: Props) {
   return (
     <Popover.Root>
       <Popover.Trigger>
-        <button className="p-1 rounded-full bg-zinc-800/50 hover:bg-zinc-700/50 border border-white/20">
+        <IconButton>
           <Bolt className="text-white/75 size-4" />
-        </button>
+        </IconButton>
       </Popover.Trigger>
       <Popover.Portal>
         <Popover.Positioner sideOffset={4}>
