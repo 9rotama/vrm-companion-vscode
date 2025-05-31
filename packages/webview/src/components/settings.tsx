@@ -1,6 +1,7 @@
 import { Popover, Separator } from "@base-ui-components/react";
 import { Bolt } from "lucide-react";
 import Slider from "./slider";
+import { IconButton } from "./icon-button";
 
 export type CameraSettings = {
   position: { y: number; z: number };
@@ -15,20 +16,20 @@ export function Settings({ values, onChange }: Props) {
   return (
     <Popover.Root>
       <Popover.Trigger>
-        <button className="p-1 rounded-full bg-zinc-800/50 hover:bg-zinc-700/50 border border-white/20">
-          <Bolt className="text-zinc-400 size-4" />
-        </button>
+        <IconButton>
+          <Bolt className="text-white/75 size-4" />
+        </IconButton>
       </Popover.Trigger>
       <Popover.Portal>
         <Popover.Positioner sideOffset={4}>
-          <Popover.Popup className="max-w-40 border border-white/20 bg-zinc-800/50 rounded-md p-2 backdrop-blur">
-            <Popover.Title className="font-bold">settings</Popover.Title>
-            <Popover.Description className="text-xs text-zinc-400">
+          <Popover.Popup className="max-w-40 border border-white/20 bg-zinc-900/50 text-white rounded-md p-2 backdrop-blur">
+            <Popover.Title className="font-bold ">settings</Popover.Title>
+            <Popover.Description className="text-xs text-white/50">
               adjust the camera and avatar settings
             </Popover.Description>
             <Separator className="my-2 h-[1px] bg-white/20" />
             <div className="mt-2">
-              <div className="text-zinc-500 font-bold">camera</div>
+              <div className="text-white/50 font-bold">camera</div>
               <div className="flex flex-row gap-2 items-center justify-between">
                 <label>height</label>
                 <Slider

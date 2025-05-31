@@ -1,4 +1,4 @@
-import VRMCompanion from "./components/canvas";
+import VRMCompanion from "./components/vrm-companion";
 
 export default function App() {
   return (

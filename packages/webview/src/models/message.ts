@@ -1,5 +1,20 @@
 import { z } from "zod";
 
+const bgSchema = z.object({
+  id: z.string(),
+  bg: z.string(),
+  preview: z.string(),
+});
+
+export type Bg = z.infer<typeof bgSchema>;
+
+const assetsUriSchema = z.object({
+  vrma: z.object({ idle: z.string() }),
+  bg: z.array(bgSchema),
+});
+
+export type AssetsUri = z.infer<typeof assetsUriSchema>;
+
 export const messageToWebviewSchema = z.union([
   z.object({
     command: z.literal("updateVrm"),
@@ -10,8 +25,8 @@ export const messageToWebviewSchema = z.union([
     body: z.object({ count: z.number() }),
   }),
   z.object({
-    command: z.literal("prepareVrmaUris"),
-    body: z.object({ idle: z.string() }),
+    command: z.literal("loadAssetsUri"),
+    body: assetsUriSchema,
   }),
 ]);
 
