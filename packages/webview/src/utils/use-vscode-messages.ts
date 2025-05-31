@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { vscode } from "./vscode";
 import { env } from "./env";
-import { messageToWebviewSchema } from "../models/message";
+import { AssetsUri, messageToWebviewSchema } from "../models/message";
 
 export function useVscodeMessages() {
   const [vrmUrl, setVrmUrl] = useState<string | undefined>(undefined);
   const [vrmaUrl, setVrmaUrl] = useState<string | undefined>(undefined);
+  const [bgsUrl, setBgsUrl] = useState<AssetsUri["bg"] | undefined>(undefined);
   const [issuesCount, setIssuesCount] = useState<number>(0);
 
   useEffect(function setVrm() {
@@ -20,8 +21,9 @@ export function useVscodeMessages() {
           case "updateVrm":
             setVrmUrl(message.body.dataUrl);
             break;
-          case "prepareVrmaUris":
-            setVrmaUrl(message.body.idle);
+          case "loadAssetsUri":
+            setVrmaUrl(message.body.vrma.idle);
+            setBgsUrl(message.body.bg);
             break;
           case "updateIssuesCount":
             setIssuesCount(message.body.count);
@@ -31,5 +33,5 @@ export function useVscodeMessages() {
     }
   }, []);
 
-  return { vrmUrl, vrmaUrl, issuesCount };
+  return { vrmUrl, vrmaUrl, bgsUrl, issuesCount };
 }

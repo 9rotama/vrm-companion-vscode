@@ -2,8 +2,15 @@ import { Popover, Separator } from "@base-ui-components/react";
 import { Palette } from "lucide-react";
 import { IconButton } from "../icon-button";
 import BackgroundButton from "./background-button";
+import { Bg } from "../../models/message";
 
-export function Backgrounds() {
+type Props = {
+  bgs: Bg[];
+  currIdx: number | undefined;
+  onChange: (next: number | undefined) => void;
+};
+
+export function Backgrounds({ bgs, currIdx, onChange }: Props) {
   return (
     <Popover.Root>
       <Popover.Trigger>
@@ -23,10 +30,22 @@ export function Backgrounds() {
               <div className="text-white/50 font-bold">2D</div>
               <div className="grid grid-cols-4 gap-1 mt-2">
                 <BackgroundButton
+                  imgUrl={undefined}
+                  active={currIdx === undefined}
                   onClick={() => {
-                    console.log("clicked");
+                    onChange(undefined);
                   }}
                 />
+                {bgs.map((v, i) => (
+                  <BackgroundButton
+                    key={i}
+                    imgUrl={v.preview}
+                    active={currIdx === i}
+                    onClick={() => {
+                      onChange(i);
+                    }}
+                  />
+                ))}
               </div>
             </div>
           </Popover.Popup>

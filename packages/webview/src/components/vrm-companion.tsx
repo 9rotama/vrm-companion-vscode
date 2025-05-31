@@ -1,12 +1,15 @@
 import { Canvas } from "@react-three/fiber";
 import Scene from "./scene";
-import { useSettings } from "../utils/use-camera-state";
+import { useSettings } from "../utils/use-settings";
 import { CameraSettings, Settings } from "./settings";
-import { whiteDots } from "../assets/bg";
 import { Backgrounds } from "./backgrounds/backgrounds";
+import { useVscodeMessages } from "../utils/use-vscode-messages";
+import { useBackgrounds } from "../utils/use-backgrounds";
 
 export default function VRMCompanion() {
+  const { vrmUrl, vrmaUrl, issuesCount, bgsUrl } = useVscodeMessages();
   const { camera, setCamera } = useSettings();
+  const { currBgIdx, setCurrBgIdx, bgs } = useBackgrounds(bgsUrl);
 
   function handleChangeSettings(next: { camera: CameraSettings }) {
     setCamera((prev) => ({
@@ -18,22 +21,41 @@ export default function VRMCompanion() {
       },
     }));
   }
+
   return (
     <div
       className="w-screen h-screen relative"
-      style={{ background: `url("${whiteDots}")` }}
+      style={{
+        background:
+          currBgIdx !== undefined
+            ? `url("${bgs[currBgIdx].bg}")`
+            : "transparent",
+      }}
     >
       <Canvas
         camera={{
           rotation: [0, 0, 0],
         }}
       >
-        <Scene cameraSettings={camera} />
+        {vrmUrl && vrmaUrl && (
+          <Scene
+            cameraSettings={camera}
+            vrmUrl={vrmUrl}
+            vrmaUrl={vrmaUrl}
+            issuesCount={issuesCount}
+          />
+        )}
       </Canvas>
       <div className="absolute top-1 right-1 text-white">
         <div className="flex flex-col gap-1">
           <Settings values={{ camera }} onChange={handleChangeSettings} />
-          <Backgrounds />
+          <Backgrounds
+            bgs={bgs}
+            currIdx={currBgIdx}
+            onChange={(next) => {
+              setCurrBgIdx(next);
+            }}
+          />
         </div>
       </div>
     </div>

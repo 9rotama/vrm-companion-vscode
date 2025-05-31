@@ -1,15 +1,18 @@
 import Model from "./model";
-import { useVscodeMessages } from "../utils/use-vscode-messages";
 import { useFrame } from "@react-three/fiber";
 import { CameraSettings } from "./settings";
 
 export default function Scene({
+  vrmUrl,
+  vrmaUrl,
+  issuesCount,
   cameraSettings,
 }: {
+  vrmUrl: string;
+  vrmaUrl: string;
+  issuesCount: number;
   cameraSettings: CameraSettings;
 }) {
-  const { vrmUrl, vrmaUrl, issuesCount } = useVscodeMessages();
-
   useFrame(({ camera }) => {
     camera.position.set(
       0,
