@@ -28,6 +28,6 @@ export function loadAssetsUri(webview: Webview, extensionUri: Uri): AssetsUri {
 
   return {
     vrma: { idle: vrmaIdle },
-    bg: { whiteDots: { bg: bgWhiteDots, preview: bgWhiteDotsPreview } },
+    bg: [{ id: "white-dots", bg: bgWhiteDots, preview: bgWhiteDotsPreview }],
   };
 }

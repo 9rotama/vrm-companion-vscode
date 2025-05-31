@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 const bgSchema = z.object({
+  id: z.string(),
   bg: z.string(),
   preview: z.string(),
 });
@@ -9,7 +10,7 @@ export type Bg = z.infer<typeof bgSchema>;
 
 const assetsUriSchema = z.object({
   vrma: z.object({ idle: z.string() }),
-  bg: z.object({ whiteDots: bgSchema }),
+  bg: z.array(bgSchema),
 });
 
 export type AssetsUri = z.infer<typeof assetsUriSchema>;

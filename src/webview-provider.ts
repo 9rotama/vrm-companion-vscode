@@ -54,7 +54,7 @@ export class WebviewProvider implements vscode.WebviewViewProvider {
             command: "loadAssetsUri",
             body: {
               vrma: { idle: assetsUri.vrma.idle },
-              bg: { whiteDots: assetsUri.bg.whiteDots },
+              bg: assetsUri.bg,
             },
           });
           this.postMessage({

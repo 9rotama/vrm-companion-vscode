@@ -36,13 +36,13 @@ export function Backgrounds({ bgs, currIdx, onChange }: Props) {
                     onChange(undefined);
                   }}
                 />
-                {bgs.map((v, i) => (
+                {bgs.map((v) => (
                   <BackgroundButton
-                    key={i}
+                    key={v.id}
                     imgUrl={v.preview}
-                    active={currIdx === i}
+                    active={currIdx === bgs.indexOf(v)}
                     onClick={() => {
-                      onChange(i);
+                      onChange(bgs.indexOf(v));
                     }}
                   />
                 ))}
