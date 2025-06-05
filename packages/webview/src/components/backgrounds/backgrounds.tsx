@@ -7,7 +7,7 @@ import { Bg } from "../../models/message";
 type Props = {
   bgs: Bg[];
   currIdx: number | undefined;
-  onChange: (next: number | undefined) => void;
+  onChange: (next: number) => void;
 };
 
 export function Backgrounds({ bgs, currIdx, onChange }: Props) {
@@ -29,17 +29,10 @@ export function Backgrounds({ bgs, currIdx, onChange }: Props) {
             <div className="mt-2">
               <div className="text-white/50 font-bold">2D</div>
               <div className="grid grid-cols-4 gap-1 mt-2">
-                <BackgroundButton
-                  imgUrl={undefined}
-                  active={currIdx === undefined}
-                  onClick={() => {
-                    onChange(undefined);
-                  }}
-                />
                 {bgs.map((v) => (
                   <BackgroundButton
                     key={v.id}
-                    imgUrl={v.preview}
+                    bg={v}
                     active={currIdx === bgs.indexOf(v)}
                     onClick={() => {
                       onChange(bgs.indexOf(v));

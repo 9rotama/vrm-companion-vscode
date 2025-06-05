@@ -1,13 +1,15 @@
 import { clsx } from "clsx";
 import { Ban } from "lucide-react";
+import { Bg } from "../../models/message";
+import { emptyBg } from "../../utils/use-backgrounds";
 
 type Props = {
-  imgUrl?: string;
+  bg: Bg;
   onClick: () => void;
   active?: boolean;
 };
 
-export default function BackgroundButton({ imgUrl, onClick, active }: Props) {
+export default function BackgroundButton({ bg, onClick, active }: Props) {
   return (
     <button
       onClick={onClick}
@@ -17,8 +19,8 @@ export default function BackgroundButton({ imgUrl, onClick, active }: Props) {
         active && "border-2 border-teal-400",
       )}
     >
-      {imgUrl ? (
-        <img src={imgUrl} className="object-fill size-full" />
+      {bg.id !== emptyBg.id ? (
+        <img src={bg.preview} className="object-fill size-full" />
       ) : (
         <div className="grid place-items-center text-gray-500">
           <Ban />
