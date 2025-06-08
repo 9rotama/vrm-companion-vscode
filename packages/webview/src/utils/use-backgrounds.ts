@@ -17,14 +17,12 @@ export function useBackgrounds(assetsBgs: Bg[] | undefined) {
   useEffect(() => {
     // load background id
     const state = stateSchema.parse(vscode.getState());
-    console.log("Background loaded:", state?.bg?.id, bgs);
 
     if (!state) return;
     if (!state.bg) return;
 
     const loadedBgId = state.bg.id;
     const targetBgIdx = bgs.findIndex((v) => v.id === loadedBgId);
-    console.log("Target background index:", targetBgIdx);
 
     if (targetBgIdx !== -1) setCurrBgIdx(targetBgIdx);
   }, [assetsBgs]);
@@ -32,7 +30,6 @@ export function useBackgrounds(assetsBgs: Bg[] | undefined) {
   function saveBackground(nextBgIdx: number) {
     // save background id
     const state = stateSchema.parse(vscode.getState());
-    console.log("Background saved:", { id: bgs[nextBgIdx].id });
 
     vscode.setState(
       stateSchema.parse({
