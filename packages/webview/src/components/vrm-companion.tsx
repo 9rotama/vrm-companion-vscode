@@ -9,7 +9,8 @@ import { useBackgrounds } from "../utils/use-backgrounds";
 export default function VRMCompanion() {
   const { vrmUrl, vrmaUrl, issuesCount, bgsUrl } = useVscodeMessages();
   const { camera, setCamera } = useSettings();
-  const { currBgIdx, setCurrBgIdx, bgs } = useBackgrounds(bgsUrl);
+  const { currBgIdx, setCurrBgIdx, saveBackground, bgs } =
+    useBackgrounds(bgsUrl);
 
   function handleChangeSettings(next: { camera: CameraSettings }) {
     setCamera((prev) => ({
@@ -26,10 +27,9 @@ export default function VRMCompanion() {
     <div
       className="w-screen h-screen relative"
       style={{
-        background:
-          currBgIdx !== undefined
-            ? `url("${bgs[currBgIdx].bg}")`
-            : "transparent",
+        background: bgs[currBgIdx]?.bg
+          ? `url("${bgs[currBgIdx].bg}")`
+          : "transparent",
       }}
     >
       <Canvas
@@ -54,6 +54,7 @@ export default function VRMCompanion() {
             currIdx={currBgIdx}
             onChange={(next) => {
               setCurrBgIdx(next);
+              saveBackground(next);
             }}
           />
         </div>

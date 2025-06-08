@@ -12,7 +12,7 @@ export function getWebviewHtml(
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta
-          http-equiv="Content-Security-Policy"
+          httpEquiv="Content-Security-Policy"
           content={`style-src ${cspSource}; script-src 'nonce-${nonce}';`}
         />
         <link rel="stylesheet" type="text/css" href={stylesUri} />

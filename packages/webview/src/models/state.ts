@@ -8,9 +8,14 @@ export const cameraStateSchema = z.object({
 });
 export type CameraState = z.infer<typeof cameraStateSchema>;
 
+const bgSchema = z.object({
+  id: z.string(),
+});
+
 export const stateSchema = z
   .object({
-    camera: cameraStateSchema,
+    camera: cameraStateSchema.optional(),
+    bg: bgSchema.optional(),
   })
   .optional();
 

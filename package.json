@@ -21,6 +21,7 @@
   "categories": [
     "Other"
   ],
+  "icon": "icon.png",
   "activationEvents": [
     "onStartupFinished"
   ],
@@ -31,7 +32,7 @@
         {
           "type": "webview",
           "id": "vrm-companion-vscode.summon",
-          "name": "vrm-companiozn"
+          "name": "vrm-companion"
         }
       ]
     },
