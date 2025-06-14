@@ -19,6 +19,10 @@ gpu capable of general 3d rendering
 
 ## release notes
 
+### 0.1.1
+
+- notification when VRM file path setting is empty or invalid
+
 ### 0.1.0
 
 initial release
