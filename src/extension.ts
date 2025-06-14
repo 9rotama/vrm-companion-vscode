@@ -3,9 +3,13 @@ import { WebviewProvider } from "./webview-provider";
 import { getVrmDataUrl } from "./utils/get-vrm-data-url";
 import { getIssuesCount } from "./utils/get-issues-count";
 import { getConfigVrmFilePath } from "./utils/workspace-config";
+import { notifyVrmFilePathNotSet } from "./utils/notifications";
 
 async function setup(context: vscode.ExtensionContext) {
   const vrmFilePath = getConfigVrmFilePath();
+
+  if (!vrmFilePath) notifyVrmFilePathNotSet();
+
   const dataUrl = vrmFilePath ? await getVrmDataUrl(vrmFilePath) : undefined;
 
   const provider = new WebviewProvider(context.extensionUri, {
@@ -29,6 +33,7 @@ async function setup(context: vscode.ExtensionContext) {
 
   vscode.workspace.onDidChangeConfiguration(async () => {
     const vrmFilePath = getConfigVrmFilePath();
+    if (!vrmFilePath) notifyVrmFilePathNotSet();
     const dataUrl = vrmFilePath ? await getVrmDataUrl(vrmFilePath) : undefined;
 
     provider.postMessage({
