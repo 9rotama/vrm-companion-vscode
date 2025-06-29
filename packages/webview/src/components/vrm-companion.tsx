@@ -1,18 +1,19 @@
 import { Canvas } from "@react-three/fiber";
-import Scene from "./scene";
+import Scene from "./three/scene";
 import { useSettings } from "../utils/use-settings";
-import { CameraSettings, Settings } from "./settings";
-import { Backgrounds } from "./backgrounds/backgrounds";
+import { BackgroundsPopover } from "./backgrounds/backgrounds-popover";
 import { useVscodeMessages } from "../utils/use-vscode-messages";
 import { useBackgrounds } from "../utils/use-backgrounds";
+import { SettingsValues } from "./settings/values";
+import { SettingsPopover } from "./settings/settings-popover";
 
 export default function VRMCompanion() {
   const { vrmUrl, vrmaUrl, issuesCount, bgsUrl } = useVscodeMessages();
-  const { camera, setCamera } = useSettings();
+  const { camera, setCamera, blink, setBlink } = useSettings();
   const { currBgIdx, setCurrBgIdx, saveBackground, bgs } =
     useBackgrounds(bgsUrl);
 
-  function handleChangeSettings(next: { camera: CameraSettings }) {
+  function handleChangeSettings(next: SettingsValues) {
     setCamera((prev) => ({
       ...prev,
       position: {
@@ -21,6 +22,12 @@ export default function VRMCompanion() {
         z: next.camera.position.z,
       },
     }));
+    setBlink({
+      happy: next.blink.happy,
+      neutral: next.blink.neutral,
+      sad: next.blink.sad,
+      angry: next.blink.angry,
+    });
   }
 
   return (
@@ -42,14 +49,18 @@ export default function VRMCompanion() {
             cameraSettings={camera}
             vrmUrl={vrmUrl}
             vrmaUrl={vrmaUrl}
+            blinkSettings={blink}
             issuesCount={issuesCount}
           />
         )}
       </Canvas>
       <div className="absolute top-1 right-1 text-white">
         <div className="flex flex-col gap-1">
-          <Settings values={{ camera }} onChange={handleChangeSettings} />
-          <Backgrounds
+          <SettingsPopover
+            values={{ camera, blink }}
+            onChange={handleChangeSettings}
+          />
+          <BackgroundsPopover
             bgs={bgs}
             currIdx={currBgIdx}
             onChange={(next) => {

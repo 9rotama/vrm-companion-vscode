@@ -1,6 +1,6 @@
 import { Popover, Separator } from "@base-ui-components/react";
 import { Palette } from "lucide-react";
-import { IconButton } from "../icon-button";
+import { IconButton } from "../ui/icon-button";
 import BackgroundButton from "./background-button";
 import { Bg } from "../../models/message";
 
@@ -10,7 +10,7 @@ type Props = {
   onChange: (next: number) => void;
 };
 
-export function Backgrounds({ bgs, currIdx, onChange }: Props) {
+export function BackgroundsPopover({ bgs, currIdx, onChange }: Props) {
   return (
     <Popover.Root>
       <Popover.Trigger>

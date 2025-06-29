@@ -6,7 +6,7 @@ export default function Slider(props: BSlider.Root.Props) {
       <BSlider.Control className="p-0.5 w-full">
         <BSlider.Track className="bg-white/30 h-1 rounded-full">
           <BSlider.Indicator className="bg-white/70 rounded-full" />
-          <BSlider.Thumb className="size-3 rounded-full bg-white " />
+          <BSlider.Thumb className="size-3 rounded-full bg-white" />
         </BSlider.Track>
       </BSlider.Control>
     </BSlider.Root>
