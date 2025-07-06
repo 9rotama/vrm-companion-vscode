@@ -7,3 +7,12 @@ body {
 .root {
   isolation: isolate;
 }
+
+@theme {
+  --color-popover-fg: oklch(98.5% 0.002 247.839);
+  --color-popover-fg-muted: oklch(98.5% 0.002 247.839 / 0.75);
+  --color-popover-bg: oklch(21% 0.034 264.665 / 0.7);
+  --color-popover-border: oklch(98.5% 0.002 247.839 / 0.2);
+  --color-popover-accent: oklch(98.5% 0.002 247.839);
+  --color-popover-translucent: oklch(98.5% 0.002 247.839 / 0.3);
+}

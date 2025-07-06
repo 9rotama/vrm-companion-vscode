@@ -3,7 +3,7 @@ export function IconButton(
 ) {
   return (
     <button
-      className="p-1 rounded-full bg-zinc-800/50 hover:bg-zinc-700/50 border border-white/20"
+      className="bg-popover-bg border-popover-border hover:bg-popover-bg rounded-full border p-1"
       {...props}
     />
   );

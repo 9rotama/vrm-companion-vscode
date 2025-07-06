@@ -1,9 +1,10 @@
-import { Popover, Separator } from "@base-ui-components/react";
+import { Popover } from "@base-ui-components/react";
 import { Bolt } from "lucide-react";
 import { IconButton } from "../ui/icon-button";
 import Slider from "../ui/slider";
 import { SettingsValues } from "./values";
 import { Checkbox } from "../ui/checkbox";
+import { Separator } from "../ui/separator";
 
 type Props = {
   values: SettingsValues;
@@ -15,20 +16,20 @@ export function SettingsPopover({ values, onChange }: Props) {
     <Popover.Root>
       <Popover.Trigger>
         <IconButton>
-          <Bolt className="text-white/75 size-4" />
+          <Bolt className="size-4 text-white/75" />
         </IconButton>
       </Popover.Trigger>
       <Popover.Portal>
         <Popover.Positioner sideOffset={4}>
-          <Popover.Popup className="max-w-40 border border-white/20 bg-zinc-900/50 text-white rounded-md p-2 backdrop-blur">
-            <Popover.Title className="font-bold ">settings</Popover.Title>
-            <Popover.Description className="text-xs text-white/50">
+          <Popover.Popup className="border-popover-border bg-popover-bg text-popover-fg max-w-40 rounded-md border p-2 backdrop-blur">
+            <Popover.Title className="font-bold">settings</Popover.Title>
+            <Popover.Description className="text-popover-fg-muted text-xs">
               adjust the camera and avatar settings
             </Popover.Description>
-            <Separator className="my-2 h-[1px] bg-white/20" />
+            <Separator />
             <div className="mt-2">
-              <div className="text-white/50 font-bold">camera</div>
-              <div className="flex flex-row gap-2 items-center justify-between">
+              <div className="text-popover-fg-muted font-bold">camera</div>
+              <div className="flex flex-row items-center justify-between gap-2">
                 <label>height</label>
                 <Slider
                   className="w-16"
@@ -48,7 +49,7 @@ export function SettingsPopover({ values, onChange }: Props) {
                   }}
                 />
               </div>
-              <div className="flex flex-row gap-2 items-center justify-between">
+              <div className="flex flex-row items-center justify-between gap-2">
                 <label>depth</label>
                 <Slider
                   className="w-16"
@@ -70,8 +71,8 @@ export function SettingsPopover({ values, onChange }: Props) {
             </div>
             <Separator className="my-2 h-[1px] bg-white/20" />
             <div className="mt-2">
-              <div className="text-white/50 font-bold">blink</div>
-              <div className="flex flex-row gap-2 items-center justify-between">
+              <div className="font-bold text-white/50">blink</div>
+              <div className="flex flex-row items-center justify-between gap-2">
                 <label>happy</label>
                 <Checkbox
                   checked={values.blink.happy}
@@ -87,7 +88,7 @@ export function SettingsPopover({ values, onChange }: Props) {
                   }}
                 />
               </div>
-              <div className="flex flex-row gap-2 items-center justify-between">
+              <div className="flex flex-row items-center justify-between gap-2">
                 <label>neutral</label>
                 <Checkbox
                   checked={values.blink.neutral}
@@ -103,7 +104,7 @@ export function SettingsPopover({ values, onChange }: Props) {
                   }}
                 />
               </div>
-              <div className="flex flex-row gap-2 items-center justify-between">
+              <div className="flex flex-row items-center justify-between gap-2">
                 <label>angry</label>
                 <Checkbox
                   checked={values.blink.angry}
@@ -119,7 +120,7 @@ export function SettingsPopover({ values, onChange }: Props) {
                   }}
                 />
               </div>
-              <div className="flex flex-row gap-2 items-center justify-between">
+              <div className="flex flex-row items-center justify-between gap-2">
                 <label>sad</label>
                 <Checkbox
                   checked={values.blink.sad}
