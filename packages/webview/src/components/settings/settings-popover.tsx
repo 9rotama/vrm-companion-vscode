@@ -43,7 +43,10 @@ export function SettingsPopover({ values, onChange }: Props) {
                       ...values,
                       camera: {
                         ...values.camera,
-                        position: { ...values.camera.position, y: v as number },
+                        position: {
+                          ...values.camera.position,
+                          y: v as number,
+                        },
                       },
                     });
                   }}
@@ -62,7 +65,10 @@ export function SettingsPopover({ values, onChange }: Props) {
                       ...values,
                       camera: {
                         ...values.camera,
-                        position: { ...values.camera.position, z: v as number },
+                        position: {
+                          ...values.camera.position,
+                          z: v as number,
+                        },
                       },
                     });
                   }}

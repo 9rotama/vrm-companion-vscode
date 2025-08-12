@@ -26,7 +26,7 @@ export function BackgroundsPopover({ bgs, currIdx, onChange }: Props) {
             <Popover.Description className="text-popover-fg-muted text-xs">
               set the background
             </Popover.Description>
-            <Separator className="my-2 h-[1px] bg-popover-border" />
+            <Separator className="bg-popover-border my-2 h-[1px]" />
             <div className="mt-2">
               <div className="text-popover-fg-muted font-bold">2D</div>
               <div className="mt-2 grid grid-cols-4 gap-1">
