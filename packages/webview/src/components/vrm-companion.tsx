@@ -1,11 +1,11 @@
 import { Canvas } from "@react-three/fiber";
 import Scene from "./three/scene";
 import { useSettings } from "../utils/use-settings";
-import { BackgroundsPopover } from "./backgrounds/backgrounds-popover";
+import { BackgroundsDialog } from "./backgrounds/backgrounds-dialog";
 import { useVscodeMessages } from "../utils/use-vscode-messages";
 import { useBackgrounds } from "../utils/use-backgrounds";
 import { SettingsValues } from "./settings/values";
-import { SettingsPopover } from "./settings/settings-popover";
+import { SettingsDialog } from "./settings/settings-dialog";
 
 export default function VRMCompanion() {
   const { vrmUrl, vrmaUrl, issuesCount, bgsUrl } = useVscodeMessages();
@@ -32,7 +32,7 @@ export default function VRMCompanion() {
 
   return (
     <div
-      className="w-screen h-screen relative"
+      className="relative h-screen w-screen"
       style={{
         background: bgs[currBgIdx]?.bg
           ? `url("${bgs[currBgIdx].bg}")`
@@ -56,11 +56,11 @@ export default function VRMCompanion() {
       </Canvas>
       <div className="absolute top-1 right-1 text-white">
         <div className="flex flex-col gap-1">
-          <SettingsPopover
+          <SettingsDialog
             values={{ camera, blink }}
             onChange={handleChangeSettings}
           />
-          <BackgroundsPopover
+          <BackgroundsDialog
             bgs={bgs}
             currIdx={currBgIdx}
             onChange={(next) => {
