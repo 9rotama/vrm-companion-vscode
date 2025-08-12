@@ -61,3 +61,15 @@ This is a VS Code extension that displays VRM avatars in the Explorer view with 
 - Webview React app in `packages/webview/`
 - Built extension output in `dist/`
 - VRM assets stored in `packages/webview/public/`
+
+### UI Components
+
+The webview uses a collection of base UI components located in `packages/webview/src/components/ui/`:
+
+- **IconButton**: Clickable buttons with icon support for actions
+- **Checkbox**: Form input component for boolean selections
+- **Slider**: Range input component for numeric value adjustments
+- **Separator**: Visual divider component for layout organization
+- **ScrollArea**: Custom scrollable container with styled scrollbars
+
+These components follow consistent design patterns and are built with Tailwind CSS for styling. They provide the foundation for the webview's user interface elements like settings panels and control interfaces.
