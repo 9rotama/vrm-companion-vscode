@@ -16,12 +16,12 @@ export function SettingsDialog({ values, onChange }: Props) {
     <Dialog.Root>
       <Dialog.Trigger>
         <IconButton>
-          <Bolt className="size-4 text-white/75" />
+          <Bolt className="size-4" />
         </IconButton>
       </Dialog.Trigger>
       <Dialog.Portal>
         <Dialog.Backdrop className="fixed inset-0" />
-        <Dialog.Popup className="border-popover-border bg-popover-bg text-popover-fg fixed inset-x-0 bottom-0 max-h-1/2 w-full overflow-y-scroll border-t p-2 backdrop-blur-xs">
+        <Dialog.Popup className="border-popover-border bg-popover-bg/80 text-popover-fg fixed inset-x-0 bottom-0 max-h-1/2 w-full overflow-y-scroll border-t p-2 backdrop-blur-xs">
           <Dialog.Title className="font-bold">settings</Dialog.Title>
           <Dialog.Description className="text-popover-fg-muted text-xs">
             adjust the camera and avatar settings
@@ -32,10 +32,10 @@ export function SettingsDialog({ values, onChange }: Props) {
             <div className="flex flex-row items-center justify-between gap-2">
               <label>height</label>
               <Slider
-                className="w-16"
+                className="w-24"
                 defaultValue={0.4}
-                min={0.4}
-                max={1.25}
+                min={0.2}
+                max={2}
                 step={0.01}
                 value={values.camera.position.y}
                 onValueChange={(v) => {
@@ -55,9 +55,9 @@ export function SettingsDialog({ values, onChange }: Props) {
             <div className="flex flex-row items-center justify-between gap-2">
               <label>depth</label>
               <Slider
-                className="w-16"
-                min={0.5}
-                max={1}
+                className="w-24"
+                min={0.2}
+                max={2}
                 step={0.01}
                 value={values.camera.position.z}
                 onValueChange={(v) => {
@@ -77,7 +77,7 @@ export function SettingsDialog({ values, onChange }: Props) {
           </div>
           <Separator className="my-2 h-[1px] bg-white/20" />
           <div className="mt-2">
-            <div className="font-bold text-white/50">blink</div>
+            <div className="text-popover-fg-muted font-bold">blink</div>
             <div className="flex flex-row items-center justify-between gap-2">
               <label>happy</label>
               <Checkbox

@@ -7,8 +7,8 @@ export function Checkbox(props: BCheckbox.Root.Props) {
     <BCheckbox.Root
       {...props}
       className={cn(
-        "border-popover-border bg-popover-bg text-popover-accent grid size-4 place-items-center rounded-sm border disabled:cursor-not-allowed disabled:opacity-50",
-        "data-[checked]:bg-popover-accent data-[checked]:text-popover-bg",
+        "border-popover-border  text-popover-fg-accent grid size-4 place-items-center rounded-sm border disabled:cursor-not-allowed disabled:opacity-50",
+        "data-[checked]:bg-popover-fg-accent data-[checked]:text-popover-bg",
         props.className,
       )}
     >

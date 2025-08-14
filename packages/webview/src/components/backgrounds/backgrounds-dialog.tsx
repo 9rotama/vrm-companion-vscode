@@ -16,12 +16,12 @@ export function BackgroundsDialog({ bgs, currIdx, onChange }: Props) {
     <Dialog.Root>
       <Dialog.Trigger>
         <IconButton>
-          <Palette className="size-4 text-white/75" />
+          <Palette className="size-4" />
         </IconButton>
       </Dialog.Trigger>
       <Dialog.Portal>
         <Dialog.Backdrop className="fixed inset-0" />
-        <Dialog.Popup className="border-popover-border bg-popover-bg text-popover-fg fixed inset-x-0 bottom-0 max-h-1/2 w-full overflow-y-scroll border-t p-2 backdrop-blur-xs">
+        <Dialog.Popup className="border-popover-border bg-popover-bg/80 text-popover-fg fixed inset-x-0 bottom-0 max-h-1/2 w-full overflow-y-scroll border-t p-2 backdrop-blur-xs">
           <Dialog.Title className="font-bold">backgrounds</Dialog.Title>
           <Dialog.Description className="text-popover-fg-muted text-xs">
             set the background

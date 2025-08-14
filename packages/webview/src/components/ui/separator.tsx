@@ -6,5 +6,5 @@ type Props = {
 };
 
 export function Separator({ className }: Props) {
-  return <BaseSeparator className={cn("my-2 h-[1px] bg-popover-border", className)} />;
+  return <BaseSeparator className={cn("bg-popover-border", className)} />;
 }

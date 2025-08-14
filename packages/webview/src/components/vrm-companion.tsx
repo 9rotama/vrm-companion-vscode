@@ -54,7 +54,7 @@ export default function VRMCompanion() {
           />
         )}
       </Canvas>
-      <div className="absolute top-1 right-1 text-white">
+      <div className="absolute top-1 right-1">
         <div className="flex flex-col gap-1">
           <SettingsDialog
             values={{ camera, blink }}
