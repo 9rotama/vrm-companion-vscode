@@ -19,6 +19,16 @@ gpu capable of general 3d rendering
 
 ## release notes
 
+### 0.2.0
+
+- added a feature to set blinking for each expression
+- fixed avatar not displaying when local storage read/write fails
+- move the settings popover to the bottom of the viewport.
+
+### 0.1.1
+
+- notification when VRM file path setting is empty or invalid
+
 ### 0.1.0
 
 initial release

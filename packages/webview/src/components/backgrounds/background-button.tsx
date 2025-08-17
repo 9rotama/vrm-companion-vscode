@@ -14,15 +14,15 @@ export default function BackgroundButton({ bg, onClick, active }: Props) {
     <button
       onClick={onClick}
       className={clsx(
-        "w-8 h-8 rounded-full bg-white/10 overflow-clip",
-        active || "border border-white/20 hover:border-white/40",
-        active && "border-2 border-teal-400",
+        "bg-popover-bg h-8 w-8 overflow-clip rounded-full",
+        active || "ring-popover-border ring",
+        active && "ring-popover-fg-accent ring-2",
       )}
     >
       {bg.id !== emptyBg.id ? (
-        <img src={bg.preview} className="object-fill size-full" />
+        <img src={bg.preview} className="size-full object-fill" />
       ) : (
-        <div className="grid place-items-center text-gray-500">
+        <div className="text-popover-fg-muted grid place-items-center">
           <Ban />
         </div>
       )}

@@ -18,7 +18,7 @@ export function getWebviewHtml(
         <link rel="stylesheet" type="text/css" href={stylesUri} />
         <title>Hello World</title>
       </head>
-      <body>
+      <body className="h-screen w-screen overflow-hidden">
         <div id="root"></div>
         <script type="module" nonce={nonce} src={scriptUri}></script>
       </body>

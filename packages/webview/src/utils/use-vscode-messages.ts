@@ -16,17 +16,23 @@ export function useVscodeMessages() {
     } else {
       vscode.postMessage({ command: "mounted" });
       window.addEventListener("message", (event) => {
-        const message = messageToWebviewSchema.parse(event.data);
-        switch (message.command) {
+        const message = messageToWebviewSchema.safeParse(event.data);
+        if (!message.success) {
+          console.error("Invalid message received:", message.error);
+          return;
+        }
+
+        const data = message.data;
+        switch (data.command) {
           case "updateVrm":
-            setVrmUrl(message.body.dataUrl);
+            setVrmUrl(data.body.dataUrl);
             break;
           case "loadAssetsUri":
-            setVrmaUrl(message.body.vrma.idle);
-            setBgsUrl(message.body.bg);
+            setVrmaUrl(data.body.vrma.idle);
+            setBgsUrl(data.body.bg);
             break;
           case "updateIssuesCount":
-            setIssuesCount(message.body.count);
+            setIssuesCount(data.body.count);
             break;
         }
       });

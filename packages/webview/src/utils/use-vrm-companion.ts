@@ -8,20 +8,23 @@ import {
   VRMAnimationLoaderPlugin,
 } from "@pixiv/three-vrm-animation";
 import { AnimationMixer } from "three";
+import { BlinkSettingsValues } from "../components/settings/values";
 
 export function useVrmCompanion({
   issuesCount,
+  blink,
   vrmUrl,
   vrmaUrl,
 }: {
   issuesCount: number;
+  blink: BlinkSettingsValues;
   vrmUrl: string;
   vrmaUrl: string;
 }) {
   const [vrm, setVrm] = useState<VRM | undefined>(undefined);
   const mixerRef = useRef<AnimationMixer | undefined>(undefined);
   const blinkConfig = useRef({ delay: 10, frequency: 3 });
-  const expression = getExpression(issuesCount);
+  const expression = getExpression(issuesCount, blink);
 
   useEffect(
     function loadVrm() {
@@ -59,7 +62,6 @@ export function useVrmCompanion({
 
   useEffect(function updateExpressionByIssues() {
     if (vrm?.expressionManager) {
-      const expression = getExpression(issuesCount);
       vrm.expressionManager.setValue("happy", expression.values.happy);
       vrm.expressionManager.setValue("angry", expression.values.angry);
       vrm.expressionManager.setValue("sad", expression.values.sad);

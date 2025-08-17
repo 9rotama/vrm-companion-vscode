@@ -7,3 +7,13 @@ body {
 .root {
   isolation: isolate;
 }
+
+@theme {
+  /* based on gray from tailwind */
+  --color-popover-fg: var(--color-zinc-100);
+  --color-popover-fg-muted: var(--color-zinc-400);
+  --color-popover-fg-accent: var(--color-teal-500);
+  --color-popover-bg: var(--color-zinc-900);
+  --color-popover-bg-hover: var(--color-zinc-700);
+  --color-popover-border: oklch(from var(--color-popover-fg) l c h / 0.3);
+}

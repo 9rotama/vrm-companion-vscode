@@ -12,7 +12,13 @@ class VSCodeAPIWrapper {
 
   public postMessage(message: MessageToVscode) {
     if (this.vsCodeApi) {
-      this.vsCodeApi.postMessage(messageToVscodeSchema.parse(message));
+      const msg = messageToVscodeSchema.safeParse(message);
+      if (!msg.success) {
+        console.error("Invalid message format:", msg.error);
+        return;
+      }
+      this.vsCodeApi.postMessage(msg.data);
+
     }
   }
 

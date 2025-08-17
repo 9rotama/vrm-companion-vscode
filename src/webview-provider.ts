@@ -47,8 +47,12 @@ export class WebviewProvider implements vscode.WebviewViewProvider {
     const assetsUri = loadAssetsUri(view.webview, this._extensionUri);
 
     view.webview.onDidReceiveMessage((message) => {
-      const msg = messageToVscodeSchema.parse(message);
-      switch (msg.command) {
+      const msg = messageToVscodeSchema.safeParse(message);
+      if (!msg.success) {
+        console.error("Invalid message received:", msg.error);
+        return;
+      }
+      switch (msg.data.command) {
         case "mounted":
           this.postMessage({
             command: "loadAssetsUri",

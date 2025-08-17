@@ -1,17 +1,19 @@
 import Model from "./model";
 import { useFrame } from "@react-three/fiber";
-import { CameraSettings } from "./settings";
+import { BlinkSettingsValues, CameraSettingsValues } from "../settings/values";
 
 export default function Scene({
   vrmUrl,
   vrmaUrl,
   issuesCount,
+  blinkSettings,
   cameraSettings,
 }: {
   vrmUrl: string;
   vrmaUrl: string;
   issuesCount: number;
-  cameraSettings: CameraSettings;
+  blinkSettings: BlinkSettingsValues;
+  cameraSettings: CameraSettingsValues;
 }) {
   useFrame(({ camera }) => {
     camera.position.set(
@@ -27,7 +29,12 @@ export default function Scene({
         <>
           <ambientLight intensity={1} />
           <directionalLight intensity={3} />
-          <Model vrmUrl={vrmUrl} vrmaUrl={vrmaUrl} issuesCount={issuesCount} />
+          <Model
+            vrmUrl={vrmUrl}
+            vrmaUrl={vrmaUrl}
+            blink={blinkSettings}
+            issuesCount={issuesCount}
+          />
         </>
       )}
     </>
