@@ -18,7 +18,6 @@ class VSCodeAPIWrapper {
         return;
       }
       this.vsCodeApi.postMessage(msg.data);
-
     }
   }
 
