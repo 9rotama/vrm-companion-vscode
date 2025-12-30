@@ -1,10 +1,9 @@
 import { clsx } from "clsx";
 import { Ban, Check } from "lucide-react";
-import { Bg } from "../../models/message";
-import { emptyBg } from "../../utils/use-backgrounds";
+import { Background } from "../../utils/use-backgrounds";
 
 type Props = {
-  bg: Bg;
+  bg: Background;
   onClick: () => void;
   isSelected?: boolean;
 };
@@ -20,12 +19,12 @@ export function BackgroundButton({ bg, onClick, isSelected }: Props) {
           isSelected && "border-popover-fg-accent border-2",
         )}
       >
-        {bg.id === emptyBg.id ? (
+        {bg.type === "empty" ? (
           <div className="text-popover-fg-muted grid place-items-center">
             <Ban />
           </div>
         ) : (
-          <img src={bg.preview} className="size-full object-fill" />
+          <img src={bg.previewUri} className="size-full object-fill" />
         )}
       </button>
       {isSelected && (

@@ -1,8 +1,8 @@
 import { Uri, Webview } from "vscode";
 import { getUri } from "./get-uri";
-import { AssetsUri } from "../../packages/webview/src/models/message";
+import { Assets } from "../../packages/webview/src/models/message";
 
-export function loadAssetsUri(webview: Webview, extensionUri: Uri): AssetsUri {
+export function loadAssets(webview: Webview, extensionUri: Uri): Assets {
   const vrmaIdle = getUri(webview, extensionUri, [
     "packages",
     "webview",
@@ -14,7 +14,7 @@ export function loadAssetsUri(webview: Webview, extensionUri: Uri): AssetsUri {
     "packages",
     "webview",
     "dist",
-    "bg",
+    "backgrounds",
     "white-dots.svg",
   ]).toString();
 
@@ -22,12 +22,18 @@ export function loadAssetsUri(webview: Webview, extensionUri: Uri): AssetsUri {
     "packages",
     "webview",
     "dist",
-    "bg",
+    "backgrounds",
     "white-dots-p.png",
   ]).toString();
 
   return {
-    vrma: { idle: vrmaIdle },
-    bg: [{ id: "white-dots", bg: bgWhiteDots, preview: bgWhiteDotsPreview }],
+    vrmaFiles: { idle: vrmaIdle },
+    backgroundImageFiles: [
+      {
+        id: "white-dots",
+        imageUri: bgWhiteDots,
+        previewUri: bgWhiteDotsPreview,
+      },
+    ],
   };
 }

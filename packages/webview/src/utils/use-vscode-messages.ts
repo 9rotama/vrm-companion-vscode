@@ -1,18 +1,22 @@
 import { useEffect, useState } from "react";
 import { vscode } from "./vscode";
 import { env } from "./env";
-import { AssetsUri, messageToWebviewSchema } from "../models/message";
+import { Assets, messageToWebviewSchema } from "../models/message";
 
 export function useVscodeMessages() {
   const [vrmUrl, setVrmUrl] = useState<string | undefined>(undefined);
-  const [vrmaUrl, setVrmaUrl] = useState<string | undefined>(undefined);
-  const [bgsUrl, setBgsUrl] = useState<AssetsUri["bg"] | undefined>(undefined);
+  const [vrmaFiles, setVrmaFiles] = useState<Assets["vrmaFiles"] | undefined>(
+    undefined,
+  );
+  const [backgroundImageFiles, setBackgroundImageFiles] = useState<
+    Assets["backgroundImageFiles"] | undefined
+  >(undefined);
   const [issuesCount, setIssuesCount] = useState<number>(0);
 
   useEffect(function setVrm() {
     if (env.VITE_DEV_VRM) {
       setVrmUrl(`_dev_/${env.VITE_DEV_VRM}`);
-      setVrmaUrl("animation/idle.vrma");
+      setVrmaFiles({ idle: "animation/idle.vrma" });
     } else {
       vscode.postMessage({ command: "mounted" });
       window.addEventListener("message", (event) => {
@@ -28,8 +32,8 @@ export function useVscodeMessages() {
             setVrmUrl(data.body.dataUrl);
             break;
           case "loadAssetsUri":
-            setVrmaUrl(data.body.vrma.idle);
-            setBgsUrl(data.body.bg);
+            setVrmaFiles(data.body.vrmaFiles);
+            setBackgroundImageFiles(data.body.backgroundImageFiles);
             break;
           case "updateIssuesCount":
             setIssuesCount(data.body.count);
@@ -39,5 +43,5 @@ export function useVscodeMessages() {
     }
   }, []);
 
-  return { vrmUrl, vrmaUrl, bgsUrl, issuesCount };
+  return { vrmUrl, vrmaFiles, backgroundImageFiles, issuesCount };
 }

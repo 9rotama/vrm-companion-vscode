@@ -1,7 +1,7 @@
 import { Dialog } from "@base-ui-components/react";
 import { ComponentProps, ReactNode } from "react";
 import { Separator } from "./separator";
-import { cn } from "../../lib/utils";
+import { cn } from "../../utils/cn";
 
 type DrawerProps = {
   renderTrigger: ComponentProps<typeof Dialog.Trigger>["render"];

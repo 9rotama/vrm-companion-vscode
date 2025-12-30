@@ -1,16 +1,20 @@
 import { Wallpaper } from "lucide-react";
 import { IconButton } from "../ui/icon-button";
 import { BackgroundButton } from "./background-button";
-import { Bg } from "../../models/message";
 import { Drawer } from "../ui/drawer";
+import { Background } from "../../utils/use-backgrounds";
 
 type Props = {
-  bgs: Bg[];
-  currIdx: number | undefined;
-  onChange: (next: number) => void;
+  backgrounds: Background[];
+  currentBackgroundId: string;
+  onChange: (next: string) => void;
 };
 
-export function BackgroundsDialog({ bgs, currIdx, onChange }: Props) {
+export function BackgroundsDialog({
+  backgrounds,
+  currentBackgroundId,
+  onChange,
+}: Props) {
   return (
     <Drawer
       renderTrigger={(props) => (
@@ -29,13 +33,13 @@ export function BackgroundsDialog({ bgs, currIdx, onChange }: Props) {
       <div className="mt-3">
         <div className="text-popover-fg font-bold">2D</div>
         <div className="mt-2 flex flex-row gap-1">
-          {bgs.map((v) => (
+          {backgrounds.map((bg) => (
             <BackgroundButton
-              key={v.id}
-              bg={v}
-              isSelected={currIdx === bgs.indexOf(v)}
+              key={bg.id}
+              bg={bg}
+              isSelected={currentBackgroundId === bg.id}
               onClick={() => {
-                onChange(bgs.indexOf(v));
+                onChange(bg.id);
               }}
             />
           ))}

@@ -1,5 +1,5 @@
 import { Separator as BaseSeparator } from "@base-ui-components/react";
-import { cn } from "../../lib/utils";
+import { cn } from "../../utils/cn";
 
 type Props = {
   className?: string;
