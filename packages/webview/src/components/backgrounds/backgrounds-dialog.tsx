@@ -2,7 +2,7 @@ import { Dialog } from "@base-ui-components/react";
 import { Palette } from "lucide-react";
 import { IconButton } from "../ui/icon-button";
 import { Separator } from "../ui/separator";
-import BackgroundButton from "./background-button";
+import { BackgroundButton } from "./background-button";
 import { Bg } from "../../models/message";
 
 type Props = {
@@ -29,12 +29,12 @@ export function BackgroundsDialog({ bgs, currIdx, onChange }: Props) {
           <Separator className="bg-popover-border my-2 h-[1px]" />
           <div className="mt-2">
             <div className="text-popover-fg-muted font-bold">2D</div>
-            <div className="mt-2 flex flex-row gap-2">
+            <div className="mt-2 flex flex-row gap-1">
               {bgs.map((v) => (
                 <BackgroundButton
                   key={v.id}
                   bg={v}
-                  active={currIdx === bgs.indexOf(v)}
+                  isSelected={currIdx === bgs.indexOf(v)}
                   onClick={() => {
                     onChange(bgs.indexOf(v));
                   }}
