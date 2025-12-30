@@ -1,0 +1,29 @@
+{
+  "formatter": [
+    {
+      "language_server": {
+        "name": "oxfmt"
+      }
+    }
+  ],
+  "languages": {
+    "JSON": {
+      "formatter": "prettier"
+    }
+  },
+  "lsp": {
+    "oxfmt": {
+      "initialization_options": {
+        "settings": {
+          "configPath": null,
+          "flags": {},
+          "fmt.configPath": null,
+          "fmt.experimental": true,
+          "run": "onSave",
+          "typeAware": false,
+          "unusedDisableDirectives": false
+        }
+      }
+    }
+  }
+}
