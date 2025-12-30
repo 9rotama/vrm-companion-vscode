@@ -1,31 +1,65 @@
 {
   "name": "vrm-companion-vscode",
   "displayName": "vrm-companion-vscode",
+  "version": "0.2.0",
   "description": "work with your fav vrm avatar",
-  "publisher": "9rotama",
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "avatar",
+    "explorer",
+    "pets",
+    "vrm",
+    "webview"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/9rotama/vrm-companion-vscode"
   },
-  "keywords": [
-    "vrm",
-    "avatar",
-    "explorer",
-    "webview",
-    "pets"
-  ],
-  "version": "0.2.0",
-  "engines": {
-    "vscode": "^1.95.0"
-  },
-  "categories": [
-    "Other"
-  ],
-  "icon": "icon.png",
-  "activationEvents": [
-    "onStartupFinished"
+  "publisher": "9rotama",
+  "workspaces": [
+    "packages/*"
   ],
   "main": "./dist/extension.js",
+  "scripts": {
+    "vscode:prepublish": "npm run package",
+    "compile": "npm run check-types && npm run lint && node esbuild.js",
+    "watch": "npm-run-all -p watch:*",
+    "watch:esbuild": "node esbuild.js --watch",
+    "watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
+    "package": "npm run check-types && npm run lint && node esbuild.js --production",
+    "compile-tests": "tsc -p . --outDir out",
+    "watch-tests": "tsc -p . -w --outDir out",
+    "pretest": "npm run compile-tests && npm run compile && npm run lint",
+    "check-types": "tsc --noEmit",
+    "lint": "oxlint --type-aware",
+    "format": "oxfmt",
+    "test": "vscode-test"
+  },
+  "dependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.9",
+    "@types/node": "20.x",
+    "@types/react": "^19.0.8",
+    "@types/react-dom": "^19.0.4",
+    "@types/vscode": "^1.95.0",
+    "@vscode/test-cli": "^0.0.10",
+    "@vscode/test-electron": "^2.4.1",
+    "esbuild": "^0.25.4",
+    "eslint-plugin-react": "^7.37.4",
+    "lefthook": "^1.11.12",
+    "npm-run-all": "^4.1.5",
+    "oxfmt": "^0.20.0",
+    "oxlint": "^1.35.0",
+    "oxlint-tsgolint": "^0.10.0",
+    "prettier": "3.5.3",
+    "typescript": "^5.8.3"
+  },
   "contributes": {
     "views": {
       "explorer": [
@@ -47,47 +81,15 @@
       }
     }
   },
-  "scripts": {
-    "vscode:prepublish": "npm run package",
-    "compile": "npm run check-types && npm run lint && node esbuild.js",
-    "watch": "npm-run-all -p watch:*",
-    "watch:esbuild": "node esbuild.js --watch",
-    "watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
-    "package": "npm run check-types && npm run lint && node esbuild.js --production",
-    "compile-tests": "tsc -p . --outDir out",
-    "watch-tests": "tsc -p . -w --outDir out",
-    "pretest": "npm run compile-tests && npm run compile && npm run lint",
-    "check-types": "tsc --noEmit",
-    "lint": "oxlint",
-    "format": "prettier --write .",
-    "test": "vscode-test"
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "icon": "icon.png",
+  "engines": {
+    "vscode": "^1.95.0"
   },
-  "devDependencies": {
-    "@types/mocha": "^10.0.9",
-    "@types/node": "20.x",
-    "@types/react": "^19.0.8",
-    "@types/react-dom": "^19.0.4",
-    "@types/vscode": "^1.95.0",
-    "@vscode/test-cli": "^0.0.10",
-    "@vscode/test-electron": "^2.4.1",
-    "esbuild": "^0.25.4",
-    "eslint-plugin-react": "^7.37.4",
-    "lefthook": "^1.11.12",
-    "npm-run-all": "^4.1.5",
-    "oxlint": "^0.16.10",
-    "prettier": "3.5.3",
-    "typescript": "^5.8.3"
-  },
-  "dependencies": {
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "zod": "^3.24.1"
-  },
-  "packageManager": "npm@10.4.1+sha512.c753b6c3ad7afa13af388fa6d808035a008e30ea9993f58c6663e2bc5ff21679aa834db094987129aa4d488b86df57f7b634981b2f827cdcacc698cc0cfb88af",
   "volta": {
     "node": "22.14.0"
   },
-  "workspaces": [
-    "packages/*"
-  ]
+  "packageManager": "npm@10.4.1+sha512.c753b6c3ad7afa13af388fa6d808035a008e30ea9993f58c6663e2bc5ff21679aa834db094987129aa4d488b86df57f7b634981b2f827cdcacc698cc0cfb88af"
 }
