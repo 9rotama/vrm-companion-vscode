@@ -1,19 +1,23 @@
 import { z } from "zod";
 
-const bgSchema = z.object({
-  id: z.string(),
-  bg: z.string(),
-  preview: z.string(),
+const backgroundImageFilesSchema = z.array(
+  z.object({
+    id: z.string(),
+    imageUri: z.string(),
+    previewUri: z.string(),
+  }),
+);
+
+const vrmaFilesSchema = z.object({
+  idle: z.string(),
 });
 
-export type Bg = z.infer<typeof bgSchema>;
-
-const assetsUriSchema = z.object({
-  vrma: z.object({ idle: z.string() }),
-  bg: z.array(bgSchema),
+const assetsSchema = z.object({
+  vrmaFiles: vrmaFilesSchema,
+  backgroundImageFiles: backgroundImageFilesSchema,
 });
 
-export type AssetsUri = z.infer<typeof assetsUriSchema>;
+export type Assets = z.infer<typeof assetsSchema>;
 
 export const messageToWebviewSchema = z.union([
   z.object({
@@ -26,7 +30,7 @@ export const messageToWebviewSchema = z.union([
   }),
   z.object({
     command: z.literal("loadAssetsUri"),
-    body: assetsUriSchema,
+    body: assetsSchema,
   }),
 ]);
 

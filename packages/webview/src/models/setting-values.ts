@@ -1,5 +1,6 @@
 export type CameraSettingsValues = {
-  position: { y: number; z: number };
+  height: number;
+  depth: number;
 };
 
 export type BlinkSettingsValues = {

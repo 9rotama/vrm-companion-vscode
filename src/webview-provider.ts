@@ -8,7 +8,7 @@ import {
   messageToWebviewSchema,
 } from "../packages/webview/src/models/message";
 import { getWebviewHtml } from "./utils/get-webview-html";
-import { loadAssetsUri } from "./utils/load-assets";
+import { loadAssets } from "./utils/load-assets";
 
 export class WebviewProvider implements vscode.WebviewViewProvider {
   constructor(
@@ -44,7 +44,7 @@ export class WebviewProvider implements vscode.WebviewViewProvider {
       return;
     }
 
-    const assetsUri = loadAssetsUri(view.webview, this._extensionUri);
+    const assets = loadAssets(view.webview, this._extensionUri);
 
     view.webview.onDidReceiveMessage((message) => {
       const msg = messageToVscodeSchema.safeParse(message);
@@ -56,10 +56,7 @@ export class WebviewProvider implements vscode.WebviewViewProvider {
         case "mounted":
           this.postMessage({
             command: "loadAssetsUri",
-            body: {
-              vrma: { idle: assetsUri.vrma.idle },
-              bg: assetsUri.bg,
-            },
+            body: assets,
           });
           this.postMessage({
             command: "updateVrm",

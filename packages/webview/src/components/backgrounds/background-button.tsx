@@ -1,31 +1,37 @@
 import { clsx } from "clsx";
-import { Ban } from "lucide-react";
-import { Bg } from "../../models/message";
-import { emptyBg } from "../../utils/use-backgrounds";
+import { Ban, Check } from "lucide-react";
+import { Background } from "../../utils/use-backgrounds";
 
 type Props = {
-  bg: Bg;
+  bg: Background;
   onClick: () => void;
-  active?: boolean;
+  isSelected?: boolean;
 };
 
-export default function BackgroundButton({ bg, onClick, active }: Props) {
+export function BackgroundButton({ bg, onClick, isSelected }: Props) {
   return (
-    <button
-      onClick={onClick}
-      className={clsx(
-        "bg-popover-bg h-8 w-8 overflow-clip rounded-full",
-        active || "ring-popover-border ring",
-        active && "ring-popover-fg-accent ring-2",
-      )}
-    >
-      {bg.id !== emptyBg.id ? (
-        <img src={bg.preview} className="size-full object-fill" />
-      ) : (
-        <div className="text-popover-fg-muted grid place-items-center">
-          <Ban />
+    <div className="relative">
+      <button
+        onClick={onClick}
+        className={clsx(
+          "bg-popover-bg relative h-9 w-9 overflow-clip rounded-full",
+          "border-popover-border border-2",
+          isSelected && "border-popover-fg-accent",
+        )}
+      >
+        {bg.type === "empty" ? (
+          <div className="text-popover-fg-muted grid place-items-center">
+            <Ban />
+          </div>
+        ) : (
+          <img src={bg.previewUri} className="size-full object-fill" />
+        )}
+      </button>
+      {isSelected && (
+        <div className="bg-popover-fg-accent absolute top-0 left-0 grid size-4 place-items-center rounded-full">
+          <Check className="text-popover-fg m-auto size-3" strokeWidth={4} />
         </div>
       )}
-    </button>
+    </div>
   );
 }

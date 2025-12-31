@@ -1,44 +1,60 @@
 import { useEffect, useState } from "react";
-import { Bg } from "../models/message";
 import { State, stateSchema } from "../models/state";
 import { vscode } from "./vscode";
 
-export const emptyBg: Bg = {
+export type Background =
+  | {
+      type: "empty";
+      id: "empty";
+    }
+  | {
+      type: "image";
+      id: string;
+      imageUri: string;
+      previewUri: string;
+    };
+
+export const emptyBg: Background = {
   id: "empty",
-  bg: "",
-  preview: "",
-};
+  type: "empty",
+} as const;
 
-export function useBackgrounds(assetsBgs: Bg[] | undefined) {
-  const [currBgIdx, setCurrBgIdx] = useState<number>(0);
+export function useBackgrounds(loadedBackgrounds: Background[] | undefined) {
+  const [currentBackgroundId, setCurrentBackgroundId] = useState<string>(
+    emptyBg.id,
+  );
 
-  const bgs = assetsBgs ? [emptyBg, ...assetsBgs] : [emptyBg];
+  const backgrounds = loadedBackgrounds
+    ? [emptyBg, ...loadedBackgrounds]
+    : [emptyBg];
 
   useEffect(() => {
     // load background id
     const state = stateSchema.safeParse(vscode.getState());
 
-    if (!state.success || !state.data?.bg) return;
+    if (!state.success || !state.data?.background) return;
 
-    const loadedBgId = state.data.bg.id;
-    const targetBgIdx = bgs.findIndex((v) => v.id === loadedBgId);
+    setCurrentBackgroundId(state.data.background.id);
+  }, [loadedBackgrounds]);
 
-    if (targetBgIdx !== -1) setCurrBgIdx(targetBgIdx);
-  }, [assetsBgs]);
-
-  function saveBackground(nextBgIdx: number) {
+  function setBackground(id: string) {
     // save background id
     const state = stateSchema.safeParse(vscode.getState());
 
     if (!state.success) return;
 
+    setCurrentBackgroundId(id);
     vscode.setState(
       stateSchema.safeParse({
         ...state.data,
-        bg: { id: bgs[nextBgIdx].id },
+        background: { id: currentBackgroundId },
       } satisfies State),
     );
   }
 
-  return { currBgIdx, setCurrBgIdx, saveBackground, bgs };
+  return {
+    backgrounds,
+    currentBackgroundId,
+    setBackground,
+  };
 }

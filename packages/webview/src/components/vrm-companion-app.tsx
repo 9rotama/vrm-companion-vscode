@@ -4,51 +4,53 @@ import { useSettings } from "../utils/use-settings";
 import { BackgroundsDialog } from "./backgrounds/backgrounds-dialog";
 import { useVscodeMessages } from "../utils/use-vscode-messages";
 import { useBackgrounds } from "../utils/use-backgrounds";
-import { SettingsValues } from "./settings/values";
+import { SettingsValues } from "../models/setting-values";
 import { SettingsDialog } from "./settings/settings-dialog";
 
-export default function VRMCompanion() {
-  const { vrmUrl, vrmaUrl, issuesCount, bgsUrl } = useVscodeMessages();
+export default function VRMCompanionApp() {
+  const { vrmUrl, vrmaFiles, issuesCount, backgroundImageFiles } =
+    useVscodeMessages();
   const { camera, setCamera, blink, setBlink } = useSettings();
-  const { currBgIdx, setCurrBgIdx, saveBackground, bgs } =
-    useBackgrounds(bgsUrl);
+  const { backgrounds, currentBackgroundId, setBackground } = useBackgrounds(
+    backgroundImageFiles?.map((file) => ({
+      type: "image" as const,
+      id: file.id,
+      imageUri: file.imageUri,
+      previewUri: file.previewUri,
+    })),
+  );
+
+  const currentBackground = backgrounds.find(
+    (bg) => bg.id === currentBackgroundId,
+  );
 
   function handleChangeSettings(next: SettingsValues) {
-    setCamera((prev) => ({
-      ...prev,
-      position: {
-        ...prev.position,
-        y: next.camera.position.y,
-        z: next.camera.position.z,
-      },
-    }));
-    setBlink({
-      happy: next.blink.happy,
-      neutral: next.blink.neutral,
-      sad: next.blink.sad,
-      angry: next.blink.angry,
-    });
+    setCamera(next.camera);
+    setBlink(next.blink);
   }
 
   return (
     <div
-      className="relative h-screen w-screen"
-      style={{
-        background: bgs[currBgIdx]?.bg
-          ? `url("${bgs[currBgIdx].bg}")`
-          : "transparent",
-      }}
+      className={"relative h-screen w-screen"}
+      style={
+        currentBackground && {
+          background:
+            currentBackground.type === "image"
+              ? `url("${currentBackground.imageUri}")`
+              : "transparent",
+        }
+      }
     >
       <Canvas
         camera={{
           rotation: [0, 0, 0],
         }}
       >
-        {vrmUrl && vrmaUrl && (
+        {vrmUrl && vrmaFiles && (
           <Scene
             cameraSettings={camera}
             vrmUrl={vrmUrl}
-            vrmaUrl={vrmaUrl}
+            vrmaUrl={vrmaFiles.idle}
             blinkSettings={blink}
             issuesCount={issuesCount}
           />
@@ -61,12 +63,9 @@ export default function VRMCompanion() {
             onChange={handleChangeSettings}
           />
           <BackgroundsDialog
-            bgs={bgs}
-            currIdx={currBgIdx}
-            onChange={(next) => {
-              setCurrBgIdx(next);
-              saveBackground(next);
-            }}
+            backgrounds={backgrounds}
+            currentBackgroundId={currentBackgroundId}
+            onChange={setBackground}
           />
         </div>
       </div>

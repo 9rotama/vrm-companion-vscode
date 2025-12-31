@@ -8,7 +8,7 @@ import {
   VRMAnimationLoaderPlugin,
 } from "@pixiv/three-vrm-animation";
 import { AnimationMixer } from "three";
-import { BlinkSettingsValues } from "../components/settings/values";
+import { BlinkSettingsValues } from "../models/setting-values";
 
 export function useVrmCompanion({
   issuesCount,

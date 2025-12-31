@@ -1,30 +1,28 @@
 import { z } from "zod";
 
 export const cameraStateSchema = z.object({
-  position: z.object({
-    y: z.number().default(1.0),
-    z: z.number().default(0.7),
-  }),
+  height: z.number().default(1.0),
+  depth: z.number().default(0.7),
 });
 export type CameraState = z.infer<typeof cameraStateSchema>;
 
-export const blinkSettingsSchema = z.object({
+export const blinkStateSchema = z.object({
   happy: z.boolean().default(false),
   neutral: z.boolean().default(false),
   sad: z.boolean().default(false),
   angry: z.boolean().default(false),
 });
-export type BlinkState = z.infer<typeof blinkSettingsSchema>;
+export type BlinkState = z.infer<typeof blinkStateSchema>;
 
-const bgSchema = z.object({
+const backgroundStateSchema = z.object({
   id: z.string(),
 });
 
 export const stateSchema = z
   .object({
     camera: cameraStateSchema.optional(),
-    blink: blinkSettingsSchema.optional(),
-    bg: bgSchema.optional(),
+    blink: blinkStateSchema.optional(),
+    background: backgroundStateSchema.optional(),
   })
   .optional();
 
