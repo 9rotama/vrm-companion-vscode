@@ -16,7 +16,7 @@ export function BackgroundButton({ bg, onClick, isSelected }: Props) {
         className={clsx(
           "bg-popover-bg relative h-9 w-9 overflow-clip rounded-full",
           "border-popover-border border-2",
-          isSelected && "border-popover-fg-accent border-2",
+          isSelected && "border-popover-fg-accent",
         )}
       >
         {bg.type === "empty" ? (
