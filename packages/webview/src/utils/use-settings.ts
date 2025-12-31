@@ -5,7 +5,8 @@ import { useDebounce } from "use-debounce";
 
 export function useSettings() {
   const [camera, setCamera] = useState<CameraState>({
-    position: { y: 1.0, z: 0.7 },
+    height: 1.0,
+    depth: 0.7,
   });
   const [blink, setBlink] = useState<BlinkState>({
     happy: false,

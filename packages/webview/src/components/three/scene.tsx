@@ -1,6 +1,9 @@
+import {
+  BlinkSettingsValues,
+  CameraSettingsValues,
+} from "../../models/setting-values";
 import Model from "./model";
 import { useFrame } from "@react-three/fiber";
-import { BlinkSettingsValues, CameraSettingsValues } from "../settings/values";
 
 export default function Scene({
   vrmUrl,
@@ -16,11 +19,7 @@ export default function Scene({
   cameraSettings: CameraSettingsValues;
 }) {
   useFrame(({ camera }) => {
-    camera.position.set(
-      0,
-      cameraSettings.position.y,
-      cameraSettings.position.z,
-    );
+    camera.position.set(0, cameraSettings.height, cameraSettings.depth);
   });
 
   return (

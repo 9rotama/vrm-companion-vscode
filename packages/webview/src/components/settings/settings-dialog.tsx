@@ -1,9 +1,25 @@
 import { Bolt } from "lucide-react";
 import { IconButton } from "../ui/icon-button";
 import Slider from "../ui/slider";
-import { SettingsValues } from "./values";
 import { Checkbox } from "../ui/checkbox";
 import { Drawer } from "../ui/drawer";
+
+type CameraSettingsValues = {
+  height: number;
+  depth: number;
+};
+
+type BlinkSettingsValues = {
+  happy: boolean;
+  neutral: boolean;
+  sad: boolean;
+  angry: boolean;
+};
+
+type SettingsValues = {
+  camera: CameraSettingsValues;
+  blink: BlinkSettingsValues;
+};
 
 type Props = {
   values: SettingsValues;
@@ -36,16 +52,14 @@ export function SettingsDialog({ values, onChange }: Props) {
             min={0.2}
             max={2}
             step={0.01}
-            value={values.camera.position.y}
+            value={values.camera.height}
             onValueChange={(v) => {
+              if (typeof v !== "number") return;
               onChange({
                 ...values,
                 camera: {
                   ...values.camera,
-                  position: {
-                    ...values.camera.position,
-                    y: v as number,
-                  },
+                  height: v,
                 },
               });
             }}
@@ -58,16 +72,14 @@ export function SettingsDialog({ values, onChange }: Props) {
             min={0.2}
             max={2}
             step={0.01}
-            value={values.camera.position.z}
+            value={values.camera.depth}
             onValueChange={(v) => {
+              if (typeof v !== "number") return;
               onChange({
                 ...values,
                 camera: {
                   ...values.camera,
-                  position: {
-                    ...values.camera.position,
-                    z: v as number,
-                  },
+                  depth: v,
                 },
               });
             }}
@@ -80,7 +92,6 @@ export function SettingsDialog({ values, onChange }: Props) {
           <label>happy</label>
           <Checkbox
             checked={values.blink.happy}
-            value={values.camera.position.y}
             onCheckedChange={(v) => {
               onChange({
                 ...values,
@@ -96,7 +107,6 @@ export function SettingsDialog({ values, onChange }: Props) {
           <label>neutral</label>
           <Checkbox
             checked={values.blink.neutral}
-            value={values.camera.position.y}
             onCheckedChange={(v) => {
               onChange({
                 ...values,
@@ -112,7 +122,6 @@ export function SettingsDialog({ values, onChange }: Props) {
           <label>angry</label>
           <Checkbox
             checked={values.blink.angry}
-            value={values.camera.position.y}
             onCheckedChange={(v) => {
               onChange({
                 ...values,
@@ -128,7 +137,6 @@ export function SettingsDialog({ values, onChange }: Props) {
           <label>sad</label>
           <Checkbox
             checked={values.blink.sad}
-            value={values.camera.position.y}
             onCheckedChange={(v) => {
               onChange({
                 ...values,

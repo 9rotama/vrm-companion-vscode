@@ -1,5 +1,5 @@
+import { BlinkSettingsValues } from "../../models/setting-values";
 import { useVrmCompanion } from "../../utils/use-vrm-companion";
-import { BlinkSettingsValues } from "../settings/values";
 
 type Props = {
   vrmUrl: string;

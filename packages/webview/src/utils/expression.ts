@@ -1,4 +1,4 @@
-import { BlinkSettingsValues } from "../components/settings/values";
+import { BlinkSettingsValues } from "../models/setting-values";
 
 export function getExpression(
   issuesCount: number,

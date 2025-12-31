@@ -4,10 +4,10 @@ import { useSettings } from "../utils/use-settings";
 import { BackgroundsDialog } from "./backgrounds/backgrounds-dialog";
 import { useVscodeMessages } from "../utils/use-vscode-messages";
 import { useBackgrounds } from "../utils/use-backgrounds";
-import { SettingsValues } from "./settings/values";
+import { SettingsValues } from "../models/setting-values";
 import { SettingsDialog } from "./settings/settings-dialog";
 
-export default function VRMCompanion() {
+export default function VRMCompanionApp() {
   const { vrmUrl, vrmaFiles, issuesCount, backgroundImageFiles } =
     useVscodeMessages();
   const { camera, setCamera, blink, setBlink } = useSettings();
@@ -25,20 +25,8 @@ export default function VRMCompanion() {
   );
 
   function handleChangeSettings(next: SettingsValues) {
-    setCamera((prev) => ({
-      ...prev,
-      position: {
-        ...prev.position,
-        y: next.camera.position.y,
-        z: next.camera.position.z,
-      },
-    }));
-    setBlink({
-      happy: next.blink.happy,
-      neutral: next.blink.neutral,
-      sad: next.blink.sad,
-      angry: next.blink.angry,
-    });
+    setCamera(next.camera);
+    setBlink(next.blink);
   }
 
   return (

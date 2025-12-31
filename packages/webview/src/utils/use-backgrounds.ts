@@ -32,9 +32,9 @@ export function useBackgrounds(loadedBackgrounds: Background[] | undefined) {
     // load background id
     const state = stateSchema.safeParse(vscode.getState());
 
-    if (!state.success || !state.data?.bg) return;
+    if (!state.success || !state.data?.background) return;
 
-    setCurrentBackgroundId(state.data.bg.id);
+    setCurrentBackgroundId(state.data.background.id);
   }, [loadedBackgrounds]);
 
   function setBackground(id: string) {
@@ -47,7 +47,7 @@ export function useBackgrounds(loadedBackgrounds: Background[] | undefined) {
     vscode.setState(
       stateSchema.safeParse({
         ...state.data,
-        bg: { id: currentBackgroundId },
+        background: { id: currentBackgroundId },
       } satisfies State),
     );
   }
