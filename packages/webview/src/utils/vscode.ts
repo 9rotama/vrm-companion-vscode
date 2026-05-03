@@ -1,4 +1,5 @@
 import type { WebviewApi } from "vscode-webview";
+import * as v from "valibot";
 import { MessageToVscode, messageToVscodeSchema } from "../models/message";
 
 class VSCodeAPIWrapper {
@@ -12,12 +13,12 @@ class VSCodeAPIWrapper {
 
   public postMessage(message: MessageToVscode) {
     if (this.vsCodeApi) {
-      const msg = messageToVscodeSchema.safeParse(message);
+      const msg = v.safeParse(messageToVscodeSchema, message);
       if (!msg.success) {
-        console.error("Invalid message format:", msg.error);
+        console.error("Invalid message format:", msg.issues);
         return;
       }
-      this.vsCodeApi.postMessage(msg.data);
+      this.vsCodeApi.postMessage(msg.output);
     }
   }
 

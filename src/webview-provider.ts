@@ -1,5 +1,6 @@
 import * as vscode from "vscode";
 import { Uri, Webview } from "vscode";
+import * as v from "valibot";
 import { getUri } from "./utils/get-uri";
 import { getNonce } from "./utils/get-nonce";
 import {
@@ -47,12 +48,12 @@ export class WebviewProvider implements vscode.WebviewViewProvider {
     const assets = loadAssets(view.webview, this._extensionUri);
 
     view.webview.onDidReceiveMessage((message) => {
-      const msg = messageToVscodeSchema.safeParse(message);
+      const msg = v.safeParse(messageToVscodeSchema, message);
       if (!msg.success) {
-        console.error("Invalid message received:", msg.error);
+        console.error("Invalid message received:", msg.issues);
         return;
       }
-      switch (msg.data.command) {
+      switch (msg.output.command) {
         case "mounted":
           this.postMessage({
             command: "loadAssetsUri",
@@ -76,7 +77,7 @@ export class WebviewProvider implements vscode.WebviewViewProvider {
       return;
     }
 
-    view.webview.postMessage(messageToWebviewSchema.parse(message));
+    view.webview.postMessage(v.parse(messageToWebviewSchema, message));
   }
 
   private _getHtml(webview: Webview, extensionUri: Uri) {

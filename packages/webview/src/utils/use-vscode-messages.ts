@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import * as v from "valibot";
 import { vscode } from "./vscode";
 import { Assets, messageToWebviewSchema } from "../models/message";
 
@@ -14,13 +15,13 @@ export function useVscodeMessages() {
 
   useEffect(() => {
     const handleReceived = (event: MessageEvent) => {
-      const message = messageToWebviewSchema.safeParse(event.data);
+      const message = v.safeParse(messageToWebviewSchema, event.data);
       if (!message.success) {
-        console.error("Invalid message received:", message.error);
+        console.error("Invalid message received:", message.issues);
         return;
       }
 
-      const data = message.data;
+      const data = message.output;
       switch (data.command) {
         case "updateVrm":
           setVrmUrl(data.body.dataUrl);
