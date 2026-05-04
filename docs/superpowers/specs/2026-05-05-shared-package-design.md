@@ -154,7 +154,7 @@ export function getWebviewHtml(
 5. `get-webview-html.tsx` を `.ts` に rename し、`String.raw` テンプレ実装に書き換え
 6. `tsconfig.json` から `"jsx": "react-jsx"` を削除
 7. root `package.json` から `react` / `react-dom` / `@types/react` / `@types/react-dom` / `eslint-plugin-react` を削除し、`"shared": "*"` を追加
-8. `packages/webview/package.json` に `react` / `react-dom` / `valibot` / `"shared": "*"` を deps、`@types/react` / `@types/react-dom` を devDeps として追加
+8. `packages/webview/package.json` に `react` / `react-dom` / `"shared": "*"` を deps、`@types/react` / `@types/react-dom` を devDeps として追加
 9. `npm install` で hoisting/重複が想定通りであることを確認（`node_modules/react` がリポジトリルートに 1 つだけ存在すること）
 10. `npm run compile` が通ることを確認
 11. `npm run package` が通り、`dist/extension.js` のバンドルサイズが減少していることを確認（`react-dom/server` が消えた分）
