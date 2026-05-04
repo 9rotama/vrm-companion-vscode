@@ -1,6 +1,6 @@
 import { Uri, Webview } from "vscode";
 import { getUri } from "./get-uri";
-import { Assets } from "../../packages/webview/src/models/message";
+import { Assets } from "shared";
 
 const animationPath = ["packages", "webview", "dist", "animation"];
 const backgroundsPath = ["packages", "webview", "dist", "backgrounds"];
