@@ -1,7 +1,7 @@
-import { z } from "zod";
+import * as v from "valibot";
 
-const envSchema = z.object({
-  VITE_DEV_VRM: z.string().optional(),
+const envSchema = v.object({
+  VITE_DEV_VRM: v.optional(v.string()),
 });
 
-export const env = envSchema.parse(import.meta.env);
+export const env = v.parse(envSchema, import.meta.env);

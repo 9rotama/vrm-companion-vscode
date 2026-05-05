@@ -1,43 +1,43 @@
-import { z } from "zod";
+import * as v from "valibot";
 
-const backgroundImageFilesSchema = z.array(
-  z.object({
-    id: z.string(),
-    imageUri: z.string(),
-    previewUri: z.string(),
+const backgroundImageFilesSchema = v.array(
+  v.object({
+    id: v.string(),
+    imageUri: v.string(),
+    previewUri: v.string(),
   }),
 );
 
-const vrmaFilesSchema = z.object({
-  idle: z.string(),
+const vrmaFilesSchema = v.object({
+  idle: v.string(),
 });
 
-const assetsSchema = z.object({
+const assetsSchema = v.object({
   vrmaFiles: vrmaFilesSchema,
   backgroundImageFiles: backgroundImageFilesSchema,
 });
 
-export type Assets = z.infer<typeof assetsSchema>;
+export type Assets = v.InferOutput<typeof assetsSchema>;
 
-export const messageToWebviewSchema = z.union([
-  z.object({
-    command: z.literal("updateVrm"),
-    body: z.object({ dataUrl: z.union([z.string(), z.undefined()]) }),
+export const messageToWebviewSchema = v.union([
+  v.object({
+    command: v.literal("updateVrm"),
+    body: v.object({ dataUrl: v.union([v.string(), v.undefined()]) }),
   }),
-  z.object({
-    command: z.literal("updateIssuesCount"),
-    body: z.object({ count: z.number() }),
+  v.object({
+    command: v.literal("updateIssuesCount"),
+    body: v.object({ count: v.number() }),
   }),
-  z.object({
-    command: z.literal("loadAssetsUri"),
+  v.object({
+    command: v.literal("loadAssetsUri"),
     body: assetsSchema,
   }),
 ]);
 
-export type MessageToWebview = z.infer<typeof messageToWebviewSchema>;
+export type MessageToWebview = v.InferOutput<typeof messageToWebviewSchema>;
 
-export const messageToVscodeSchema = z.object({
-  command: z.literal("mounted"),
+export const messageToVscodeSchema = v.object({
+  command: v.literal("mounted"),
 });
 
-export type MessageToVscode = z.infer<typeof messageToVscodeSchema>;
+export type MessageToVscode = v.InferOutput<typeof messageToVscodeSchema>;

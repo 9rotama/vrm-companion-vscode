@@ -1,19 +1,9 @@
-.vscode/**
-.vscode-test/**
-out/**
-node_modules/**
-src/**
-.gitignore
-.yarnrc
-esbuild.js
-vsc-extension-quickstart.md
-**/tsconfig.json
-**/eslint.config.mjs
-**/*.map
-**/*.ts
-**/.vscode-test.*
-packages/webview/**
+**
 
-!packages/webview/dist/**/*
-
-
+!package.json
+!README.md
+!CHANGELOG.md
+!LICENCE
+!icon.png
+!dist/extension.js
+!packages/webview/dist/**
