@@ -1,6 +1,6 @@
 import type { WebviewApi } from "vscode-webview";
 import * as v from "valibot";
-import { MessageToVscode, messageToVscodeSchema } from "../models/message";
+import { MessageToVscode, messageToVscodeSchema } from "shared";
 
 class VSCodeAPIWrapper {
   private readonly vsCodeApi: WebviewApi<unknown> | undefined;
