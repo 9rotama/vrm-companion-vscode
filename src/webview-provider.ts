@@ -7,7 +7,7 @@ import {
   messageToVscodeSchema,
   MessageToWebview,
   messageToWebviewSchema,
-} from "../packages/webview/src/models/message";
+} from "shared";
 import { getWebviewHtml } from "./utils/get-webview-html";
 import { loadAssets } from "./utils/load-assets";
 

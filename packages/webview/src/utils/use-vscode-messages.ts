@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import * as v from "valibot";
 import { vscode } from "./vscode";
-import { Assets, messageToWebviewSchema } from "../models/message";
+import { Assets, messageToWebviewSchema } from "shared";
 
 export function useVscodeMessages() {
   const [vrmUrl, setVrmUrl] = useState<string | undefined>(undefined);
