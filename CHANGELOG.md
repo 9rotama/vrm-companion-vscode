@@ -7,11 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.2] - 2026-05-06
+
+### Fixed
+
+- Background selection and blink settings not being persisted across reloads
+
 ### Changed
 
 - Migrate schema validation library from zod to valibot
   (bundle: webview −56 kB raw / −13 kB gzip, extension −55 kB raw)
-- `npm run compile` and `npm run package` now build the webview workspace as part of the script
 
 ## [0.2.0] - 2025-08-18
 

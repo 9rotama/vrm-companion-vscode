@@ -1,7 +1,7 @@
 {
   "name": "vrm-companion-vscode",
   "displayName": "vrm-companion-vscode",
-  "version": "0.2.0",
+  "version": "0.2.2",
   "description": "work with your fav vrm avatar",
   "categories": [
     "Other"
