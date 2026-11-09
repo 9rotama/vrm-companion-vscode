@@ -10,6 +10,11 @@ import {
 import { AnimationMixer } from "three";
 import { BlinkSettingsValues } from "../models/setting-values";
 
+import { vscode } from "./vscode";
+import { loadCompanion } from "./load-companion";
+
+export const avatarMetrics = { modelLoads: 0, frames: 0, maxDelta: 0 };
+
 export function useVrmCompanion({
   issuesCount,
   blink,
@@ -21,64 +26,56 @@ export function useVrmCompanion({
   vrmUrl: string;
   vrmaUrl: string;
 }) {
-  const [vrm, setVrm] = useState<VRM | undefined>(undefined);
+  const key = `${vrmUrl}\n${vrmaUrl}`;
+  const [loaded, setLoaded] = useState<{ key: string; vrm: VRM }>();
+  const vrm = loaded?.key === key ? loaded.vrm : undefined;
   const mixerRef = useRef<AnimationMixer | undefined>(undefined);
   const blinkConfig = useRef({ delay: 10, frequency: 3 });
   const expression = getExpression(issuesCount, blink);
 
   useEffect(
     function loadVrm() {
-      let cancelled = false;
-      let loadedVrm: VRM | undefined;
-      (async () => {
-        if (!vrmUrl || !vrmaUrl) return;
-
-        const loader = new GLTFLoader();
-        loader.register((parser) => {
-          return new VRMLoaderPlugin(parser);
-        });
-        loader.register((parser) => {
-          return new VRMAnimationLoaderPlugin(parser);
-        });
-
-        const animationPromise = loader
-          .loadAsync(vrmaUrl)
-          .catch((error: unknown) => {
-            console.error("Failed to load animation", error);
-            return undefined;
+      if (!vrmUrl || !vrmaUrl) return;
+      const loader = new GLTFLoader();
+      loader.register((parser) => new VRMLoaderPlugin(parser));
+      loader.register((parser) => new VRMAnimationLoaderPlugin(parser));
+      let mixer: AnimationMixer | undefined;
+      const task = loadCompanion({
+        loadModel: async () => {
+          avatarMetrics.modelLoads++;
+          const gltf = await loader.loadAsync(vrmUrl);
+          return gltf.userData.vrm as VRM;
+        },
+        loadAnimation: async () => {
+          const gltf = await loader.loadAsync(vrmaUrl);
+          return gltf.userData.vrmAnimations[0];
+        },
+        showModel: (model) => setLoaded({ key, vrm: model }),
+        animate: (model, animation) => {
+          const clip = createVRMAnimationClip(animation, model);
+          mixer = new AnimationMixer(model.scene);
+          mixerRef.current = mixer;
+          mixer.clipAction(clip).play();
+        },
+        disposeModel: (model) => {
+          mixer?.stopAllAction();
+          mixer?.uncacheRoot(model.scene);
+          if (mixerRef.current === mixer) mixerRef.current = undefined;
+          VRMUtils.deepDispose(model.scene);
+        },
+        reportError: (error) => {
+          console.error("Failed to load VRM or animation", error);
+          vscode.postMessage({
+            command: "loadError",
+            body: { message: String(error) },
           });
-        const vrmGltf = await loader.loadAsync(vrmUrl);
-        const vrm = vrmGltf.userData.vrm as VRM;
-        if (cancelled) {
-          VRMUtils.deepDispose(vrm.scene);
-          return;
-        }
-        loadedVrm = vrm;
-        setVrm(vrm);
-
-        const vrmaGltf = await animationPromise;
-        if (cancelled || !vrmaGltf) return;
-        const vrmAnimation = vrmaGltf.userData.vrmAnimations[0];
-
-        // create animation clip
-        const clip = createVRMAnimationClip(vrmAnimation, vrm);
-
-        // play animation
-        const mixer = new AnimationMixer(vrm.scene);
-        mixerRef.current = mixer;
-        mixerRef.current.clipAction(clip).play();
-      })().catch((error: unknown) =>
-        console.error("Failed to load VRM or animation", error),
-      );
+        },
+      });
       return () => {
-        cancelled = true;
-        mixerRef.current?.stopAllAction();
-        mixerRef.current = undefined;
-        if (loadedVrm) VRMUtils.deepDispose(loadedVrm.scene);
-        setVrm(undefined);
+        task.cancel();
       };
     },
-    [vrmUrl, vrmaUrl],
+    [vrmUrl, vrmaUrl, key],
   );
 
   useEffect(function updateExpressionByIssues() {
@@ -91,6 +88,8 @@ export function useVrmCompanion({
 
   useFrame(function updateAvatarTime(_, delta) {
     const step = Math.min(delta, 0.05);
+    avatarMetrics.frames++;
+    avatarMetrics.maxDelta = Math.max(avatarMetrics.maxDelta, step);
     if (mixerRef.current) mixerRef.current.update(step);
     if (vrm) vrm.update(step);
   });

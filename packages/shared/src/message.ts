@@ -46,11 +46,30 @@ export type MessageToWebview = v.InferOutput<typeof messageToWebviewSchema>;
 
 export const messageToVscodeSchema = v.union([
   v.object({
+    command: v.literal("loadError"),
+    body: v.object({ message: v.string() }),
+  }),
+  v.object({
     command: v.literal("mounted"),
   }),
   v.object({
     command: v.literal("rendered"),
-    body: v.object({ elapsed: v.number(), reason: v.string() }),
+    body: v.object({
+      elapsed: v.number(),
+      reason: v.string(),
+      modelUri: v.optional(v.string()),
+      documentId: v.optional(v.number()),
+      metrics: v.optional(
+        v.object({
+          modelLoads: v.number(),
+          frames: v.number(),
+          maxDelta: v.number(),
+          geometries: v.number(),
+          textures: v.number(),
+          issuesCount: v.number(),
+        }),
+      ),
+    }),
   }),
 ]);
 

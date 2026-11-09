@@ -15,10 +15,7 @@ import { loadAssets } from "./utils/load-assets";
 export class WebviewProvider
   implements vscode.WebviewViewProvider, vscode.Disposable
 {
-  private performanceLog = vscode.window.createOutputChannel(
-    "VRM Performance",
-    { log: true },
-  );
+  private performanceLog?: vscode.LogOutputChannel;
   private measurements = new Map<string, number>();
   private measurementId = 0;
   private activeMeasurement = "initial";
@@ -43,6 +40,17 @@ export class WebviewProvider
       view.webview.onDidReceiveMessage((message: unknown) => {
         const msg = v.safeParse(messageToVscodeSchema, message);
         if (!msg.success) return;
+        if (msg.output.command !== "mounted") {
+          this.performanceLog ??= vscode.window.createOutputChannel(
+            "VRM Performance",
+            { log: true },
+          );
+        }
+        if (msg.output.command === "loadError") {
+          this.performanceLog?.error(msg.output.body.message);
+          console.error("[VRM load]", msg.output.body.message);
+          return;
+        }
         if (msg.output.command === "mounted") {
           this.sendState();
           return;
@@ -58,7 +66,7 @@ export class WebviewProvider
           hostElapsed:
             start === undefined ? undefined : performance.now() - start,
         };
-        this.performanceLog.info(JSON.stringify(result));
+        this.performanceLog?.info(JSON.stringify(result));
         if (this.performanceLogPath)
           appendFileSync(
             this.performanceLogPath,
@@ -159,7 +167,7 @@ export class WebviewProvider
     this.disposeViewListeners();
     this._view = undefined;
     this.measurements.clear();
-    this.performanceLog.dispose();
+    this.performanceLog?.dispose();
   }
 
   private getHtml(webview: vscode.Webview) {

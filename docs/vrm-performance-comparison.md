@@ -1,5 +1,7 @@
 # 変更前後の実機比較
 
+最新のURI方式の検証結果は [vrm-uri-verification.md](vrm-uri-verification.md) を参照。
+
 2026-11-09、同じmacOS・インストール済みVS Code・ローカルVRMで測定。
 モデル：VRM_NekoUmiushi.vrm（1,049,112 bytes）。モデル自体は保存・コピーしていない。
 

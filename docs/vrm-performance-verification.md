@@ -1,5 +1,7 @@
 # VRM再表示の実機検証
 
+最新のURI方式の検証結果は [vrm-uri-verification.md](vrm-uri-verification.md) を参照。
+
 2026-11-09、macOS上のVS Code Extension Development Hostで実施。
 ユーザー配置の `VRM_NekoUmiushi.vrm`（1,049,112 bytes）を使用。
 モデルはリポジトリへコピーしていない。

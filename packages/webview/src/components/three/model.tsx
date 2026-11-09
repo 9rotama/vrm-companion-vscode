@@ -1,5 +1,5 @@
 import { BlinkSettingsValues } from "../../models/setting-values";
-import { useVrmCompanion } from "../../utils/use-vrm-companion";
+import { useVrmCompanion, avatarMetrics } from "../../utils/use-vrm-companion";
 import { useEffect, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import { vscode } from "../../utils/vscode";
@@ -47,7 +47,13 @@ export default function Model({ vrmUrl, vrmaUrl, blink, issuesCount }: Props) {
       pending.current = undefined;
       vscode.postMessage({
         command: "rendered",
-        body: { reason, elapsed: performance.now() - start },
+        body: {
+          reason,
+          modelUri: vrmUrl,
+          documentId: performance.timeOrigin,
+          elapsed: performance.now() - start,
+          metrics: { ...avatarMetrics, ...gl.info.memory, issuesCount },
+        },
       });
     }
   }, 1);

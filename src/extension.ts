@@ -18,7 +18,7 @@ async function setup(context: vscode.ExtensionContext) {
       modelPath,
       issuesCount: getIssuesCount(),
     },
-    context.extensionMode === vscode.ExtensionMode.Development
+    context.extensionMode !== vscode.ExtensionMode.Production
       ? process.env.VRM_PERFORMANCE_LOG
       : undefined,
   );
