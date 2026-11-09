@@ -1,5 +1,7 @@
 # 変更前後の実機比較
 
+最終的な変更前後の比較は [vrm-final-comparison.md](vrm-final-comparison.md) を参照。
+
 最新のURI方式の検証結果は [vrm-uri-verification.md](vrm-uri-verification.md) を参照。
 
 2026-11-09、同じmacOS・インストール済みVS Code・ローカルVRMで測定。

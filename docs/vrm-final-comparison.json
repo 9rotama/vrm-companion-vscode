@@ -1,0 +1,683 @@
+{
+  "baselineCommit": "44ea49193c8e3cb72331d755b413f107cbccb887",
+  "finalImplementationCommit": "eb39e98a91e2c009679858ba8b5abf663327446f",
+  "stats": {
+    "before": {
+      "initial": {
+        "n": 3,
+        "median": 266.78875000000005,
+        "min": 202.87037500000002,
+        "max": 296.60074999999995,
+        "p95": 296.60074999999995
+      },
+      "resume:": {
+        "n": 30,
+        "median": 152.60914550000007,
+        "min": 138.35849999999982,
+        "max": 1116.6830409999998,
+        "p95": 669.3487080000004
+      }
+    },
+    "final": {
+      "initial": {
+        "n": 3,
+        "median": 243.030417,
+        "min": 217.29179200000004,
+        "max": 275.831042,
+        "p95": 275.831042
+      },
+      "resume:": {
+        "n": 30,
+        "median": 21.90689550000002,
+        "min": 9.618457999999919,
+        "max": 30.08725000000004,
+        "p95": 29.132542000000058
+      }
+    }
+  },
+  "runs": {
+    "before": [
+      [
+        {
+          "reason": "initial",
+          "hostElapsed": 266.78875000000005
+        },
+        {
+          "reason": "resume:1",
+          "hostElapsed": 338.8811249999999
+        },
+        {
+          "reason": "resume:2",
+          "hostElapsed": 142.13066600000002
+        },
+        {
+          "reason": "resume:3",
+          "hostElapsed": 154.31179199999997
+        },
+        {
+          "reason": "resume:4",
+          "hostElapsed": 140.8061670000002
+        },
+        {
+          "reason": "resume:5",
+          "hostElapsed": 145.09516699999995
+        },
+        {
+          "reason": "resume:6",
+          "hostElapsed": 158.57008399999995
+        },
+        {
+          "reason": "resume:7",
+          "hostElapsed": 157.42100000000028
+        },
+        {
+          "reason": "resume:8",
+          "hostElapsed": 158.75525000000016
+        },
+        {
+          "reason": "resume:9",
+          "hostElapsed": 156.61225000000013
+        },
+        {
+          "reason": "resume:10",
+          "hostElapsed": 147.61862500000007
+        }
+      ],
+      [
+        {
+          "reason": "initial",
+          "hostElapsed": 296.60074999999995
+        },
+        {
+          "reason": "resume:1",
+          "hostElapsed": 1116.6830409999998
+        },
+        {
+          "reason": "resume:2",
+          "hostElapsed": 138.35849999999982
+        },
+        {
+          "reason": "resume:3",
+          "hostElapsed": 143.93733299999985
+        },
+        {
+          "reason": "resume:4",
+          "hostElapsed": 150.9808750000002
+        },
+        {
+          "reason": "resume:5",
+          "hostElapsed": 149.91274999999996
+        },
+        {
+          "reason": "resume:6",
+          "hostElapsed": 149.655084
+        },
+        {
+          "reason": "resume:7",
+          "hostElapsed": 154.32350000000042
+        },
+        {
+          "reason": "resume:8",
+          "hostElapsed": 151.83291700000063
+        },
+        {
+          "reason": "resume:9",
+          "hostElapsed": 151.632208
+        },
+        {
+          "reason": "resume:10",
+          "hostElapsed": 157.9503340000001
+        }
+      ],
+      [
+        {
+          "reason": "initial",
+          "hostElapsed": 202.87037500000002
+        },
+        {
+          "reason": "resume:1",
+          "hostElapsed": 152.61137499999995
+        },
+        {
+          "reason": "resume:2",
+          "hostElapsed": 153.198167
+        },
+        {
+          "reason": "resume:3",
+          "hostElapsed": 157.67679099999987
+        },
+        {
+          "reason": "resume:4",
+          "hostElapsed": 152.60691600000018
+        },
+        {
+          "reason": "resume:5",
+          "hostElapsed": 145.17266699999982
+        },
+        {
+          "reason": "resume:6",
+          "hostElapsed": 644.9254169999999
+        },
+        {
+          "reason": "resume:7",
+          "hostElapsed": 669.3487080000004
+        },
+        {
+          "reason": "resume:8",
+          "hostElapsed": 164.80462499999976
+        },
+        {
+          "reason": "resume:9",
+          "hostElapsed": 146.57129200000054
+        },
+        {
+          "reason": "resume:10",
+          "hostElapsed": 147.6764579999999
+        }
+      ]
+    ],
+    "final": [
+      [
+        {
+          "elapsed": 49.19999998807907,
+          "reason": "initial",
+          "modelUri": "https://file%2B.vscode-resource.vscode-cdn.net/Users/krtm/Desktop/vrm/VRM_NekoUmiushi.vrm?revision%3D0",
+          "documentId": 1794230443367.9,
+          "metrics": {
+            "modelLoads": 1,
+            "frames": 4,
+            "maxDelta": 0.01319999998807907,
+            "geometries": 1,
+            "textures": 3,
+            "issuesCount": 0
+          },
+          "hostElapsed": 217.29179200000004
+        },
+        {
+          "elapsed": 13,
+          "reason": "resume:1",
+          "modelUri": "https://file%2B.vscode-resource.vscode-cdn.net/Users/krtm/Desktop/vrm/VRM_NekoUmiushi.vrm?revision%3D0",
+          "documentId": 1794230443367.9,
+          "metrics": {
+            "modelLoads": 1,
+            "frames": 8,
+            "maxDelta": 0.02230000001192093,
+            "geometries": 1,
+            "textures": 3,
+            "issuesCount": 0
+          },
+          "hostElapsed": 19.397708999999963
+        },
+        {
+          "elapsed": 17.900000005960464,
+          "reason": "resume:2",
+          "modelUri": "https://file%2B.vscode-resource.vscode-cdn.net/Users/krtm/Desktop/vrm/VRM_NekoUmiushi.vrm?revision%3D0",
+          "documentId": 1794230443367.9,
+          "metrics": {
+            "modelLoads": 1,
+            "frames": 10,
+            "maxDelta": 0.02230000001192093,
+            "geometries": 1,
+            "textures": 3,
+            "issuesCount": 0
+          },
+          "hostElapsed": 29.132542000000058
+        },
+        {
+          "elapsed": 15.900000005960464,
+          "reason": "resume:3",
+          "modelUri": "https://file%2B.vscode-resource.vscode-cdn.net/Users/krtm/Desktop/vrm/VRM_NekoUmiushi.vrm?revision%3D0",
+          "documentId": 1794230443367.9,
+          "metrics": {
+            "modelLoads": 1,
+            "frames": 13,
+            "maxDelta": 0.02230000001192093,
+            "geometries": 1,
+            "textures": 3,
+            "issuesCount": 0
+          },
+          "hostElapsed": 27.087041999999883
+        },
+        {
+          "elapsed": 11.099999994039536,
+          "reason": "resume:4",
+          "modelUri": "https://file%2B.vscode-resource.vscode-cdn.net/Users/krtm/Desktop/vrm/VRM_NekoUmiushi.vrm?revision%3D0",
+          "documentId": 1794230443367.9,
+          "metrics": {
+            "modelLoads": 1,
+            "frames": 17,
+            "maxDelta": 0.02230000001192093,
+            "geometries": 1,
+            "textures": 3,
+            "issuesCount": 0
+          },
+          "hostElapsed": 16.075000000000045
+        },
+        {
+          "elapsed": 16,
+          "reason": "resume:5",
+          "modelUri": "https://file%2B.vscode-resource.vscode-cdn.net/Users/krtm/Desktop/vrm/VRM_NekoUmiushi.vrm?revision%3D0",
+          "documentId": 1794230443367.9,
+          "metrics": {
+            "modelLoads": 1,
+            "frames": 19,
+            "maxDelta": 0.02230000001192093,
+            "geometries": 1,
+            "textures": 3,
+            "issuesCount": 0
+          },
+          "hostElapsed": 22.72720900000013
+        },
+        {
+          "elapsed": 18,
+          "reason": "resume:6",
+          "modelUri": "https://file%2B.vscode-resource.vscode-cdn.net/Users/krtm/Desktop/vrm/VRM_NekoUmiushi.vrm?revision%3D0",
+          "documentId": 1794230443367.9,
+          "metrics": {
+            "modelLoads": 1,
+            "frames": 21,
+            "maxDelta": 0.02230000001192093,
+            "geometries": 1,
+            "textures": 3,
+            "issuesCount": 0
+          },
+          "hostElapsed": 20.710833000000093
+        },
+        {
+          "elapsed": 15.899999976158142,
+          "reason": "resume:7",
+          "modelUri": "https://file%2B.vscode-resource.vscode-cdn.net/Users/krtm/Desktop/vrm/VRM_NekoUmiushi.vrm?revision%3D0",
+          "documentId": 1794230443367.9,
+          "metrics": {
+            "modelLoads": 1,
+            "frames": 22,
+            "maxDelta": 0.02230000001192093,
+            "geometries": 1,
+            "textures": 3,
+            "issuesCount": 0
+          },
+          "hostElapsed": 21.419166000000132
+        },
+        {
+          "elapsed": 10.600000023841858,
+          "reason": "resume:8",
+          "modelUri": "https://file%2B.vscode-resource.vscode-cdn.net/Users/krtm/Desktop/vrm/VRM_NekoUmiushi.vrm?revision%3D0",
+          "documentId": 1794230443367.9,
+          "metrics": {
+            "modelLoads": 1,
+            "frames": 23,
+            "maxDelta": 0.02230000001192093,
+            "geometries": 1,
+            "textures": 3,
+            "issuesCount": 0
+          },
+          "hostElapsed": 24.718249999999898
+        },
+        {
+          "elapsed": 14,
+          "reason": "resume:9",
+          "modelUri": "https://file%2B.vscode-resource.vscode-cdn.net/Users/krtm/Desktop/vrm/VRM_NekoUmiushi.vrm?revision%3D0",
+          "documentId": 1794230443367.9,
+          "metrics": {
+            "modelLoads": 1,
+            "frames": 25,
+            "maxDelta": 0.02230000001192093,
+            "geometries": 1,
+            "textures": 3,
+            "issuesCount": 0
+          },
+          "hostElapsed": 27.05049999999983
+        },
+        {
+          "elapsed": 13.200000017881393,
+          "reason": "resume:10",
+          "modelUri": "https://file%2B.vscode-resource.vscode-cdn.net/Users/krtm/Desktop/vrm/VRM_NekoUmiushi.vrm?revision%3D0",
+          "documentId": 1794230443367.9,
+          "metrics": {
+            "modelLoads": 1,
+            "frames": 29,
+            "maxDelta": 0.02230000001192093,
+            "geometries": 1,
+            "textures": 3,
+            "issuesCount": 0
+          },
+          "hostElapsed": 25.447375000000648
+        }
+      ],
+      [
+        {
+          "elapsed": 84.19999998807907,
+          "reason": "initial",
+          "modelUri": "https://file%2B.vscode-resource.vscode-cdn.net/Users/krtm/Desktop/vrm/VRM_NekoUmiushi.vrm?revision%3D0",
+          "documentId": 1794230456426,
+          "metrics": {
+            "modelLoads": 1,
+            "frames": 8,
+            "maxDelta": 0.010400000005960464,
+            "geometries": 1,
+            "textures": 3,
+            "issuesCount": 0
+          },
+          "hostElapsed": 243.030417
+        },
+        {
+          "elapsed": 18.5,
+          "reason": "resume:1",
+          "modelUri": "https://file%2B.vscode-resource.vscode-cdn.net/Users/krtm/Desktop/vrm/VRM_NekoUmiushi.vrm?revision%3D0",
+          "documentId": 1794230456426,
+          "metrics": {
+            "modelLoads": 1,
+            "frames": 14,
+            "maxDelta": 0.02239999997615814,
+            "geometries": 1,
+            "textures": 3,
+            "issuesCount": 0
+          },
+          "hostElapsed": 24.673708000000033
+        },
+        {
+          "elapsed": 10,
+          "reason": "resume:2",
+          "modelUri": "https://file%2B.vscode-resource.vscode-cdn.net/Users/krtm/Desktop/vrm/VRM_NekoUmiushi.vrm?revision%3D0",
+          "documentId": 1794230456426,
+          "metrics": {
+            "modelLoads": 1,
+            "frames": 18,
+            "maxDelta": 0.02239999997615814,
+            "geometries": 1,
+            "textures": 3,
+            "issuesCount": 0
+          },
+          "hostElapsed": 23.466499999999996
+        },
+        {
+          "elapsed": 1.300000011920929,
+          "reason": "resume:3",
+          "modelUri": "https://file%2B.vscode-resource.vscode-cdn.net/Users/krtm/Desktop/vrm/VRM_NekoUmiushi.vrm?revision%3D0",
+          "documentId": 1794230456426,
+          "metrics": {
+            "modelLoads": 1,
+            "frames": 20,
+            "maxDelta": 0.02239999997615814,
+            "geometries": 1,
+            "textures": 3,
+            "issuesCount": 0
+          },
+          "hostElapsed": 15.767166999999972
+        },
+        {
+          "elapsed": 13.900000005960464,
+          "reason": "resume:4",
+          "modelUri": "https://file%2B.vscode-resource.vscode-cdn.net/Users/krtm/Desktop/vrm/VRM_NekoUmiushi.vrm?revision%3D0",
+          "documentId": 1794230456426,
+          "metrics": {
+            "modelLoads": 1,
+            "frames": 22,
+            "maxDelta": 0.02239999997615814,
+            "geometries": 1,
+            "textures": 3,
+            "issuesCount": 0
+          },
+          "hostElapsed": 19.762499999999818
+        },
+        {
+          "elapsed": 5.300000011920929,
+          "reason": "resume:5",
+          "modelUri": "https://file%2B.vscode-resource.vscode-cdn.net/Users/krtm/Desktop/vrm/VRM_NekoUmiushi.vrm?revision%3D0",
+          "documentId": 1794230456426,
+          "metrics": {
+            "modelLoads": 1,
+            "frames": 23,
+            "maxDelta": 0.02239999997615814,
+            "geometries": 1,
+            "textures": 3,
+            "issuesCount": 0
+          },
+          "hostElapsed": 14.043916999999965
+        },
+        {
+          "elapsed": 15,
+          "reason": "resume:6",
+          "modelUri": "https://file%2B.vscode-resource.vscode-cdn.net/Users/krtm/Desktop/vrm/VRM_NekoUmiushi.vrm?revision%3D0",
+          "documentId": 1794230456426,
+          "metrics": {
+            "modelLoads": 1,
+            "frames": 25,
+            "maxDelta": 0.02239999997615814,
+            "geometries": 1,
+            "textures": 3,
+            "issuesCount": 0
+          },
+          "hostElapsed": 19.76491699999997
+        },
+        {
+          "elapsed": 15.299999982118607,
+          "reason": "resume:7",
+          "modelUri": "https://file%2B.vscode-resource.vscode-cdn.net/Users/krtm/Desktop/vrm/VRM_NekoUmiushi.vrm?revision%3D0",
+          "documentId": 1794230456426,
+          "metrics": {
+            "modelLoads": 1,
+            "frames": 26,
+            "maxDelta": 0.02239999997615814,
+            "geometries": 1,
+            "textures": 3,
+            "issuesCount": 0
+          },
+          "hostElapsed": 22.91924999999992
+        },
+        {
+          "elapsed": 15.900000005960464,
+          "reason": "resume:8",
+          "modelUri": "https://file%2B.vscode-resource.vscode-cdn.net/Users/krtm/Desktop/vrm/VRM_NekoUmiushi.vrm?revision%3D0",
+          "documentId": 1794230456426,
+          "metrics": {
+            "modelLoads": 1,
+            "frames": 30,
+            "maxDelta": 0.02239999997615814,
+            "geometries": 1,
+            "textures": 3,
+            "issuesCount": 0
+          },
+          "hostElapsed": 29.092415999999957
+        },
+        {
+          "elapsed": 10.799999982118607,
+          "reason": "resume:9",
+          "modelUri": "https://file%2B.vscode-resource.vscode-cdn.net/Users/krtm/Desktop/vrm/VRM_NekoUmiushi.vrm?revision%3D0",
+          "documentId": 1794230456426,
+          "metrics": {
+            "modelLoads": 1,
+            "frames": 34,
+            "maxDelta": 0.02239999997615814,
+            "geometries": 1,
+            "textures": 3,
+            "issuesCount": 0
+          },
+          "hostElapsed": 20.307208999999602
+        },
+        {
+          "elapsed": 7.5,
+          "reason": "resume:10",
+          "modelUri": "https://file%2B.vscode-resource.vscode-cdn.net/Users/krtm/Desktop/vrm/VRM_NekoUmiushi.vrm?revision%3D0",
+          "documentId": 1794230456426,
+          "metrics": {
+            "modelLoads": 1,
+            "frames": 36,
+            "maxDelta": 0.02239999997615814,
+            "geometries": 1,
+            "textures": 3,
+            "issuesCount": 0
+          },
+          "hostElapsed": 18.384041000000252
+        }
+      ],
+      [
+        {
+          "elapsed": 45.80000001192093,
+          "reason": "initial",
+          "modelUri": "https://file%2B.vscode-resource.vscode-cdn.net/Users/krtm/Desktop/vrm/VRM_NekoUmiushi.vrm?revision%3D0",
+          "documentId": 1794230469484.8,
+          "metrics": {
+            "modelLoads": 1,
+            "frames": 3,
+            "maxDelta": 0.00830000001192093,
+            "geometries": 1,
+            "textures": 3,
+            "issuesCount": 0
+          },
+          "hostElapsed": 275.831042
+        },
+        {
+          "elapsed": 10.399999976158142,
+          "reason": "resume:1",
+          "modelUri": "https://file%2B.vscode-resource.vscode-cdn.net/Users/krtm/Desktop/vrm/VRM_NekoUmiushi.vrm?revision%3D0",
+          "documentId": 1794230469484.8,
+          "metrics": {
+            "modelLoads": 1,
+            "frames": 7,
+            "maxDelta": 0.022699999988079072,
+            "geometries": 1,
+            "textures": 3,
+            "issuesCount": 0
+          },
+          "hostElapsed": 18.177208000000064
+        },
+        {
+          "elapsed": 19.099999994039536,
+          "reason": "resume:2",
+          "modelUri": "https://file%2B.vscode-resource.vscode-cdn.net/Users/krtm/Desktop/vrm/VRM_NekoUmiushi.vrm?revision%3D0",
+          "documentId": 1794230469484.8,
+          "metrics": {
+            "modelLoads": 1,
+            "frames": 9,
+            "maxDelta": 0.022699999988079072,
+            "geometries": 1,
+            "textures": 3,
+            "issuesCount": 0
+          },
+          "hostElapsed": 30.08725000000004
+        },
+        {
+          "elapsed": 11.699999988079071,
+          "reason": "resume:3",
+          "modelUri": "https://file%2B.vscode-resource.vscode-cdn.net/Users/krtm/Desktop/vrm/VRM_NekoUmiushi.vrm?revision%3D0",
+          "documentId": 1794230469484.8,
+          "metrics": {
+            "modelLoads": 1,
+            "frames": 12,
+            "maxDelta": 0.022699999988079072,
+            "geometries": 1,
+            "textures": 3,
+            "issuesCount": 0
+          },
+          "hostElapsed": 22.394624999999905
+        },
+        {
+          "elapsed": 10,
+          "reason": "resume:4",
+          "modelUri": "https://file%2B.vscode-resource.vscode-cdn.net/Users/krtm/Desktop/vrm/VRM_NekoUmiushi.vrm?revision%3D0",
+          "documentId": 1794230469484.8,
+          "metrics": {
+            "modelLoads": 1,
+            "frames": 14,
+            "maxDelta": 0.022699999988079072,
+            "geometries": 1,
+            "textures": 3,
+            "issuesCount": 0
+          },
+          "hostElapsed": 15.157000000000153
+        },
+        {
+          "elapsed": 1.2000000178813934,
+          "reason": "resume:5",
+          "modelUri": "https://file%2B.vscode-resource.vscode-cdn.net/Users/krtm/Desktop/vrm/VRM_NekoUmiushi.vrm?revision%3D0",
+          "documentId": 1794230469484.8,
+          "metrics": {
+            "modelLoads": 1,
+            "frames": 16,
+            "maxDelta": 0.022699999988079072,
+            "geometries": 1,
+            "textures": 3,
+            "issuesCount": 0
+          },
+          "hostElapsed": 10.447249999999713
+        },
+        {
+          "elapsed": 4,
+          "reason": "resume:6",
+          "modelUri": "https://file%2B.vscode-resource.vscode-cdn.net/Users/krtm/Desktop/vrm/VRM_NekoUmiushi.vrm?revision%3D0",
+          "documentId": 1794230469484.8,
+          "metrics": {
+            "modelLoads": 1,
+            "frames": 26,
+            "maxDelta": 0.022699999988079072,
+            "geometries": 1,
+            "textures": 3,
+            "issuesCount": 0
+          },
+          "hostElapsed": 9.618457999999919
+        },
+        {
+          "elapsed": 17.19999998807907,
+          "reason": "resume:7",
+          "modelUri": "https://file%2B.vscode-resource.vscode-cdn.net/Users/krtm/Desktop/vrm/VRM_NekoUmiushi.vrm?revision%3D0",
+          "documentId": 1794230469484.8,
+          "metrics": {
+            "modelLoads": 1,
+            "frames": 28,
+            "maxDelta": 0.022699999988079072,
+            "geometries": 1,
+            "textures": 3,
+            "issuesCount": 0
+          },
+          "hostElapsed": 21.41399999999976
+        },
+        {
+          "elapsed": 14.099999994039536,
+          "reason": "resume:8",
+          "modelUri": "https://file%2B.vscode-resource.vscode-cdn.net/Users/krtm/Desktop/vrm/VRM_NekoUmiushi.vrm?revision%3D0",
+          "documentId": 1794230469484.8,
+          "metrics": {
+            "modelLoads": 1,
+            "frames": 29,
+            "maxDelta": 0.022699999988079072,
+            "geometries": 1,
+            "textures": 3,
+            "issuesCount": 0
+          },
+          "hostElapsed": 26.53716600000007
+        },
+        {
+          "elapsed": 15.5,
+          "reason": "resume:9",
+          "modelUri": "https://file%2B.vscode-resource.vscode-cdn.net/Users/krtm/Desktop/vrm/VRM_NekoUmiushi.vrm?revision%3D0",
+          "documentId": 1794230469484.8,
+          "metrics": {
+            "modelLoads": 1,
+            "frames": 33,
+            "maxDelta": 0.022699999988079072,
+            "geometries": 1,
+            "textures": 3,
+            "issuesCount": 0
+          },
+          "hostElapsed": 27.102458999999726
+        },
+        {
+          "elapsed": 19.099999994039536,
+          "reason": "resume:10",
+          "modelUri": "https://file%2B.vscode-resource.vscode-cdn.net/Users/krtm/Desktop/vrm/VRM_NekoUmiushi.vrm?revision%3D0",
+          "documentId": 1794230469484.8,
+          "metrics": {
+            "modelLoads": 1,
+            "frames": 37,
+            "maxDelta": 0.022699999988079072,
+            "geometries": 1,
+            "textures": 3,
+            "issuesCount": 0
+          },
+          "hostElapsed": 26.463707999999315
+        }
+      ]
+    ]
+  }
+}

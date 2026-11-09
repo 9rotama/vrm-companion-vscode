@@ -1,5 +1,7 @@
 # URI方式の実装・検証結果
 
+最終的な変更前後の比較は [vrm-final-comparison.md](vrm-final-comparison.md) を参照。
+
 2026-11-09、ユーザー配置のVRM_NekoUmiushi.vrm（1,049,112 bytes）を使用した。
 VS Code Extension Hostの検証コードで測定し、全テストが終了コード0で完了した。
 

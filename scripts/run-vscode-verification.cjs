@@ -29,7 +29,7 @@ const child = spawn(
   [
     `--user-data-dir=${profile}`,
     `--extensions-dir=${path.join(profile, "extensions")}`,
-    `--extensionDevelopmentPath=${root}`,
+    `--extensionDevelopmentPath=${process.env.VRM_EXTENSION_PATH || root}`,
     `--extensionTestsPath=${path.resolve(root, tests)}`,
     "--disable-extensions",
     "--skip-welcome",
