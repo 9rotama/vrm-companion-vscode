@@ -1,4 +1,4 @@
-import { VRM, VRMLoaderPlugin } from "@pixiv/three-vrm";
+import { VRM, VRMLoaderPlugin, VRMUtils } from "@pixiv/three-vrm";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { useEffect, useRef, useState } from "react";
 import { useFrame } from "@react-three/fiber";
@@ -28,6 +28,8 @@ export function useVrmCompanion({
 
   useEffect(
     function loadVrm() {
+      let cancelled = false;
+      let loadedVrm: VRM | undefined;
       (async () => {
         if (!vrmUrl || !vrmaUrl) return;
 
@@ -39,10 +41,23 @@ export function useVrmCompanion({
           return new VRMAnimationLoaderPlugin(parser);
         });
 
+        const animationPromise = loader
+          .loadAsync(vrmaUrl)
+          .catch((error: unknown) => {
+            console.error("Failed to load animation", error);
+            return undefined;
+          });
         const vrmGltf = await loader.loadAsync(vrmUrl);
         const vrm = vrmGltf.userData.vrm as VRM;
+        if (cancelled) {
+          VRMUtils.deepDispose(vrm.scene);
+          return;
+        }
+        loadedVrm = vrm;
+        setVrm(vrm);
 
-        const vrmaGltf = await loader.loadAsync(vrmaUrl);
+        const vrmaGltf = await animationPromise;
+        if (cancelled || !vrmaGltf) return;
         const vrmAnimation = vrmaGltf.userData.vrmAnimations[0];
 
         // create animation clip
@@ -52,12 +67,18 @@ export function useVrmCompanion({
         const mixer = new AnimationMixer(vrm.scene);
         mixerRef.current = mixer;
         mixerRef.current.clipAction(clip).play();
-
-        // display vrm
-        setVrm(vrm);
-      })();
+      })().catch((error: unknown) =>
+        console.error("Failed to load VRM or animation", error),
+      );
+      return () => {
+        cancelled = true;
+        mixerRef.current?.stopAllAction();
+        mixerRef.current = undefined;
+        if (loadedVrm) VRMUtils.deepDispose(loadedVrm.scene);
+        setVrm(undefined);
+      };
     },
-    [vrmUrl],
+    [vrmUrl, vrmaUrl],
   );
 
   useEffect(function updateExpressionByIssues() {
@@ -69,8 +90,9 @@ export function useVrmCompanion({
   });
 
   useFrame(function updateAvatarTime(_, delta) {
-    if (mixerRef.current) mixerRef.current.update(delta);
-    if (vrm) vrm.update(delta);
+    const step = Math.min(delta, 0.05);
+    if (mixerRef.current) mixerRef.current.update(step);
+    if (vrm) vrm.update(step);
   });
 
   useFrame(function blink({ clock }) {

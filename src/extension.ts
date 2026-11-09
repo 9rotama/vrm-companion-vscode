@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 import { WebviewProvider } from "./webview-provider";
-import { getVrmDataUrl } from "./utils/get-vrm-data-url";
+import { getLocalVrmPath } from "./utils/get-local-vrm-path";
 import { getIssuesCount } from "./utils/get-issues-count";
 import { getConfigVrmFilePath } from "./utils/workspace-config";
 import { notifyVrmFilePathNotSet } from "./utils/notifications";
@@ -10,41 +10,52 @@ async function setup(context: vscode.ExtensionContext) {
 
   if (!vrmFilePath) notifyVrmFilePathNotSet();
 
-  const dataUrl = vrmFilePath ? await getVrmDataUrl(vrmFilePath) : undefined;
+  const modelPath = await getLocalVrmPath(vrmFilePath);
 
-  const provider = new WebviewProvider(context.extensionUri, {
-    vrmDataUrl: dataUrl,
-    issuesCount: getIssuesCount(),
-  });
+  const provider = new WebviewProvider(
+    context.extensionUri,
+    {
+      modelPath,
+      issuesCount: getIssuesCount(),
+    },
+    context.extensionMode === vscode.ExtensionMode.Development
+      ? process.env.VRM_PERFORMANCE_LOG
+      : undefined,
+  );
 
   context.subscriptions.push(
+    provider,
     vscode.window.registerWebviewViewProvider(
       "vrm-companion-vscode.summon",
       provider,
+      { webviewOptions: { retainContextWhenHidden: true } },
     ),
   );
 
-  vscode.languages.onDidChangeDiagnostics(() =>
-    provider.postMessage({
-      command: "updateIssuesCount",
-      body: { count: getIssuesCount() },
-    }),
+  context.subscriptions.push(
+    vscode.languages.onDidChangeDiagnostics(() =>
+      provider.setIssuesCount(getIssuesCount()),
+    ),
   );
 
-  vscode.workspace.onDidChangeConfiguration(async () => {
-    const vrmFilePath = getConfigVrmFilePath();
-    if (!vrmFilePath) notifyVrmFilePathNotSet();
-    const dataUrl = vrmFilePath ? await getVrmDataUrl(vrmFilePath) : undefined;
+  let configurationVersion = 0;
+  context.subscriptions.push(
+    vscode.workspace.onDidChangeConfiguration(async (event) => {
+      if (!event.affectsConfiguration("vrm-companion-vscode.vrmFilePath"))
+        return;
+      const version = ++configurationVersion;
+      const vrmFilePath = getConfigVrmFilePath();
+      if (!vrmFilePath) notifyVrmFilePathNotSet();
+      const modelPath = await getLocalVrmPath(vrmFilePath);
+      if (version !== configurationVersion) return;
 
-    provider.postMessage({
-      command: "updateVrm",
-      body: { dataUrl },
-    });
-  });
+      provider.setModelPath(modelPath);
+    }),
+  );
 }
 
 export function activate(context: vscode.ExtensionContext) {
-  setup(context);
+  return setup(context);
 }
 
 export function deactivate() {}

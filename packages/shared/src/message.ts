@@ -21,8 +21,16 @@ export type Assets = v.InferOutput<typeof assetsSchema>;
 
 export const messageToWebviewSchema = v.union([
   v.object({
+    command: v.literal("visibility"),
+    body: v.object({ visible: v.boolean() }),
+  }),
+  v.object({
+    command: v.literal("measureRender"),
+    body: v.object({ id: v.string() }),
+  }),
+  v.object({
     command: v.literal("updateVrm"),
-    body: v.object({ dataUrl: v.union([v.string(), v.undefined()]) }),
+    body: v.object({ uri: v.union([v.string(), v.undefined()]) }),
   }),
   v.object({
     command: v.literal("updateIssuesCount"),
@@ -36,8 +44,14 @@ export const messageToWebviewSchema = v.union([
 
 export type MessageToWebview = v.InferOutput<typeof messageToWebviewSchema>;
 
-export const messageToVscodeSchema = v.object({
-  command: v.literal("mounted"),
-});
+export const messageToVscodeSchema = v.union([
+  v.object({
+    command: v.literal("mounted"),
+  }),
+  v.object({
+    command: v.literal("rendered"),
+    body: v.object({ elapsed: v.number(), reason: v.string() }),
+  }),
+]);
 
 export type MessageToVscode = v.InferOutput<typeof messageToVscodeSchema>;

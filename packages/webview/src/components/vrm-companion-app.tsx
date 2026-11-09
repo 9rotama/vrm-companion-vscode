@@ -8,7 +8,7 @@ import { SettingsValues } from "../models/setting-values";
 import { SettingsDialog } from "./settings/settings-dialog";
 
 export default function VRMCompanionApp() {
-  const { vrmUrl, vrmaFiles, issuesCount, backgroundImageFiles } =
+  const { visible, vrmUrl, vrmaFiles, issuesCount, backgroundImageFiles } =
     useVscodeMessages();
   const { camera, setCamera, blink, setBlink } = useSettings();
   const { backgrounds, currentBackgroundId, setBackground } = useBackgrounds(
@@ -42,6 +42,7 @@ export default function VRMCompanionApp() {
       }
     >
       <Canvas
+        frameloop={visible ? "always" : "never"}
         camera={{
           rotation: [0, 0, 0],
         }}

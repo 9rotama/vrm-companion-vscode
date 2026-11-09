@@ -13,7 +13,7 @@ export function getWebviewHtml(
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta
           http-equiv="Content-Security-Policy"
-          content="style-src ${cspSource}; script-src 'nonce-${nonce}';"
+          content="default-src 'none'; img-src ${cspSource} data: blob:; connect-src ${cspSource}; style-src ${cspSource} 'unsafe-inline'; script-src 'nonce-${nonce}';"
         />
         <link rel="stylesheet" type="text/css" href="${stylesUri}" />
         <title>vrm-companion</title>
