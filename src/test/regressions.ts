@@ -3,6 +3,9 @@ import * as vscode from "vscode";
 import { WebviewProvider } from "../webview-provider";
 import { getLocalVrmPath } from "../utils/get-local-vrm-path";
 import { loadCompanion } from "../../packages/webview/src/utils/load-companion";
+import { getVrmFromGltf } from "../../packages/webview/src/utils/get-vrm-from-gltf";
+import { VRM, VRMUtils } from "@pixiv/three-vrm";
+import { BoxGeometry, Group, Mesh, MeshBasicMaterial } from "three";
 import { mkdtemp, writeFile, unlink, rmdir } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -198,6 +201,50 @@ export async function run() {
       await task.done;
       assert.equal(errors.length, 1);
       task.cancel();
+    },
+  );
+  await check(
+    "non-VRM glTF releases resources and allows switching to a valid VRM",
+    async () => {
+      const scene = new Group();
+      const geometry = new BoxGeometry();
+      const material = new MeshBasicMaterial();
+      scene.add(new Mesh(geometry, material));
+      let geometryDisposals = 0;
+      let materialDisposals = 0;
+      geometry.addEventListener("dispose", () => geometryDisposals++);
+      material.addEventListener("dispose", () => materialDisposals++);
+      const valid = { scene: new Group() } as VRM;
+      const shown: VRM[] = [];
+      const errors: unknown[] = [];
+      const disposed: VRM[] = [];
+      const start = (userData: Record<string, unknown>) =>
+        loadCompanion({
+          loadModel: async () => getVrmFromGltf({ scene, userData }),
+          loadAnimation: async () => "idle",
+          showModel: (model) => shown.push(model),
+          animate: () => {},
+          disposeModel: (model) => {
+            disposed.push(model);
+            VRMUtils.deepDispose(model.scene);
+          },
+          reportError: (error) => errors.push(error),
+        });
+      const invalid = start({});
+      await invalid.done;
+      assert.equal(errors.length, 1);
+      assert.match(String(errors[0]), /does not contain a VRM model/);
+      assert.deepEqual(shown, []);
+      assert.equal(geometryDisposals, 1);
+      assert.equal(materialDisposals, 1);
+      assert.doesNotThrow(() => invalid.cancel());
+      assert.deepEqual(disposed, []);
+      const next = start({ vrm: valid });
+      await next.done;
+      assert.deepEqual(shown, [valid]);
+      assert.equal(errors.length, 1);
+      assert.doesNotThrow(() => next.cancel());
+      assert.deepEqual(disposed, [valid]);
     },
   );
   await check("only existing absolute local files are accepted", async () => {

@@ -12,6 +12,7 @@ import { BlinkSettingsValues } from "../models/setting-values";
 
 import { vscode } from "./vscode";
 import { loadCompanion } from "./load-companion";
+import { getVrmFromGltf } from "./get-vrm-from-gltf";
 
 export const avatarMetrics = { modelLoads: 0, frames: 0, maxDelta: 0 };
 
@@ -44,7 +45,7 @@ export function useVrmCompanion({
         loadModel: async () => {
           avatarMetrics.modelLoads++;
           const gltf = await loader.loadAsync(vrmUrl);
-          return gltf.userData.vrm as VRM;
+          return getVrmFromGltf(gltf);
         },
         loadAnimation: async () => {
           const gltf = await loader.loadAsync(vrmaUrl);
