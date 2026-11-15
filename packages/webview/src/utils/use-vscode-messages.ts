@@ -4,6 +4,7 @@ import { vscode } from "./vscode";
 import { Assets, messageToWebviewSchema } from "shared";
 
 export function useVscodeMessages() {
+  const [visible, setVisible] = useState(true);
   const [vrmUrl, setVrmUrl] = useState<string | undefined>(undefined);
   const [vrmaFiles, setVrmaFiles] = useState<Assets["vrmaFiles"] | undefined>(
     undefined,
@@ -23,8 +24,11 @@ export function useVscodeMessages() {
 
       const data = message.output;
       switch (data.command) {
+        case "visibility":
+          setVisible(data.body.visible);
+          break;
         case "updateVrm":
-          setVrmUrl(data.body.dataUrl);
+          setVrmUrl(data.body.uri);
           break;
         case "loadAssetsUri":
           setVrmaFiles(data.body.vrmaFiles);
@@ -36,13 +40,13 @@ export function useVscodeMessages() {
       }
     };
 
-    vscode.postMessage({ command: "mounted" });
     window.addEventListener("message", handleReceived);
+    vscode.postMessage({ command: "mounted" });
 
     return () => {
       window.removeEventListener("message", handleReceived);
     };
   }, []);
 
-  return { vrmUrl, vrmaFiles, backgroundImageFiles, issuesCount };
+  return { visible, vrmUrl, vrmaFiles, backgroundImageFiles, issuesCount };
 }

@@ -5,7 +5,7 @@
     "rootDir": ".",
     "strict": true,
     "module": "es2022",
-    "moduleResolution": "node"
+    "moduleResolution": "bundler"
   },
   "include": ["./src/**/*"]
 }

@@ -36,7 +36,11 @@
     "check-types": "tsc --noEmit",
     "lint": "oxlint --type-aware",
     "format": "oxfmt",
-    "test": "vscode-test"
+    "test": "vscode-test",
+    "pretest:regressions": "npm run compile",
+    "test:regressions": "esbuild src/test/regressions.ts --bundle --platform=node --format=cjs --external:vscode --outfile=out/regressions.cjs && node scripts/run-vscode-verification.cjs",
+    "pretest:performance": "npm run compile",
+    "test:performance": "node scripts/run-vscode-verification.cjs scripts/verify-vrm-performance.cjs"
   },
   "dependencies": {
     "shared": "*",
