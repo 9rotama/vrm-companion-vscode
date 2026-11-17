@@ -1,8 +1,8 @@
 pre-commit:
   parallel: true
   jobs:
-    - run: npx oxlint {staged_files}
+    - run: npx oxlint --no-error-on-unmatched-pattern {staged_files}
       stage_fixed: true
 
-    - run: npx prettier --write --ignore-unknown {staged_files}
+    - run: npx oxfmt --no-error-on-unmatched-pattern {staged_files}
       stage_fixed: true

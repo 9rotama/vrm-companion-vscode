@@ -20,7 +20,7 @@ export function BackgroundButton({ bg, onClick, isSelected }: Props) {
         )}
       >
         {bg.type === "empty" ? (
-          <div className="text-popover-fg-muted grid place-items-center">
+          <div className="grid place-items-center text-popover-fg-muted">
             <Ban />
           </div>
         ) : (
@@ -28,8 +28,8 @@ export function BackgroundButton({ bg, onClick, isSelected }: Props) {
         )}
       </button>
       {isSelected && (
-        <div className="bg-popover-fg-accent absolute top-0 left-0 grid size-4 place-items-center rounded-full">
-          <Check className="text-popover-fg m-auto size-3" strokeWidth={4} />
+        <div className="absolute top-0 left-0 grid size-4 place-items-center rounded-full bg-popover-fg-accent">
+          <Check className="m-auto size-3 text-popover-fg" strokeWidth={4} />
         </div>
       )}
     </div>

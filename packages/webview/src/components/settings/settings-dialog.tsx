@@ -36,14 +36,14 @@ export function SettingsDialog({ values, onChange }: Props) {
       )}
       title={
         <div className="flex flex-row items-center gap-1">
-          <Bolt className="text-popover-fg-muted size-4" />
+          <Bolt className="size-4 text-popover-fg-muted" />
           <span>settings</span>
         </div>
       }
       description="adjust the camera and avatar settings"
     >
       <div className="mt-3">
-        <div className="text-popover-fg mb-1 font-bold">camera</div>
+        <div className="mb-1 font-bold text-popover-fg">camera</div>
         <div className="flex flex-row items-center justify-between gap-2">
           <label>height</label>
           <Slider
@@ -87,7 +87,7 @@ export function SettingsDialog({ values, onChange }: Props) {
         </div>
       </div>
       <div className="mt-3">
-        <div className="text-popover-fg mb-1 font-bold">blink</div>
+        <div className="mb-1 font-bold text-popover-fg">blink</div>
         <div className="flex flex-row items-center justify-between gap-2">
           <label>happy</label>
           <Checkbox

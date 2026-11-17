@@ -29,10 +29,10 @@ export function Drawer({
           )}
         >
           <Dialog.Title className="text-base font-bold">{title}</Dialog.Title>
-          <Dialog.Description className="text-popover-fg-muted text-xs">
+          <Dialog.Description className="text-xs text-popover-fg-muted">
             {description}
           </Dialog.Description>
-          <Separator className="bg-popover-border my-2 h-px" />
+          <Separator className="my-2 h-px bg-popover-border" />
           {children}
         </Dialog.Popup>
       </Dialog.Portal>
