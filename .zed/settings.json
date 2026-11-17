@@ -6,22 +6,15 @@
       }
     }
   ],
-  "languages": {
-    "JSON": {
-      "formatter": "prettier"
-    }
+  "prettier": {
+    "allowed": false
   },
   "lsp": {
     "oxfmt": {
       "initialization_options": {
         "settings": {
-          "configPath": null,
-          "flags": {},
           "fmt.configPath": null,
-          "fmt.experimental": true,
-          "run": "onSave",
-          "typeAware": false,
-          "unusedDisableDirectives": false
+          "run": "onSave"
         }
       }
     }

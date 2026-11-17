@@ -10,8 +10,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `npm run watch` - Watch mode for both esbuild and TypeScript compilation
 - `npm run package` - Build production version for VS Code publishing
 - `npm run check-types` - TypeScript type checking without emitting files
-- `npm run lint` - Run oxlint for code linting
-- `npm run format` - Format code with Prettier
+- `npm run lint` - Run oxlint (type-aware, enabled in `.oxlintrc.json`) for code linting
+- `npm run format` - Format code with oxfmt
 
 ### Webview Development
 

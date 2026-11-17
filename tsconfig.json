@@ -5,7 +5,10 @@
     "rootDir": ".",
     "strict": true,
     "module": "es2022",
-    "moduleResolution": "bundler"
+    "moduleResolution": "bundler",
+    "types": ["node", "mocha"],
+    // @types/three pulls in @webgpu/types, which collides with the WebGPU types bundled in TS7's lib.dom
+    "skipLibCheck": true
   },
   "include": ["./src/**/*"]
 }

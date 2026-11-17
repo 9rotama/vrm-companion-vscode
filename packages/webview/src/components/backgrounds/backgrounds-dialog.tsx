@@ -24,14 +24,14 @@ export function BackgroundsDialog({
       )}
       title={
         <div className="flex flex-row items-center gap-1">
-          <Wallpaper className="text-popover-fg-muted size-4" />
+          <Wallpaper className="size-4 text-popover-fg-muted" />
           <span>backgrounds</span>
         </div>
       }
       description="set the background"
     >
       <div className="mt-3">
-        <div className="text-popover-fg font-bold">2D</div>
+        <div className="font-bold text-popover-fg">2D</div>
         <div className="mt-2 flex flex-row gap-1">
           {backgrounds.map((bg) => (
             <BackgroundButton
