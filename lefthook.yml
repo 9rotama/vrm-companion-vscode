@@ -2,7 +2,6 @@ pre-commit:
   parallel: true
   jobs:
     - run: npx oxlint --no-error-on-unmatched-pattern {staged_files}
-      stage_fixed: true
 
     - run: npx oxfmt --no-error-on-unmatched-pattern {staged_files}
       stage_fixed: true
