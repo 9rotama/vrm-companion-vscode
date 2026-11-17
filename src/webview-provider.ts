@@ -1,7 +1,6 @@
 import * as vscode from "vscode";
 import { dirname } from "node:path";
 import { appendFileSync } from "node:fs";
-import * as v from "valibot";
 import { getUri } from "./utils/get-uri";
 import { getNonce } from "./utils/get-nonce";
 import {
@@ -161,9 +160,16 @@ export class WebviewProvider
   }
 
   public postMessage(message: MessageToWebview) {
-    void this._view?.webview.postMessage(
-      v.parse(messageToWebviewSchema, message),
-    );
+    const parsed = validate(messageToWebviewSchema, message);
+    if (!parsed.ok) {
+      console.error(
+        "[message to webview]",
+        message.command,
+        describeValidationError(parsed.error),
+      );
+      return;
+    }
+    void this._view?.webview.postMessage(parsed.value);
   }
 
   private disposeViewListeners() {

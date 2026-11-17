@@ -8,20 +8,20 @@
 拡張機能 (`src/`) と webview (`packages/webview/src`) のエラーは、throw・try/catch・Promise の reject・valibot の `safeParse` が混在していた。
 調査時点 (main `64771fc`) のエラー経路は次のとおり。
 
-| 場所                                                   | 発生                                                              | 処理                                                           | 問題                                              |
-| ------------------------------------------------------ | ----------------------------------------------------------------- | -------------------------------------------------------------- | ------------------------------------------------- |
-| `src/utils/get-local-vrm-path.ts`                      | `fs.stat` の reject と、try 内の自前 `throw`                      | `catch {}` で通知して `undefined` を返す                       | 原因 (未設定/相対パス/不存在/非ファイル) が消える |
-| `src/extension.ts`                                     | 上記の `undefined`                                                | 未設定の通知を呼び出し側で別途判定 (2 箇所で重複)              | 通知の判断が util と呼び出し側に分散              |
-| `src/webview-provider.ts` 受信                         | `v.safeParse` 失敗                                                | `if (!msg.success) return;`                                    | 不正メッセージを無言で捨てる                      |
-| `src/webview-provider.ts` 送信                         | `v.parse` の throw                                                | 未処理 (VS Code のコールバックまで伝播)                        | 型で保証済みの不変条件。後述のとおり throw のまま |
-| `webview/utils/get-vrm-from-gltf.ts`                   | VRM が無い glTF で `throw new Error`                              | `loadCompanion` の `.catch` → `String(error)` で拡張機能へ送信 | エラー種別が文字列化で失われる                    |
-| `webview/utils/use-vrm-companion.ts`                   | `GLTFLoader.loadAsync` の reject、`vrmAnimations[0]` が undefined | 同上                                                           | アニメーション欠落は後続の例外としてしか現れない  |
-| `webview/utils/load-companion.ts`                      | 上記の reject                                                     | アニメーションだけ自前の `{ ok: true as const, value }` に変換 | 局所的な Result もどきが既に生まれていた          |
-| `webview/utils/vscode.ts` `getState`                   | `JSON.parse` の throw (dev の localStorage)                       | 未処理 (`useState` 初期化で React まで伝播)                    | 壊れた localStorage で描画ごと落ちる              |
-| `webview/utils/use-settings.ts` / `use-backgrounds.ts` | `v.safeParse` 失敗                                                | warn して `{}` (同一関数が 2 ファイルに重複)                   | 重複                                              |
-| `webview/utils/use-vscode-messages.ts`                 | `v.safeParse` 失敗                                                | `console.error` して return                                    | —                                                 |
-| `webview/utils/env.ts`                                 | `v.parse` の throw (モジュール初期化時)                           | 未処理                                                         | ビルド設定の誤り。throw のまま                    |
-| `src/extension.ts` `activate`                          | `setup` の reject                                                 | VS Code が activation 失敗として扱う                           | 境界。throw のまま                                |
+| 場所                                                   | 発生                                                              | 処理                                                           | 問題                                                     |
+| ------------------------------------------------------ | ----------------------------------------------------------------- | -------------------------------------------------------------- | -------------------------------------------------------- |
+| `src/utils/get-local-vrm-path.ts`                      | `fs.stat` の reject と、try 内の自前 `throw`                      | `catch {}` で通知して `undefined` を返す                       | 原因 (未設定/相対パス/不存在/非ファイル) が消える        |
+| `src/extension.ts`                                     | 上記の `undefined`                                                | 未設定の通知を呼び出し側で別途判定 (2 箇所で重複)              | 通知の判断が util と呼び出し側に分散                     |
+| `src/webview-provider.ts` 受信                         | `v.safeParse` 失敗                                                | `if (!msg.success) return;`                                    | 不正メッセージを無言で捨てる                             |
+| `src/webview-provider.ts` 送信                         | `v.parse` の throw                                                | 未処理 (VS Code のコールバックまで伝播)                        | 型で保証済みでも、失敗がコールバック経由でアプリを止める |
+| `webview/utils/get-vrm-from-gltf.ts`                   | VRM が無い glTF で `throw new Error`                              | `loadCompanion` の `.catch` → `String(error)` で拡張機能へ送信 | エラー種別が文字列化で失われる                           |
+| `webview/utils/use-vrm-companion.ts`                   | `GLTFLoader.loadAsync` の reject、`vrmAnimations[0]` が undefined | 同上                                                           | アニメーション欠落は後続の例外としてしか現れない         |
+| `webview/utils/load-companion.ts`                      | 上記の reject                                                     | アニメーションだけ自前の `{ ok: true as const, value }` に変換 | 局所的な Result もどきが既に生まれていた                 |
+| `webview/utils/vscode.ts` `getState`                   | `JSON.parse` の throw (dev の localStorage)                       | 未処理 (`useState` 初期化で React まで伝播)                    | 壊れた localStorage で描画ごと落ちる                     |
+| `webview/utils/use-settings.ts` / `use-backgrounds.ts` | `v.safeParse` 失敗                                                | warn して `{}` (同一関数が 2 ファイルに重複)                   | 重複                                                     |
+| `webview/utils/use-vscode-messages.ts`                 | `v.safeParse` 失敗                                                | `console.error` して return                                    | —                                                        |
+| `webview/utils/env.ts`                                 | `v.parse` の throw (モジュール初期化時)                           | 未処理                                                         | ビルド設定の誤り。throw のまま                           |
+| `src/extension.ts` `activate`                          | `setup` の reject                                                 | VS Code が activation 失敗として扱う                           | 境界。throw のまま                                       |
 
 呼び出し側から見て失敗の有無と種類が型に現れないため、「catch して捨てる」「`undefined` で返して理由を失う」が起きやすかった。
 
@@ -71,7 +71,6 @@ Result にするのは「正しく動くプログラムでも起こる失敗」 
 | 箇所                                             | 理由                                                                                                                |
 | ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------- |
 | `activate` / VS Code のイベントコールバック      | VS Code API がコールバックの戻り値を見ないため、Result を返しても誰も受け取らない。境界内で Result を解いて通知する |
-| `WebviewProvider.postMessage` の `v.parse`       | 引数は `MessageToWebview` 型で保証済み。失敗はバグなので、Result で包むと握りつぶしの選択肢を増やすだけになる       |
 | `packages/webview/src/utils/env.ts` の `v.parse` | ビルド時の環境変数の誤り。起動直後に落ちるのが最も早く気付ける                                                      |
 | React のレンダリング・`useFrame`                 | React はエラーを throw で Error Boundary に伝える設計。描画関数から Result を返す手段が無い                         |
 | `src/test/`、`scripts/*.cjs`                     | テストと開発スクリプトは失敗＝中断でよい                                                                            |
@@ -85,6 +84,8 @@ Result にするのは「正しく動くプログラムでも起こる失敗」 
 - `useVrmCompanion` の glTF 取得を `fromPromise` で `fetchFailed` に、アニメーション欠落を `notVrmAnimation` に変換し、`describeCompanionLoadError` で拡張機能へ送る文言を組み立てる。
 - `vscode.getState` → `Result<unknown, StorageError>`。`use-settings` / `use-backgrounds` の重複した `loadState` を `utils/load-state.ts` に統合。
 - valibot の `safeParse` 4 箇所 → `validate`。拡張機能側の受信で無言だった不正メッセージは `console.warn` するようにした。
+- 拡張機能側の送信 (`WebviewProvider.postMessage`) の `v.parse` → `validate`。型で保証済みの値でも、throw は VS Code のイベントコールバックを途中で止め、後続のメッセージ (`sendState` の残り) まで送られなくなる。webview 側の `vscode.postMessage` と同じく、ログを出してそのメッセージだけ送らない。
+  `postMessage` 自体は Result を返さない。呼び出し元はすべてイベントコールバックで、受け取っても打てる手が無いため。
 
 ### 5. lint ルール
 
@@ -136,6 +137,10 @@ oxlint の JS プラグインは型情報を参照できない (公式ドキュ�
 oxlint が JS プラグインに型情報を提供した時点で、`no-unused-result` と `handle-error` を型ベースに置き換える。
 
 ### その他
+
+- 別 issue に切り出したもの:
+  - VRM パス未設定時の警告表示。現状は `notSet` を既存の情報通知に流しているだけで、webview 側の表示は無い。
+  - React の Error Boundary。描画中の例外 (WebGL コンテキスト取得失敗など) の受け皿が無い。
 
 - `throw` のまま残す境界を明文化したので、新しいコードで迷ったら「正しいプログラムでも起こるか」で判断する。
 - 意図的にエラーを捨てる場合は `// oxlint-disable-next-line result/<rule> -- 理由` を書く。理由の無い抑制はレビューで差し戻す。
