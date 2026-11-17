@@ -5,9 +5,11 @@ import * as v from "valibot";
 import { getUri } from "./utils/get-uri";
 import { getNonce } from "./utils/get-nonce";
 import {
+  describeValidationError,
   messageToVscodeSchema,
   MessageToWebview,
   messageToWebviewSchema,
+  validate,
 } from "shared";
 import { getWebviewHtml } from "./utils/get-webview-html";
 import { loadAssets } from "./utils/load-assets";
@@ -38,30 +40,37 @@ export class WebviewProvider
     this.updateResourceRoots();
     this.viewSubscriptions.push(
       view.webview.onDidReceiveMessage((message: unknown) => {
-        const msg = v.safeParse(messageToVscodeSchema, message);
-        if (!msg.success) return;
-        if (msg.output.command !== "mounted") {
+        const parsed = validate(messageToVscodeSchema, message);
+        if (!parsed.ok) {
+          console.warn(
+            "[webview message]",
+            describeValidationError(parsed.error),
+          );
+          return;
+        }
+        const msg = parsed.value;
+        if (msg.command !== "mounted") {
           this.performanceLog ??= vscode.window.createOutputChannel(
             "VRM Performance",
             { log: true },
           );
         }
-        if (msg.output.command === "loadError") {
-          this.performanceLog?.error(msg.output.body.message);
-          console.error("[VRM load]", msg.output.body.message);
+        if (msg.command === "loadError") {
+          this.performanceLog?.error(msg.body.message);
+          console.error("[VRM load]", msg.body.message);
           return;
         }
-        if (msg.output.command === "mounted") {
+        if (msg.command === "mounted") {
           this.sendState();
           return;
         }
         const reason =
-          msg.output.body.reason === "initial"
+          msg.body.reason === "initial"
             ? this.activeMeasurement
-            : msg.output.body.reason;
+            : msg.body.reason;
         const start = this.measurements.get(reason);
         const result = {
-          ...msg.output.body,
+          ...msg.body,
           reason,
           hostElapsed:
             start === undefined ? undefined : performance.now() - start,

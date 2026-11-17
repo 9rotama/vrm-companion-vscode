@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
-import * as v from "valibot";
 import { vscode } from "./vscode";
-import { Assets, messageToWebviewSchema } from "shared";
+import {
+  Assets,
+  describeValidationError,
+  messageToWebviewSchema,
+  validate,
+} from "shared";
 
 export function useVscodeMessages() {
   const [visible, setVisible] = useState(true);
@@ -16,13 +20,16 @@ export function useVscodeMessages() {
 
   useEffect(() => {
     const handleReceived = (event: MessageEvent) => {
-      const message = v.safeParse(messageToWebviewSchema, event.data);
-      if (!message.success) {
-        console.error("Invalid message received:", message.issues);
+      const message = validate(messageToWebviewSchema, event.data);
+      if (!message.ok) {
+        console.error(
+          "Invalid message received:",
+          describeValidationError(message.error),
+        );
         return;
       }
 
-      const data = message.output;
+      const data = message.value;
       switch (data.command) {
         case "visibility":
           setVisible(data.body.visible);
@@ -36,6 +43,9 @@ export function useVscodeMessages() {
           break;
         case "updateIssuesCount":
           setIssuesCount(data.body.count);
+          break;
+        case "measureRender":
+          // Not handled here: Model listens for it so the measurement starts next to the renderer.
           break;
       }
     };

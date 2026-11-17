@@ -1,6 +1,15 @@
 import type { WebviewApi } from "vscode-webview";
-import * as v from "valibot";
-import { MessageToVscode, messageToVscodeSchema } from "shared";
+import {
+  describeValidationError,
+  err,
+  MessageToVscode,
+  messageToVscodeSchema,
+  ok,
+  Result,
+  validate,
+} from "shared";
+
+export type StorageError = { type: "corruptedStorage"; cause: unknown };
 
 class VSCodeAPIWrapper {
   private readonly vsCodeApi: WebviewApi<unknown> | undefined;
@@ -13,21 +22,29 @@ class VSCodeAPIWrapper {
 
   public postMessage(message: MessageToVscode) {
     if (this.vsCodeApi) {
-      const msg = v.safeParse(messageToVscodeSchema, message);
-      if (!msg.success) {
-        console.error("Invalid message format:", msg.issues);
+      const msg = validate(messageToVscodeSchema, message);
+      if (!msg.ok) {
+        console.error(
+          "Invalid message format:",
+          describeValidationError(msg.error),
+        );
         return;
       }
-      this.vsCodeApi.postMessage(msg.output);
+      this.vsCodeApi.postMessage(msg.value);
     }
   }
 
-  public getState(): unknown | undefined {
+  public getState(): Result<unknown, StorageError> {
     if (this.vsCodeApi) {
-      return this.vsCodeApi.getState();
+      return ok(this.vsCodeApi.getState());
     } else {
       const state = localStorage.getItem("vscodeState");
-      return state ? JSON.parse(state) : undefined;
+      if (!state) return ok(undefined);
+      try {
+        return ok(JSON.parse(state));
+      } catch (cause) {
+        return err({ type: "corruptedStorage", cause });
+      }
     }
   }
 

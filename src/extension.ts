@@ -3,14 +3,12 @@ import { WebviewProvider } from "./webview-provider";
 import { getLocalVrmPath } from "./utils/get-local-vrm-path";
 import { getIssuesCount } from "./utils/get-issues-count";
 import { getConfigVrmFilePath } from "./utils/workspace-config";
-import { notifyVrmFilePathNotSet } from "./utils/notifications";
+import { notifyVrmPathError } from "./utils/notifications";
 
 async function setup(context: vscode.ExtensionContext) {
-  const vrmFilePath = getConfigVrmFilePath();
-
-  if (!vrmFilePath) notifyVrmFilePathNotSet();
-
-  const modelPath = await getLocalVrmPath(vrmFilePath);
+  const initial = await getLocalVrmPath(getConfigVrmFilePath());
+  if (!initial.ok) notifyVrmPathError(initial.error);
+  const modelPath = initial.ok ? initial.value : undefined;
 
   const provider = new WebviewProvider(
     context.extensionUri,
@@ -44,12 +42,11 @@ async function setup(context: vscode.ExtensionContext) {
       if (!event.affectsConfiguration("vrm-companion-vscode.vrmFilePath"))
         return;
       const version = ++configurationVersion;
-      const vrmFilePath = getConfigVrmFilePath();
-      if (!vrmFilePath) notifyVrmFilePathNotSet();
-      const modelPath = await getLocalVrmPath(vrmFilePath);
+      const result = await getLocalVrmPath(getConfigVrmFilePath());
       if (version !== configurationVersion) return;
+      if (!result.ok) notifyVrmPathError(result.error);
 
-      provider.setModelPath(modelPath);
+      provider.setModelPath(result.ok ? result.value : undefined);
     }),
   );
 }

@@ -1,7 +1,7 @@
 import { useState } from "react";
-import * as v from "valibot";
-import { State, stateSchema } from "../models/state";
+import { State } from "../models/state";
 import { vscode } from "./vscode";
+import { loadStateOrDefault } from "./load-state";
 
 export type Background =
   | {
@@ -20,17 +20,8 @@ export const emptyBg: Background = {
   type: "empty",
 } as const;
 
-function loadState(): NonNullable<State> {
-  const parsed = v.safeParse(stateSchema, vscode.getState());
-  if (!parsed.success) {
-    console.warn("Failed to parse state:", parsed.issues);
-    return {};
-  }
-  return parsed.output ?? {};
-}
-
 function loadInitialBackgroundId(): string {
-  return loadState().background?.id ?? emptyBg.id;
+  return loadStateOrDefault().background?.id ?? emptyBg.id;
 }
 
 export function useBackgrounds(loadedBackgrounds: Background[] | undefined) {
@@ -45,7 +36,7 @@ export function useBackgrounds(loadedBackgrounds: Background[] | undefined) {
   function setBackground(id: string) {
     setCurrentBackgroundId(id);
     vscode.setState({
-      ...loadState(),
+      ...loadStateOrDefault(),
       background: { id },
     } satisfies State);
   }
