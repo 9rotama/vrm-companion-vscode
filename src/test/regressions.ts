@@ -9,7 +9,7 @@ import { BoxGeometry, Group, Mesh, MeshBasicMaterial } from "three";
 import { mkdtemp, writeFile, unlink, rmdir } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { MessageToWebview } from "shared";
+import { err, MessageToWebview, ok, Result } from "shared";
 
 function fakeView() {
   const received = new vscode.EventEmitter<unknown>();
@@ -139,14 +139,13 @@ export async function run() {
       const disposed: string[] = [];
       const make = (model: Promise<string>) =>
         loadCompanion({
-          loadModel: () => model,
-          loadAnimation: () => animation.promise,
+          loadModel: () => model.then(ok),
+          loadAnimation: () => animation.promise.then(ok),
           showModel: (value) => shown.push(value),
           animate: () => assert.fail("cancelled animation"),
           disposeModel: (value) => disposed.push(value),
-          reportError: (error) => {
-            throw error;
-          },
+          reportError: (error) =>
+            assert.fail(`unexpected error: ${JSON.stringify(error)}`),
         });
       const a = make(old.promise);
       a.cancel();
@@ -166,11 +165,11 @@ export async function run() {
   await check(
     "model is shown before animation finishes and survives animation failure",
     async () => {
-      const animation = deferred<string>();
+      const animation = deferred<Result<string, string>>();
       const shown: string[] = [];
       const errors: unknown[] = [];
       const task = loadCompanion({
-        loadModel: () => Promise.resolve("model"),
+        loadModel: () => Promise.resolve(ok("model")),
         loadAnimation: () => animation.promise,
         showModel: (model) => shown.push(model),
         animate: () => assert.fail("failed animation"),
@@ -179,10 +178,31 @@ export async function run() {
       });
       await Promise.resolve();
       assert.deepEqual(shown, ["model"]);
-      animation.reject(new Error("missing animation"));
+      animation.resolve(err("missing animation"));
       await task.done;
-      assert.equal(errors.length, 1);
+      assert.deepEqual(errors, ["missing animation"]);
       assert.deepEqual(shown, ["model"]);
+      task.cancel();
+    },
+  );
+  await check(
+    "unexpected rejection is reported instead of left unhandled",
+    async () => {
+      const errors: unknown[] = [];
+      const cause = new Error("loader crashed");
+      const task = loadCompanion({
+        loadModel: () => Promise.reject(cause),
+        loadAnimation: () => Promise.reject(cause),
+        showModel: () => assert.fail("crashed model shown"),
+        animate: () => assert.fail("crashed model animated"),
+        disposeModel: () => {},
+        reportError: (error) => errors.push(error),
+      });
+      await task.done;
+      assert.deepEqual(errors, [
+        { type: "unexpected", cause },
+        { type: "unexpected", cause },
+      ]);
       task.cancel();
     },
   );
@@ -191,8 +211,8 @@ export async function run() {
     async () => {
       const errors: unknown[] = [];
       const task = loadCompanion({
-        loadModel: () => Promise.reject(new Error("missing model")),
-        loadAnimation: () => Promise.resolve("idle"),
+        loadModel: () => Promise.resolve(err("missing model")),
+        loadAnimation: () => Promise.resolve(ok("idle")),
         showModel: () => assert.fail("missing model shown"),
         animate: () => assert.fail("missing model animated"),
         disposeModel: () => {},
@@ -221,7 +241,7 @@ export async function run() {
       const start = (userData: Record<string, unknown>) =>
         loadCompanion({
           loadModel: async () => getVrmFromGltf({ scene, userData }),
-          loadAnimation: async () => "idle",
+          loadAnimation: async () => ok("idle"),
           showModel: (model) => shown.push(model),
           animate: () => {},
           disposeModel: (model) => {
@@ -233,7 +253,7 @@ export async function run() {
       const invalid = start({});
       await invalid.done;
       assert.equal(errors.length, 1);
-      assert.match(String(errors[0]), /does not contain a VRM model/);
+      assert.deepEqual(errors[0], { type: "notVrm" });
       assert.deepEqual(shown, []);
       assert.equal(geometryDisposals, 1);
       assert.equal(materialDisposals, 1);
@@ -252,15 +272,22 @@ export async function run() {
     const file = join(dir, "model.vrm");
     try {
       await writeFile(file, "local fixture");
-      assert.equal(await getLocalVrmPath(file), file);
-      assert.equal(await getLocalVrmPath(undefined), undefined);
-      assert.equal(
-        await getLocalVrmPath("https://example.invalid/model.vrm"),
-        undefined,
+      assert.deepEqual(await getLocalVrmPath(file), ok(file));
+      assert.deepEqual(
+        await getLocalVrmPath(undefined),
+        err({ type: "notSet" }),
       );
-      assert.equal(await getLocalVrmPath(dir), undefined);
+      assert.deepEqual(
+        await getLocalVrmPath("https://example.invalid/model.vrm"),
+        err({ type: "notAbsolute", path: "https://example.invalid/model.vrm" }),
+      );
+      assert.deepEqual(
+        await getLocalVrmPath(dir),
+        err({ type: "notAFile", path: dir }),
+      );
       await unlink(file);
-      assert.equal(await getLocalVrmPath(file), undefined);
+      const missing = await getLocalVrmPath(file);
+      assert.ok(!missing.ok && missing.error.type === "notFound");
     } finally {
       await rmdir(dir);
     }

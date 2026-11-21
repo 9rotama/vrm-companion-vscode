@@ -1,14 +1,15 @@
 import { VRM, VRMUtils } from "@pixiv/three-vrm";
 import type { Group } from "three";
+import { err, ok, Result } from "shared";
 
 export function getVrmFromGltf(gltf: {
   scene: Group;
   userData: Record<string, unknown>;
-}): VRM {
+}): Result<VRM, { type: "notVrm" }> {
   const vrm = gltf.userData.vrm as VRM | undefined;
   if (!vrm) {
     VRMUtils.deepDispose(gltf.scene);
-    throw new Error("The selected file does not contain a VRM model");
+    return err({ type: "notVrm" });
   }
-  return vrm;
+  return ok(vrm);
 }

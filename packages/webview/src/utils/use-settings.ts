@@ -1,7 +1,7 @@
 import { useState } from "react";
-import * as v from "valibot";
 import { vscode } from "./vscode";
-import { BlinkState, CameraState, State, stateSchema } from "../models/state";
+import { loadStateOrDefault } from "./load-state";
+import { BlinkState, CameraState, State } from "../models/state";
 import { useDebouncedCallback } from "use-debounce";
 
 const defaultCamera: CameraState = { height: 1.0, depth: 0.7 };
@@ -12,21 +12,12 @@ const defaultBlink: BlinkState = {
   angry: false,
 };
 
-function loadState(): NonNullable<State> {
-  const parsed = v.safeParse(stateSchema, vscode.getState());
-  if (!parsed.success) {
-    console.warn("Failed to parse state:", parsed.issues);
-    return {};
-  }
-  return parsed.output ?? {};
-}
-
 function saveState(patch: NonNullable<State>) {
-  vscode.setState({ ...loadState(), ...patch } satisfies State);
+  vscode.setState({ ...loadStateOrDefault(), ...patch } satisfies State);
 }
 
 export function useSettings() {
-  const [initial] = useState(loadState);
+  const [initial] = useState(loadStateOrDefault);
   const [camera, setCameraState] = useState<CameraState>(
     initial.camera ?? defaultCamera,
   );

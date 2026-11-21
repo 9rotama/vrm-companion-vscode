@@ -1,16 +1,25 @@
 import { stat } from "node:fs/promises";
 import { isAbsolute } from "node:path";
-import { notifyVrmFilePathNotFound } from "./notifications";
+import { err, fromPromise, ok, Result } from "shared";
 
-export async function getLocalVrmPath(filePath: string | undefined) {
-  if (!filePath) return undefined;
-  try {
-    if (!isAbsolute(filePath) || !(await stat(filePath)).isFile()) {
-      throw new Error("Expected a local file");
-    }
-    return filePath;
-  } catch {
-    notifyVrmFilePathNotFound();
-    return undefined;
-  }
+export type VrmPathError =
+  | { type: "notSet" }
+  | { type: "notAbsolute"; path: string }
+  | { type: "notFound"; path: string; cause: unknown }
+  | { type: "notAFile"; path: string };
+
+export async function getLocalVrmPath(
+  filePath: string | undefined,
+): Promise<Result<string, VrmPathError>> {
+  if (!filePath) return err({ type: "notSet" });
+  if (!isAbsolute(filePath))
+    return err({ type: "notAbsolute", path: filePath });
+  const stats = await fromPromise(stat(filePath), (cause) => ({
+    type: "notFound" as const,
+    path: filePath,
+    cause,
+  }));
+  if (!stats.ok) return stats;
+  if (!stats.value.isFile()) return err({ type: "notAFile", path: filePath });
+  return ok(filePath);
 }

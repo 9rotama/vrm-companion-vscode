@@ -1,4 +1,5 @@
 import * as vscode from "vscode";
+import type { VrmPathError } from "./get-local-vrm-path";
 
 export function notifyVrmFilePathNotSet() {
   const action = "open settings";
@@ -21,4 +22,18 @@ export function notifyVrmFilePathNotFound() {
   vscode.window.showErrorMessage(
     "VRM file path is not found. please set a valid VRM file path in the extension settings.",
   );
+}
+
+export function notifyVrmPathError(error: VrmPathError) {
+  switch (error.type) {
+    case "notSet":
+      notifyVrmFilePathNotSet();
+      return;
+    case "notAbsolute":
+    case "notFound":
+    case "notAFile":
+      console.warn("[VRM path]", error);
+      notifyVrmFilePathNotFound();
+      return;
+  }
 }

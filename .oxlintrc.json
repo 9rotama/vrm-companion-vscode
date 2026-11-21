@@ -2,5 +2,21 @@
   "$schema": "./node_modules/oxlint/configuration_schema.json",
   "options": {
     "typeAware": true
+  },
+  "jsPlugins": ["./lint/oxlint-plugin-result/index.mjs"],
+  "rules": {
+    "result/no-swallowed-error": "error",
+    "result/no-throw-in-result-function": "error",
+    "result/no-unused-result": "error",
+    "result/handle-error": "error",
+    "no-empty": "error",
+    "no-useless-catch": "error",
+    "preserve-caught-error": "error",
+    "typescript/ban-ts-comment": "error",
+    "typescript/no-floating-promises": "error",
+    "typescript/only-throw-error": "error",
+    "typescript/prefer-promise-reject-errors": "error",
+    "typescript/switch-exhaustiveness-check": "error",
+    "typescript/use-unknown-in-catch-callback-variable": "error"
   }
 }
